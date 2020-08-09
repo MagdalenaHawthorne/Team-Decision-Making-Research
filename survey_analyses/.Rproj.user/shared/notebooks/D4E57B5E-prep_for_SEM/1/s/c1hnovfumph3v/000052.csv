@@ -1,0 +1,8 @@
+"0","summary(alpha(survey_data_clean[c('knowledge_utilization_1', 'knowledge_utilization_2', 'knowledge_utilization_3', 'knowledge_sharing_1', 'knowledge_sharing_2', 'knowledge_sharing_3', 'knowledge_sharing_4')], check.keys=TRUE))"
+"2","Some items were negatively correlated with total scale and were automatically reversed.
+ This is indicated by a negative sign for the variable name."
+"1","
+Reliability analysis "
+"1"," "
+"1"," 
+"

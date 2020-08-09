@@ -1,0 +1,89 @@
+---
+title: "Plots"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+## load libraries
+```{r}
+library(tidyverse)
+library(readr)
+library(lavaan)
+library(mediation)
+library(MASS)
+
+```
+## load data
+
+```{r}
+cleaned_df <- read_csv("survey_data_clean.csv")
+
+# change to factor
+cleaned_df <- cleaned_df %>% 
+  mutate_at(vars(level, gender), as.factor)
+
+#change to numeric 
+cleaned_df <- cleaned_df %>% 
+  mutate_at(vars(work_experience, core_team_tenure), as.numeric) 
+```
+# DAN'S EXOTIC PLAYGROUND
+
+```{r}
+t1 <- lm(transactive_memory ~ team_structure * interdependence, data = cleaned_df); summary(t1) 
+t2 <- lm(knowledge_sharing ~ transactive_memory + interdependence, data = cleaned_df); summary(t2)  
+t3 <- lm(decision_quality ~ transactive_memory + team_structure + knowledge_sharing * interdependence, data = cleaned_df);
+summary(t3)        
+t4 <- lm(knowledge_sharing ~ transactive_memory + team_structure, data = cleaned_df); summary(t4) 
+
+cleaned_df <- cleaned_df %>%
+  mutate(HighLowTransMem = case_when(
+    transactive_memory >= median(transactive_memory) ~ "high",
+    transactive_memory < median(transactive_memory) ~ "low"))
+
+cleaned_df <- cleaned_df %>%
+  mutate(HighLowInde = case_when(
+    interdependence >= median(interdependence) ~ "high",
+    interdependence < median(interdependence) ~ "low"))
+
+cleaned_df <- cleaned_df %>%
+  mutate(HighLowTeam = case_when(
+    team_structure >= median(team_structure) ~ "high",
+    team_structure < median(team_structure) ~ "low"))
+
+ggplot(aes(x=team_structure,y=knowledge_sharing, fill = HighLowTransMem, group = HighLowTransMem), data=cleaned_df) +
+    geom_smooth()
+
+ggplot(aes(x=transactive_memory,y=knowledge_sharing, fill = HighLowTeam, group = HighLowTeam), data=cleaned_df) +
+    geom_smooth()
+
+ggplot(aes(x=knowledge_sharing, y=decision_quality, fill = HighLowTeam, group = HighLowTeam), data=cleaned_df) +
+    geom_smooth() +
+  geom_point()
+
+ggplot(aes(x=team_structure,y=transactive_memory), data=cleaned_df) +
+    geom_smooth() +
+    geom_point()
+
+ggplot(aes(x=team_structure,y=decision_quality), data=cleaned_df) +
+    geom_smooth() +
+    geom_point()
+
+ggplot(aes(x=team_structure,y=knowledge_sharing), data=cleaned_df) +
+    geom_smooth() +
+    geom_point()
+
+ggplot(aes(x=knowledge_sharing, y=decision_quality), data=cleaned_df) +
+    geom_smooth() +
+    geom_point()
+
+ggplot(aes(x=team_structure, y=transactive_memory, fill = HighLowInde, group = HighLowInde), data=cleaned_df) +
+  geom_smooth() 
+
+ggplot(aes(x=team_structure, y=decision_quality, fill = HighLowInde, group = HighLowInde), data=cleaned_df) +
+    geom_smooth()
+# The more non-hierarchical the more knowledge is shared. **To a lesser extent, having a strong TMS system in place additionally increases knowledge sharing**. However, TMS is very important in moderately hierarcical regimes where it can lead to much higher knowledge sharing than similarly hierarchical teams without strong TMS systems in place. 
+
+```
+

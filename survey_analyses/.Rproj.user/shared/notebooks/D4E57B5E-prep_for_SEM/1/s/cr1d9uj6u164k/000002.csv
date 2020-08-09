@@ -1,0 +1,7 @@
+"0","# list of items that are reversed:"
+"0","# - tms_credib_4"
+"0","# - tms_coord_3"
+"0","# - tms_coord_5"
+"0","# - knowledge_sharing_3"
+"0","survey_data[,c(""tms_credib_4"", ""tms_coord_3"", ""tms_coord_5"", ""knowledge_sharing_3"")] <- 6 - survey_data[,c(""tms_credib_4"", ""tms_coord_3"", ""tms_coord_5"")] "
+"0","survey_data[, ""knowledge_sharing_3""] <- 7 - survey_data[,""knowledge_sharing_3""]"

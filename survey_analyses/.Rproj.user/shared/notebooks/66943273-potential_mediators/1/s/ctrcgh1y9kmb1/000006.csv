@@ -1,0 +1,4 @@
+"0","# calculating average group identification per group "
+"0","big_df <- big_df %>% "
+"0","  group_by(group) %>% "
+"0","  mutate(group_ident_per_group = mean(overall_group_identification))"

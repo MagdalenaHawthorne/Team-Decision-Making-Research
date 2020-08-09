@@ -1,0 +1,3 @@
+"0","# group identification"
+"0","survey_data <- survey_data %>% "
+"0","  mutate(group_identification = rowMeans(.[, c(""group_ident_1"", 'group_ident_2', ""group_ident_3"", ""group_ident_4"")]))"

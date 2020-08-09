@@ -1,0 +1,2 @@
+"0","ggplot(aes(team_structure), data=cleaned_df) +"
+"0","  geom_density()"

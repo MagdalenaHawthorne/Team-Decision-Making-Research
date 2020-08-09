@@ -1,0 +1,24 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1576246808942.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3279145950",
+    "id" : "6E1A37F2",
+    "lastKnownWriteTime" : 1576582057,
+    "last_content_update" : 1576582057299,
+    "path" : "~/Dropbox/PhD/exp_analyses/descriptive_stats.Rmd",
+    "project_path" : "descriptive_stats.Rmd",
+    "properties" : {
+        "cursorPosition" : "195,13",
+        "last_setup_crc32" : "FF4EE4872b2c3ee7",
+        "scrollLine" : "190",
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 7,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

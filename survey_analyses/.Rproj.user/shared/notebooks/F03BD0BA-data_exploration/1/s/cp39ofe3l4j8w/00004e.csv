@@ -1,0 +1,4 @@
+"0","# percent using an agile method [REMINDER: TRUE is interpreted as 1, FALSE as 0]"
+"0","survey_data %>% "
+"0","  mutate(agile_method = agile_method == ""Yes"") %>%"
+"0","  summarise(percent_agile = sum(agile_method)/n() * 100)"

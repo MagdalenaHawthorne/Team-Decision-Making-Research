@@ -1,0 +1,6 @@
+"0","big_df <- big_df %>% 
+  group_by(group, group_structure, TMS) %>% 
+  mutate(group_avg_open_comm = mean(avg_open_comm))
+"
+"2","Error in eval(lhs, parent, parent) : object 'big_df' not found
+"

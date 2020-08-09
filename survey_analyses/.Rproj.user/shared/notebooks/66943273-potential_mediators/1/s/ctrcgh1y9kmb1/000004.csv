@@ -1,0 +1,5 @@
+"0","# calculate overall score"
+"0","big_df <- big_df %>% "
+"0","  ungroup() %>% "
+"0","  mutate(overall_group_identification = rowMeans(.[ , c('group_ident_1', 'group_ident_2', 'group_ident_3', 'group_ident_4')]))"
+"0","big_df"

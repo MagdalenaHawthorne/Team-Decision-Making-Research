@@ -1,0 +1,7 @@
+"0","survey_data <- rownames_to_column(survey_data, var = ""participant"") "
+"0","# remove people who reported a ridiculously large team size and an old dude"
+"0","survey_data <- survey_data %>% "
+"0","  filter(!team_members > 55) %>% "
+"0","  filter(!work_experience == 50)"
+"0","survey_data %>% "
+"0","  filter(gender == ""No response"") # --> kick out participant 94 & 275 & 334 & 531 & 733 due to missing data "

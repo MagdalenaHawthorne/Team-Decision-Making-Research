@@ -1,0 +1,33 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1581023460012.000,
+    "dirty" : false,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "BE949C87",
+    "lastKnownWriteTime" : -3370399537020003175,
+    "last_content_update" : 1581023460012,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "cacheKey" : "9C804E8F",
+        "caption" : "joined_df",
+        "contentUrl" : "grid_resource/gridviewer.html?env=&obj=joined_df&cache_key=9C804E8F",
+        "displayedObservations" : "2430",
+        "environment" : "",
+        "expression" : "joined_df",
+        "object" : "joined_df",
+        "preview" : "0",
+        "totalObservations" : "2430",
+        "variables" : "11"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 6,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_dataframe"
+}

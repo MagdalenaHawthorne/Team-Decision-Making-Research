@@ -1,0 +1,4 @@
+"0","survey_data <- survey_data %>% "
+"0","  mutate(gender = gender == ""Male"")"
+"0","survey_data %>% "
+"0","  summarise(percent_male = sum(gender)/n() * 100)"

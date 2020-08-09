@@ -1,0 +1,26 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1580231138129.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "357825516",
+    "id" : "4C4B4BFD",
+    "lastKnownWriteTime" : 1593686912,
+    "last_content_update" : 1593686912781,
+    "path" : "~/Dropbox/PhD/data_analyses/exp_analyses/manipulation_checks.Rmd",
+    "project_path" : "manipulation_checks.Rmd",
+    "properties" : {
+        "cursorPosition" : "166,3",
+        "last_setup_crc32" : "",
+        "scrollLine" : "0"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

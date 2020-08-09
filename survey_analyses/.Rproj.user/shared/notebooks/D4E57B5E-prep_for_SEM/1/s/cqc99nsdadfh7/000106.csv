@@ -1,0 +1,4 @@
+"0","survey_data_clean %>% "
+"0","  ggplot(aes(functional_area)) +"
+"0","  geom_bar() +"
+"0","  theme(axis.text.x = element_text(angle = 90)) "

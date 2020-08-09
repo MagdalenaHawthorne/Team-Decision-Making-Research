@@ -1,0 +1,17 @@
+"0","survey_data <- read_csv(""data/survey_results.csv"")"
+"2","Parsed with column specification:
+cols(
+  .default = col_double(),
+  participant_datetime = [31mcol_character()[39m,
+  agile_method = [31mcol_character()[39m,
+  which_agile_method = [31mcol_character()[39m,
+  manager_type = [31mcol_character()[39m,
+  gender = [31mcol_character()[39m,
+  location = [31mcol_character()[39m,
+  functional_area = [31mcol_character()[39m,
+  level = [31mcol_character()[39m,
+  specified_level = [31mcol_character()[39m
+)
+"
+"2","See spec(...) for full column specifications.
+"

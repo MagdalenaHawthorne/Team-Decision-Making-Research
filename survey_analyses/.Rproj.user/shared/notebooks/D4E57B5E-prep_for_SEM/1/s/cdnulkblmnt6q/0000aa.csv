@@ -1,0 +1,8 @@
+"0","survey_data <- survey_data %>% "
+"0","  filter(!participant %in% c(233, 815)) "
+"0","View(survey_data)"
+"0","nrow(survey_data) "
+"1","[1]"
+"1"," 1129"
+"1","
+"

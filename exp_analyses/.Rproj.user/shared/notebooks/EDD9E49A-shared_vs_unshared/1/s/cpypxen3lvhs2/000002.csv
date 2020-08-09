@@ -1,0 +1,14 @@
+"0","group_df <- read_csv(""data/group_level_data.csv"")
+"
+"2","Parsed with column specification:
+cols(
+  group = [32mcol_double()[39m,
+  condition = [31mcol_character()[39m,
+  pilot_profile = [31mcol_character()[39m,
+  decision = [31mcol_character()[39m,
+  duration_min = [32mcol_double()[39m,
+  location = [31mcol_character()[39m,
+  familiarity = [31mcol_character()[39m,
+  comment = [31mcol_character()[39m
+)
+"

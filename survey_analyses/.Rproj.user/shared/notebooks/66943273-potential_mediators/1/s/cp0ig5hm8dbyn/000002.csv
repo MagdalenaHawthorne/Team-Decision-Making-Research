@@ -1,0 +1,3 @@
+"0","big_df <- big_df %>% "
+"0","  separate(condition, c('group_structure','TMS'), sep = '_', remove = FALSE) %>%"
+"0","  mutate(binary_decision = decision == ""C"")"

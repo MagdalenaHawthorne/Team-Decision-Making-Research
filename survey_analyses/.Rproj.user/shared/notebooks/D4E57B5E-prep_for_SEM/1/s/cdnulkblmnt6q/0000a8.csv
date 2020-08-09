@@ -1,0 +1,4 @@
+"0","survey_data <- survey_data %>% "
+"0","  filter(!participant %in% c(94, 275, 334, 531, 733)) "
+"0","survey_data %>% "
+"0","  filter(team_members < 3) # --> kick out participant 233 & 815 because of team size that is not applicable"

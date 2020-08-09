@@ -1,0 +1,175 @@
+---
+title: "data_exploration"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## load libraries
+
+```{r}
+library(tidyverse)
+library(lubridate)
+library(readr)
+library(forcats)
+library(stringr)
+```
+
+## load data 
+
+```{r}
+survey_data <- read_csv("data/survey_results.csv")
+survey_data
+```
+# prep data file
+
+```{r}
+survey_data <- rownames_to_column(survey_data, var = "participant") 
+survey_data <- mutate_at(survey_data, vars(indiv_team_tenure, core_team_tenure), as.factor)
+survey_data
+View(survey_data)
+```
+
+# plotting variables
+
+## team size and tenure
+```{r}
+ggplot(survey_data, aes(team_members)) +
+  geom_histogram(binwidth = 10)
+
+survey_data %>% mutate(indiv_team_tenure = indiv_team_tenure %>% fct_infreq) %>% 
+  ggplot(aes(indiv_team_tenure)) +
+  geom_bar() +
+    theme(axis.text.x = element_text(angle = 90))
+
+survey_data$indiv_team_tenure <- fct_relevel(survey_data$indiv_team_tenure, "Less than 3 months", "3 _ 6 months", "6 _ 12 months")
+
+summary(survey_data$indiv_team_tenure)
+
+survey_data %>% 
+  ggplot(aes(indiv_team_tenure)) + 
+  geom_bar() + 
+  xlab("indiv_team_tenure") +
+  theme(axis.text.x = element_text(angle = 90)) 
+
+survey_data$core_team_tenure <- fct_relevel(survey_data$core_team_tenure,"Do not know", "Less than 3 months", "3 _ 6 months", "6 _ 12 months")
+
+summary(survey_data$core_team_tenure)
+
+survey_data %>% 
+  ggplot(aes(fct_relevel(core_team_tenure,"Do not know", "Less than 3 months", "3 _ 6 months", "6 _ 12 months"))) + 
+  geom_bar() + 
+  xlab("core_team_tenure") +
+  theme(axis.text.x = element_text(angle = 90)) 
+```
+## agile 
+
+```{r}
+survey_data %>% 
+  count(agile_method) 
+# percent using an agile method [REMINDER: TRUE is interpreted as 1, FALSE as 0]
+survey_data %>% 
+  mutate(agile_method = agile_method == "Yes") %>%
+  summarise(percent_agile = sum(agile_method)/n() * 100)
+
+# looking into the character vector on which agile methods were used
+
+str_agile_method <- survey_data$which_agile_method
+
+str_agile_method <- str_to_lower(str_agile_method)
+
+str_agile_method 
+
+scrum <- str_detect(str_agile_method, "scrum")
+summary(scrum)
+
+lean <- str_detect(str_agile_method, "lean")
+summary(lean)
+
+kanban <- str_detect(str_agile_method, "ban")
+summary(kanban)
+```
+## manager
+
+```{r}
+survey_data %>% 
+  mutate(manager_type = manager_type == "Internal") %>% 
+  summarise(percent_internal_manager = sum(manager_type/n() * 100))
+```
+## gender
+
+```{r}
+survey_data <- survey_data %>% 
+  mutate(gender = gender == "Male")
+
+survey_data %>% 
+  summarise(percent_male = sum(gender)/n() * 100)
+
+# Anteil weiblicher Angestellter bei SAP im Jahr 2018: 33 % 
+```
+## work experience
+
+```{r}
+survey_data %>% 
+  ggplot(aes(work_experience)) +
+  geom_histogram(binwidth = 5)
+
+summary(survey_data$work_experience)
+
+survey_data %>% 
+  filter(!work_experience > 40) %>% 
+  select(work_experience) %>% 
+  summarise(mean_work_exp = mean(work_experience))
+
+survey_data %>% 
+  filter(work_experience > 45)
+
+# participant 1074 needs to be excluded 
+```
+## location and area
+
+```{r}
+survey_data %>% 
+  ggplot(aes(location)) +
+  geom_bar() +
+  theme(axis.text.x = element_text(angle = 90))
+
+survey_data %>% 
+  count(location) %>% 
+  arrange(desc(n))
+
+survey_data %>% 
+  ggplot(aes(functional_area)) +
+  geom_bar() +
+  theme(axis.text.x = element_text(angle = 90))
+
+survey_data %>% 
+  count(functional_area) %>% 
+  arrange(desc(n))
+```
+## career level
+```{r}
+survey_data <- mutate_at(survey_data, vars(level), as.factor) 
+
+survey_data %>%
+  filter(!participant == 95) %>% 
+  mutate(level = fct_infreq(level)) %>% 
+  ggplot(aes(level)) +
+  geom_bar() +
+  theme(axis.text.x = element_text(angle = 90))
+
+survey_data %>% 
+  filter(is.na(level))
+
+survey_data <- survey_data %>% 
+  filter(!participant == 94)
+
+View(survey_data)
+
+survey_data %>% 
+  count(level)
+
+```
+

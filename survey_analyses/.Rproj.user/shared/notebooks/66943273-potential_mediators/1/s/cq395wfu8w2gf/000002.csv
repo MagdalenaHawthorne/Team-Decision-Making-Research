@@ -1,0 +1,4 @@
+"0","group_df <- group_df %>% "
+"0","  filter(!group %in% c(14, 80))"
+"0","indiv_df <- indiv_df %>% "
+"0","  filter(!group %in% c(14, 80))"

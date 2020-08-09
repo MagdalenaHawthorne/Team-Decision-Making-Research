@@ -1,0 +1,32 @@
+"0","group_df <- read_csv(""data/group_level_data.csv"")"
+"2","Parsed with column specification:
+cols(
+  group = [32mcol_double()[39m,
+  condition = [31mcol_character()[39m,
+  pilot_profile = [31mcol_character()[39m,
+  decision = [31mcol_character()[39m,
+  duration_min = [32mcol_double()[39m,
+  location = [31mcol_character()[39m,
+  familiarity = [31mcol_character()[39m,
+  comment = [31mcol_character()[39m
+)
+"
+"0","indiv_df <- read_csv(""data/indiv_level_data.csv"")"
+"2","Parsed with column specification:
+cols(
+  .default = col_double(),
+  `leader?` = [31mcol_character()[39m,
+  gender = [31mcol_character()[39m,
+  discipline = [31mcol_character()[39m,
+  `formal_leader?` = [31mcol_character()[39m,
+  indiv_decision = [31mcol_character()[39m,
+  `final_decision?` = [31mcol_character()[39m,
+  `exp_p1?` = [31mcol_character()[39m,
+  `exp_p2?` = [31mcol_character()[39m,
+  `exp_p3?` = [31mcol_character()[39m,
+  bias = [31mcol_character()[39m,
+  `purpose_study?` = [31mcol_character()[39m
+)
+"
+"2","See spec(...) for full column specifications.
+"

@@ -1,0 +1,372 @@
+---
+title: "Descriptive Statistics"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+# knitr::opts_chunk$set(echo = TRUE)
+
+library(readr)
+library(tidyverse)
+library(forcats)
+library(psych)
+library(broom)
+```
+# Load data
+
+```{r}
+group_df <- read_csv("data/group_level_data.csv", col_types = cols(
+  condition = col_factor(levels = NULL),
+  pilot_profile = col_factor(levels = NULL),
+  decision = col_factor(levels = NULL),
+  location = col_factor(levels = NULL),
+  familiarity = col_factor(levels = NULL)
+  ))
+group_df
+
+indiv_df <- read_csv("data/indiv_level_data.csv", col_types = cols(
+  `leader?` = col_factor(levels = NULL),
+  gender = col_factor(levels = NULL),
+  discipline = col_factor(levels = NULL),
+  `formal_leader?`= col_factor(levels = NULL),
+  indiv_decision = col_factor(levels = NULL),
+  `final_decision?` = col_factor(levels = NULL),
+  `exp_p1?` = col_factor(levels = NULL),
+  `exp_p2?` = col_factor(levels = NULL),
+  `exp_p3?` = col_factor(levels = NULL),
+  bias = col_factor(levels = NULL)
+  ))
+indiv_df
+
+memory_df <- read_csv("data/memory_test_data.csv",
+                      col_types = cols(
+                        pilot = col_factor(levels = NULL)
+                        ))
+memory_df
+                      
+shared_unshared_df <- read_csv("data/shared_unshared_inf.csv",
+                               col_types = cols(
+                                 pilot = col_factor(levels = NULL)
+                                 ))
+shared_unshared_df
+
+```
+# Cleaning data
+
+```{r}
+# check how many groups per condition
+
+group_df %>% 
+  group_by(condition) %>% 
+  count()
+
+indiv_df %>% nrow()
+# remove the two additional groups from h_noTMS, no.14 due to the version of the task and then no.80 because leader was weak or, alternatively, no.90 because they were SAP people and behaved differently (more design thinking)
+
+group_df <- group_df %>% 
+  filter(!group %in% c(14, 80))
+
+indiv_df <- indiv_df %>% 
+  filter(!group %in% c(14, 80))
+
+memory_df <- memory_df %>% 
+  filter(!group %in% c(14, 80))
+
+shared_unshared_df <- shared_unshared_df %>% 
+  filter(!group %in% c(14, 80))
+
+# check conditions again
+
+group_df %>% count(condition)
+```
+# Basic descriptive analyses
+
+## total sample
+```{r}
+indiv_df %>% 
+  group_by(group, id) %>% 
+  nrow()
+
+# Of the total of 98 tested groups, 11 were included in a pilot study and 7 had to be excluded. 80 groups of 3 participants each remained, resulting in a sample of n = 240 
+```
+## gender
+
+### number of female and male participants
+
+```{r}
+gender_dist <- indiv_df %>% 
+  count(gender)
+gender_dist
+```
+### percentage of female and male participants 
+
+```{r}
+gender_perc <- indiv_df %>% 
+  mutate(`female?` = gender == "female") %>% 
+  dplyr::select(`female?`, everything())
+gender_perc  
+
+gender_perc %>% 
+  summarise(percent_women = sum(`female?`)/n() * 100)
+```
+### explore distribution of leaders by gender
+
+```{r}
+indiv_df %>% 
+  group_by(gender, `leader?`) %>% 
+  count()
+
+group_df %>% 
+  filter(duration_min > 40)
+```
+### percentage of female/male leaders in reference to total sample
+
+```{r}
+indiv_df %>% 
+  group_by(gender) %>%
+  mutate(`leader?` = `leader?` == "yes") %>% 
+  summarise(percent_leader = sum(`leader?`)/nrow(indiv_df) * 100)
+```
+### percentage of female/male leaders in reference to all leaders
+
+```{r}
+
+leader_percentage <- indiv_df %>% 
+  mutate(`leader?` = `leader?` == "yes") %>%
+  filter(`leader?` == 1) 
+
+leader_percentage %>% 
+  group_by(gender, `leader?`) %>% 
+  summarise(percent_leader = sum(`leader?`)/nrow(leader_percentage) * 100)
+```
+### Pearson's Chi-squared test of independece: gender, leaders
+
+```{r}
+# using baseR "table"
+
+tb <- table(indiv_df$gender, indiv_df$`leader?`)
+tb
+chisq.test(tb)
+
+# => p-value = 0.25, so NOT significant, which means that gender and leader status are independent => no biased selection! :)
+```
+
+### gender distribution by condition
+
+```{r}
+# skinny dataframe
+gender_per_condition <- indiv_df %>% 
+  dplyr::select(group:number_semester)
+
+# join with group data to add 'condition'
+gender_per_condition <- gender_per_condition %>%
+  left_join(group_df, by = "group")  
+
+# explore distribution of male leaders across conditions
+gender_per_condition %>% 
+  filter(gender == "male") %>% 
+  group_by(condition, gender) %>% 
+  count()
+
+# Gender as predictor 
+
+
+
+```
+
+### Pearson's Chi-squared test of independece: gender, condition
+
+```{r}
+# again, creating a table first, then testing with chisq.test
+
+test_table <- table(gender_per_condition$condition, gender_per_condition$gender)
+chisq.test(test_table)
+
+# => gender and condition are independent
+
+# 
+```
+### look at group structure (hierarchical vs. self-organized) independently
+
+```{r}
+gender_per_structure <- gender_per_condition %>% 
+  separate(condition, into = c('group_structure','TMS'), sep = '_', remove = FALSE) %>% 
+  group_by(group_structure, gender) %>% 
+  count()
+
+gender_per_structure
+```
+
+## age 
+
+### average age of sample
+
+```{r}
+indiv_df %>% summarise(avg_age = mean(age, na.rm = TRUE))
+summary(indiv_df$age)
+sd(indiv_df$age)
+```
+### control for age (leaders vs. members)
+
+```{r}
+library(broom)
+
+indiv_df %>% do(tidy(t.test(indiv_df$age ~ indiv_df$`leader?`)))
+
+# => no signficant difference between leaders' and members' age
+?tidy
+?do
+
+# alternative (coded by Dan): 
+leader_yes <- indiv_df$age[indiv_df$`leader?` == 'yes']
+leader_no <- indiv_df$age[indiv_df$`leader?` == 'no']
+
+t.test(leader_yes, leader_no)
+
+```
+
+### control for age differences between conditions
+
+```{r}
+age_across_conditions <- indiv_df %>% 
+  dplyr::select(group:number_semester)
+
+age_across_conditions <- age_across_conditions %>% 
+  left_join(group_df,  by = "group")
+
+# explore age distribution
+age_across_conditions %>% 
+  group_by(condition) %>% 
+  summarise(age_by_condition = mean(age, na.rm = TRUE))
+
+levels(age_across_conditions$condition)
+
+# testing with ANOVA
+age_across_conditions %>% do(tidy(aov(age ~ condition, data = age_across_conditions))) 
+aov_age <- aov(age ~ condition, data = age_across_conditions)
+summary(aov_age)
+require(sjstats)
+
+eta_sq(aov_age, partial = TRUE)
+# testing with linear regression                                  
+regression_way <- lm(age ~ condition, data = age_across_conditions)
+summary(regression_way)
+
+# => no signif. difference in age between conditions
+```
+
+## field of study
+
+```{r}
+# explore
+
+ggplot(data = indiv_df, mapping = aes(discipline)) +
+  geom_bar() +
+  coord_flip()
+
+indiv_df %>% 
+  mutate(discipline = discipline %>% fct_infreq() %>% fct_rev()) %>%
+  ggplot(aes(discipline)) +
+  geom_bar() +
+  theme(axis.text.x = element_text(angle = 90))
+
+indiv_df %>% 
+  count(discipline) %>% 
+  arrange(desc(n))
+
+# change factor structure to collapse into less disciplines
+
+discipline_concise <- indiv_df %>% mutate(field_of_study = fct_collapse(discipline, 'Psychology' = 'psychology', "Educational Science" = 'educational science', "Teacher's Training" = c("teacher's training", "special education"), 'Law' = c("law", "international law"), "Business & Economics" = c("economics", "management"), 'Medicine' = c("medicine", "ecotrophology"), 'Engineering' = c("engineering", "constructional engineering"), 'Applied Social Sciences' = c("criminology", "political science", "media science", "social work",'sport science'), 'Humanities' = c("philosophy", "linguistics", "history", "anthropology", "archeology"), 'Natural Sciences' = c("biology", "chemistry", "physics", "mathematics"), "Computer Science" = 'computer science')) %>% 
+
+
+## ALTERNATIVE: discipline_concise <- indiv_df %>% mutate(field_of_study = fct_collapse(discipline, "teacher's training" = c("teacher's training", "special education"), law = c("law", "international law"), "business and economics" = c("economics", "management"), 'applied sciences' = c("medicine", "ecotrophology", "social work", "sport science", "media science", "engineering", "constructional engineering"), 'social sciences' = c("criminology", "political science", "anthropology"), 'humanities' = c("philosophy", "linguistics", "archeology", "history"), 'natural sciences' = c("biology", "chemistry", "physics"), 'formal sciences' = c("mathematics", "computer science")))
+
+discipline_concise %>% count(field_of_study) %>% arrange(desc(n))
+discipline_concise %>% count(field_of_study)
+
+
+# show collapsed factor as bar chart                                                             
+discipline_concise %>% 
+  mutate(discipline = field_of_study %>% fct_infreq()) %>% 
+  ggplot(aes(discipline)) +
+  geom_bar() +
+  theme(axis.text.x = element_text(angle = 90))
+
+discipline_concise %>% 
+  mutate(discipline = field_of_study %>% fct_relevel("Psychology", "Educational Science", "Teacher's Training", "Business & Economics", "Law", "Medicine", "Computer Science", "Engineering", "Humanities", "Applied Social Sciences", "Natural Sciences")) %>%   ggplot(aes(discipline)) +
+  geom_bar() +
+  theme(axis.text.x = element_text(angle = 90))
+
+discipline_concise %>% 
+  mutate(discipline = field_of_study %>% fct_relevel("Psychology", "Educational Science", "Teacher's Training", "Business & Economics", "Law", "Medicine", "Computer Science", "Engineering", "Mathematics", "Humanities", "Applied Social Sciences", "Natural Sciences") %>% fct_rev()) %>%   
+  ggplot(aes(discipline)) +
+  geom_bar() +
+  coord_flip()
+
+?stat
+
+# change factor order: biggest single groups first and then collapsed ones
+discipline_compact <- discipline_concise %>% 
+  mutate(discipline = field_of_study) %>% 
+  count(discipline)
+
+discipline_compact 
+
+# provide percentage for each field of study
+discipline_compact <- discipline_compact %>%
+  mutate(percent = n/sum(n)*100) 
+
+discipline_compact
+discipline_compact %>% 
+  mutate(discipline = discipline %>% fct_relevel("Psychology", "Educational Science", "Teacher's Training", "Business & Economics", "Law", "Medicine", "Computer Science", "Engineering", "Humanities", "Applied Social Sciences", "Natural Sciences") %>% fct_rev()) %>%   ggplot(aes(discipline, percent)) +
+  geom_bar(stat = "identity") +
+  coord_flip() +
+  scale_fill_brewer(palette = "Blues") +
+  xlab("Discipline") +
+  ylab("%") +
+  
+
+
+indiv_df %>% mutate(field_of_study = fct_lump(discipline, n = 10)) %>% count(field_of_study, sort = TRUE) %>% print(n = Inf) 
+
+```
+## study experience 
+
+### average number of semesters across sample
+
+```{r}
+indiv_df %>% summarise(avg_number_semester = mean(number_semester))
+
+# using the "psych" package for descriptive statistics on continuous variables (function "describe")
+
+descript_stats_on_variables <- c("age", "number_semester")
+describe(indiv_df[descript_stats_on_variables])
+
+```
+### control for difference in experience between leaders and members
+
+```{r}
+indiv_df %>% do(tidy(t.test(number_semester ~ `leader?`, data = indiv_df)))
+
+# --> not significant
+```
+
+### control for difference in experience between conditions
+
+```{r}
+# create the right data frame
+
+experience_across_conditions <- indiv_df %>% 
+  dplyr::select(group:number_semester)
+
+experience_across_conditions <- experience_across_conditions %>% 
+  left_join(group_df,  by = "group")
+
+# test for significance
+experience_across_conditions %>% do(tidy(aov(number_semester ~ condition, data = experience_across_conditions)))
+# => not significant
+
+aov_discipline <- aov(number_semester ~ condition, data = experience_across_conditions)
+eta_sq(aov_discipline, partial = TRUE)
+```
+

@@ -1,0 +1,2 @@
+"0","library(psych)"
+"0","psych::describe(cleaned_df$core_team_tenure) "

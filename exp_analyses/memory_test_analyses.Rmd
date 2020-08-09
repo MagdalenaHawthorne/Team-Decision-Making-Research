@@ -1,0 +1,167 @@
+---
+title: "Memory Test Data"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+## libraries
+
+```{r}
+library(readr)
+library(tidyverse)
+library(forcats)
+library(psych)
+```
+## load in data
+
+```{r}
+memory_test <- read_csv("data/memory_test_data.csv")
+group_df <- read_csv("data/group_level_data.csv")
+```
+## drop groups to be excluded
+
+```{r}
+memory_test <- memory_test %>% 
+  filter(!group %in% c(14, 80))
+
+group_df <- group_df %>% 
+  filter(!group %in% c(14, 80))
+```
+# create new shared data frame
+
+```{r}
+group_df <- group_df %>% 
+  dplyr::select(group:duration_min) %>% 
+  separate(condition, c('group_structure','TMS'), sep = "_", remove = FALSE, convert = TRUE) %>% 
+  mutate(binary_decision = decision == "C") %>% 
+  mutate(binary_decision_numeric = binary_decision * 1)
+
+View(group_df)
+group_df
+
+joint_df <- memory_test %>% 
+  left_join(group_df, by = "group")
+```
+# create variable for pieces of inf. that participants had learned per pilot 
+
+```{r}
+joint_df <- joint_df %>% 
+  group_by(group, id, pilot) %>% 
+  mutate(pos_information_learned_pilot = post_correct_pos - correct_same_pos, 
+         neg_information_learned_pilot = post_correct_neg - correct_same_neg, 
+         all_information_learned_pilot = pos_information_learned_pilot + neg_information_learned_pilot)
+```
+# Information Gain
+
+```{r}
+
+info_gain_per_person <- joint_df %>% 
+  group_by(group, id, group_structure, TMS, condition) %>% 
+  summarise(info_learned = sum(all_information_learned_pilot)) 
+  
+info_gain <- info_gain_per_person %>% 
+  group_by(group, group_structure, TMS, condition) %>% 
+  summarise(info_learned_avg = mean(info_learned))
+
+info_gain
+
+
+## Does condition predict information gain?
+
+summary(lm(info_learned ~ TMS * group_structure, data = info_gain_per_person))
+summary(lm(info_learned_avg ~ TMS * group_structure, data = info_gain))
+
+ggplot(data = info_gain, aes(condition, info_learned_avg)) +
+  geom_bar(stat = "identity")
+            
+  
+```
+
+# Manipulation Check for TMS: look whether in TMS condition, participants remembered more items about "their" pilot
+
+## summarize pos. and neg. information remembered before discussion
+```{r}
+View(joint_df)
+
+joint_df <- joint_df %>%
+  group_by(group, id, pilot) %>% 
+  mutate(correct_pre_count_pilot = pre_correct_neg + pre_count_pos)
+```
+## analyze TMS condition only
+
+```{r}
+# remove noTMS groups
+TMS_only <- joint_df %>% 
+  filter(TMS == "TMS") 
+
+TMS_only %>% 
+  dplyr::select(group, id, pilot, correct_pre_count_pilot)
+
+
+####
+
+TMS_short <- TMS_only %>% 
+  group_by(group, id, pilot) %>% 
+  mutate(exp_pilot = id == 1 & pilot == "A" | id == 2 & pilot =="B" | id == 3 & pilot == "C")
+
+summary(lm(correct_pre_count_pilot ~ exp_pilot, data = TMS_short))
+anova_mod <- aov(correct_pre_count_pilot ~ exp_pilot, data = TMS_short)
+summary(anova_mod)
+eta_sq(anova_mod)
+####
+
+TMS_short <- TMS_only %>% 
+  group_by(id, pilot) %>% 
+  summarise(avg_remembered = mean(correct_pre_count_pilot)) %>% 
+  mutate(exp_pilot = id == 1 & pilot == "A" | id == 2 & pilot =="B" | id == 3 & pilot == "C")
+
+summary(aov(avg_remembered ~ exp_pilot, data = TMS_short))
+
+#### vica versa: remove TMS gorups
+
+noTMS_only <- joint_df %>% 
+  filter(TMS == "noTMS") 
+
+noTMS_only %>% 
+  dplyr::select(group, id, pilot, correct_pre_count_pilot) 
+
+####
+
+noTMS_short <- noTMS_only %>% 
+  group_by(group, id, pilot) %>% 
+  mutate(exp_pilot = id == 1 & pilot == "A" | id == 2 & pilot =="B" | id == 3 & pilot == "C")
+
+anova_counter_mod <- aov(correct_pre_count_pilot ~ exp_pilot, data = noTMS_short)
+summary(anova_counter_mod)
+eta_sq(anova_counter_mod)
+####
+
+
+# I've been wondering whether the way above is correct? Should I or can I consider the nested structure of the data? Does it matter that each individual has 3 data points and each group 9?
+test <- TMS_only %>% 
+  group_by(group) %>%
+  mutate(exp_pilot = id == 1 & pilot == "A" | id == 2 & pilot =="B" | id == 3 & pilot == "C") %>% ungroup()
+
+library('lme4')
+
+test
+summary(lmer(correct_pre_count_pilot ~ exp_pilot + (1 | group), data = test))
+
+?glmer
+```
+
+# CONTROLLING FOR
+
+## is memory itself a predictor for decision outcome?
+
+```{r}
+memory_as_predictor <- joint_df %>% 
+  mutate(binary_decision = decision == "C") %>% 
+  group_by(group, condition, TMS, group_structure, binary_decision) %>% 
+  summarise(group_avg_pre_remembered = mean(correct_pre_count_pilot))
+
+summary(glm(binary_decision ~ group_avg_pre_remembered, family = "binomial", data = memory_as_predictor))
+```
+

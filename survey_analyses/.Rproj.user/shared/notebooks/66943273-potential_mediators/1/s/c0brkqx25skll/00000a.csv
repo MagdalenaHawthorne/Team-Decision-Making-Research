@@ -1,0 +1,4 @@
+"0","shared_repetition_bias <- shared_repetition_bias %>% 
+  rename(repetition_bias = bias)
+"
+"2","Detecting old grouped_df format, replacing `vars` attribute by `groups`"

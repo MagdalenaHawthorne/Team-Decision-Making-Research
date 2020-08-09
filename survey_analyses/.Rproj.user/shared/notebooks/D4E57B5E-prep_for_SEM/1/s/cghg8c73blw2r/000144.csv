@@ -1,0 +1,7 @@
+"0","# specialization"
+"0","summary(alpha(survey_data_clean[c('tms_special_1','tms_special_2',""tms_special_3"",""tms_special_4"",""tms_special_5"")], check.keys=TRUE)) "
+"1","
+Reliability analysis "
+"1"," "
+"1"," 
+"

@@ -1,0 +1,2 @@
+"0","survey_data <- survey_data %>% "
+"0","  mutate_at(vars(indiv_team_tenure, core_team_tenure, level), as.factor)"

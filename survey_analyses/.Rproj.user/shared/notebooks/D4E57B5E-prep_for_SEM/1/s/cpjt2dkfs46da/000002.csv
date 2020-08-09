@@ -1,0 +1,8 @@
+"0","# intrinsic motivation"
+"0"," survey_data <- survey_data %>% "
+"0","  mutate(intrinsic_motivation = rowMeans(.[, c('int_ident_1', 'int_ident_2', 'int_ident_3', 'int_intr_1', 'int_intr_2', 'int_intr_3')]))"
+"0","# extrinsic motivation"
+"0","survey_data <- survey_data %>% "
+"0","  mutate(extrinsic_motivation = rowMeans(.[, c('ext_mat_1', 'ext_mat_2', 'ext_mat_3', 'ext_soc_1', 'ext_soc_2', 'ext_soc_3')]))"
+"0","survey_data_clean <- survey_data"
+"0","write_csv(survey_data_clean, ""survey_data_clean.csv"")"

@@ -1,0 +1,3 @@
+"0","survey_data <- rownames_to_column(survey_data, var = ""participant"") "
+"0","survey_data <- mutate_at(survey_data, vars(indiv_team_tenure, core_team_tenure), as.factor)"
+"0","survey_data"

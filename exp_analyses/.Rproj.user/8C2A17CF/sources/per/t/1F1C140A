@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1580917459735.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2679669271",
+    "id" : "1F1C140A",
+    "lastKnownWriteTime" : 1593619110,
+    "last_content_update" : 1593619110497,
+    "path" : "~/Dropbox/PhD/data_analyses/exp_analyses/shared_vs_unshared.Rmd",
+    "project_path" : "shared_vs_unshared.Rmd",
+    "properties" : {
+        "cursorPosition" : "246,18",
+        "scrollLine" : "243"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 4,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

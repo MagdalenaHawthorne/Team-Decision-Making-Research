@@ -1,0 +1,2 @@
+"0","big_df <- big_df %>% "
+"0","  mutate(open_comm_4_recoded = 7 - open_comm_4)"

@@ -1,0 +1,2 @@
+"0","survey_data_clean <- survey_data_clean %>% mutate_at(vars(work_experience, core_team_tenure), as.numeric) "
+"0","survey_data_clean %>% summarise(avg_work_experience = mean(work_experience))"

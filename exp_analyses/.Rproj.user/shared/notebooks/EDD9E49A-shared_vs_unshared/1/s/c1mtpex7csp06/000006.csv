@@ -1,0 +1,5 @@
+"0","res <- glmer(mentioning ~ simple_kind + (1 | group), family = ""binomial"", data = shared_df)
+"
+"2","Error in glmer(mentioning ~ simple_kind + (1 | group), family = ""binomial"",  : 
+  could not find function ""glmer""
+"

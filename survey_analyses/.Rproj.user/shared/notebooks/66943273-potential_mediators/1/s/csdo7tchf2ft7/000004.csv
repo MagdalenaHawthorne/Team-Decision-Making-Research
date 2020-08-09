@@ -1,0 +1,8 @@
+"0","# calculate average fist"
+"0","big_df <- big_df %>% "
+"0","  group_by(group) %>%"
+"0","  mutate(avg_motivation = mean(gen_motivation))"
+"0","# compare motivation "
+"0","big_df %>% "
+"0","  group_by(condition) %>% "
+"0","  summarise(gen_mot = mean(avg_motivation))"
