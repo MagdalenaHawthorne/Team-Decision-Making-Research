@@ -304,7 +304,7 @@ discipline_compact %>%
   coord_flip() +
   scale_fill_brewer(palette = "Blues") +
   xlab("Discipline") +
-  ylab("%") +
+  ylab("%") 
   
 indiv_df %>% 
   mutate(field_of_study = fct_lump(discipline, n = 10)) %>% 

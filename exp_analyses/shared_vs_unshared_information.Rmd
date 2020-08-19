@@ -179,7 +179,7 @@ joined_df %>%
 ```{r}
 joined_df %>%
     group_by(simple_kind, TMS) %>%
-    summarize(mentioning_rate = sum(mentioning)/n()) %>%
+    summarise(mentioning_rate = sum(mentioning)/n()) %>%
     group_by(TMS) %>%
     do(data.frame(.[.$simple_kind=='shared', 'mentioning_rate'] - .[.$simple_kind=='unshared', 'mentioning_rate']))
 ```
@@ -360,7 +360,7 @@ plot(m.out)
 ```{r}
 shared_repetition_bias <- joined_df %>%
     group_by(group_structure, group, simple_kind) %>%
-    summarize(repetition_rate = sum(repetition)/sum(mentioning), 
+    summarise(repetition_rate = sum(repetition)/sum(mentioning), 
               binary_decision = binary_decision[1] * 1) %>% 
     group_by(group_structure, group) %>%
     do(
@@ -384,7 +384,7 @@ plot(m.out)
 ```{r}
 shared_mentioning_bias <- joined_df %>%
     group_by(TMS, group, simple_kind) %>%
-    summarize(mentioning_rate = sum(mentioning)/n(), 
+    summarise(mentioning_rate = sum(mentioning)/n(), 
               binary_decision = binary_decision[1] * 1) %>% 
     group_by(TMS, group) %>%
     do(
@@ -403,7 +403,7 @@ plot(m.out)
 ```{r}
 shared_repetition_bias <- joined_df %>%
     group_by(TMS, group, simple_kind) %>%
-    summarize(repetition_rate = sum(repetition)/sum(mentioning), 
+    summarise(repetition_rate = sum(repetition)/sum(mentioning), 
               binary_decision = binary_decision[1] * 1) %>% 
     group_by(TMS, group) %>%
     do(
