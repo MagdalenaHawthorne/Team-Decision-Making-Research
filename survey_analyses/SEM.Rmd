@@ -257,7 +257,7 @@ cond_2_indirect := b*e3
 cond_1_direct := f1*f2
 cond_2_direct := d1*d2
 '
-model_fit_final <- sem(model_final, data = cleaned_df,)
+model_fit_final <- sem(model_final, data = cleaned_df, se = "boot", bootstrap = 10000)
 summary(model_fit_final, fit.measures = TRUE, standardized = TRUE, ci = T)
 
 
@@ -275,7 +275,7 @@ indirect3:= a1*b*c1
 cond_indirect_1:= a2*c3
 cond_indirect_2:= a1*b*c3
 '
-model_fit_lesscompli <- sem(model_lesscompli, data = cleaned_df, se = "boot", bootstrap = 5000)
+model_fit_lesscompli <- sem(model_lesscompli, data = cleaned_df, se = "boot", bootstrap = 10000)
 summary(model_fit_lesscompli, fit.measures = TRUE, standardized = TRUE, ci = T)
 
 modificationindices(model_fit, minimum.value = 20)
