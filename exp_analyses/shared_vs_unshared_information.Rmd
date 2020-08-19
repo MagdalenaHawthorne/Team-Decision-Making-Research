@@ -3,17 +3,17 @@ title: "shareVunshared_information"
 output: pdf_document
 ---
 
-# Prepare environment
-## Load in our libraries
+# Load in our libraries
 
 ```{r}
 require(tidyverse)
 require('lme4')
 require(psych)
 require(mediation)
+require(lsr)
+require(sjstats)
 ```
-
-## Load data sets
+# Load data sets
 
 ```{r warning=FALSE}
 shared_df <- read_csv("data/shared_unshared_inf.csv")[,1:7]
@@ -23,17 +23,14 @@ group_df <- group_df %>%
   mutate(binary_decision = decision == "C") 
 
 # Exclude groups
-
 group_df <- group_df %>% 
   filter(!group %in% c(14, 80))
 shared_df <- shared_df %>% 
   filter(!group %in% c(14, 80))
 
-
 ## indiv_df <- read_csv("data/indiv_level_data.csv")
 ## memory_df <- read_csv("data/memory_test_data.csv")
 ```
-
 # Compute and test rates for shared vs unshared information
 
 ## First, collapse the two different kind of shared information (fully and partially shared)
@@ -42,7 +39,6 @@ shared_df <- shared_df %>%
 shared_df <- shared_df %>%
     mutate(simple_kind = ifelse(kind == 1, 'unshared', 'shared'))
 ```
-
 ## Mentioning rate
 
 ### calculate mentioning rate per group per pilot (probably don't need this)
@@ -54,15 +50,14 @@ mentioning_rate_pilot <- shared_df %>%
 
 mentioning_rate_pilot
 ```
-
 ### calculate mention rate per group
+
 ```{r}
 average_mention_rate <- shared_df %>%
   group_by(group, simple_kind) %>%
   summarise(average_mention_rate = sum(mentioning)/n())
 
 average_mention_rate
-
 
 avg_mentioned <- shared_df %>% 
   group_by(group, simple_kind) %>% 
@@ -73,10 +68,7 @@ avg_mentioned <- shared_df %>%
 
 psych::describe(avg_mentioned$avg_mentioned_unshared)
 psych::describe(avg_mentioned$avg_mentioned_shared)
-
-
 ```
-
 ### does the mentioning rate differ between shared and unshared information?
 
 ```{r}
@@ -88,10 +80,7 @@ overall_shared_mod <- aov(average_mention_rate ~ simple_kind, data= average_ment
 
 res <- glmer(mentioning ~ simple_kind + (1 | group), family = "binomial", data = shared_df)
 summary(res)
-
 ```
-
-
 ## Repetition rate
 
 ### calculate repetition rate per group per pilot (probably don't need this)
@@ -104,8 +93,8 @@ repetition_rate_pilot <- shared_df %>%
 shared_df %>% filter(group == 12)
 repetition_rate_pilot
 ```
-
 ### calculate repetition rate per group
+
 ```{r}
 average_repetition_rate <- shared_df %>%
     group_by(group, simple_kind) %>%
@@ -115,13 +104,12 @@ average_repetition_rate <- shared_df %>%
 ### does the repetition rate differ between shared and unshared information?
 ```{r}
 t.test(average_repetition_rate ~ simple_kind, paired=T, data= average_repetition_rate)
-require(lsr)
+
 cohensD(average_repetition_rate ~ simple_kind, data= average_repetition_rate)
 
 average_repetition_rate  %>%
     group_by(simple_kind) %>%
     summarise(average_repetition_rate = mean(average_repetition_rate))
-
 
 stats_rep_rate <- shared_df %>% 
   group_by(group, simple_kind) %>% 
@@ -132,22 +120,18 @@ stats_rep_rate <- shared_df %>%
 
 psych::describe(stats_rep_rate$rep_rate_unshared)
 psych::describe(stats_rep_rate$rep_rate_shared)
-
-
 ```
+# Compute & test measures for shared vs. unshared information by condition
 
-# COMPUTE AND TEST MEASURES for shared vs. unshared by condition
+## join experimental structure to shared df
 
-## Join experimental structure to shared df
 ```{r}
 shared_df <- shared_df %>%
     mutate(simple_kind = ifelse(kind == 1, 'unshared', 'shared'))
 
 joined_df <- shared_df %>% 
   left_join(group_df[, c("group", "binary_decision", "group_structure", "TMS")], by= 'group')
-
 ```
-
 ## Mentioning rate 
 
 ### calculate mentioning rate per condition
@@ -162,12 +146,12 @@ mentioning_rate_by_condition
 mentioning_rate_by_condition_by_kind <- joined_df %>%
     group_by(group_structure, TMS, simple_kind, group) %>%
     summarise(mentioning_rate = sum(mentioning)/n()) %>%
-    group_by(group_structure, TMS, simple_kind) %>% # explicit formulation of what is anyway going on in R --> dropping the last variable in group_by
     summarise(mean_meantiong_rate = mean(mentioning_rate), sd = sd(mentioning_rate))
 
 mentioning_rate_by_condition_by_kind
 ```
-## Calculate shared information bias per condition (mentioning rate for shared divided by sum of mentioning rate for unshared and shared)
+### calculate shared information bias per condition (mentioning rate for shared inf. divided by sum of mentioning rate for unshared and shared)
+
 ```{r}
  bias_df <- joined_df %>%
     group_by(group_structure, TMS, simple_kind, group) %>%
@@ -179,12 +163,9 @@ mentioning_rate_by_condition_by_kind
   rename(bias = mentioning_rate) %>% 
     group_by(group_structure, TMS) %>% 
      summarise(mean_bias = mean(bias), sd = sd(bias))
-
-  
-
 ```
-
 ### compare group structure
+
 ```{r}
 joined_df %>%
     group_by(simple_kind, group_structure, group) %>%
@@ -193,7 +174,6 @@ joined_df %>%
     do(data.frame(.[.$simple_kind=='shared', 'mentioning_rate'] / (.[.$simple_kind=='unshared', 'mentioning_rate'] + .[.$simple_kind=='shared', 'mentioning_rate']))) %>% 
   summarise(mean = mean(mentioning_rate))
 ```
-
 ### compare TMS
 
 ```{r}
@@ -202,16 +182,15 @@ joined_df %>%
     summarize(mentioning_rate = sum(mentioning)/n()) %>%
     group_by(TMS) %>%
     do(data.frame(.[.$simple_kind=='shared', 'mentioning_rate'] - .[.$simple_kind=='unshared', 'mentioning_rate']))
-
 ```
-
 ### test difference in mentioning shared information between conditions
+
 ```{r}
 res <- glmer(mentioning ~ simple_kind + TMS + group_structure + (1 | group), data=joined_df, family='binomial'); summary(res)
 res <- glm(mentioning ~ simple_kind + TMS + group_structure, data=joined_df, family='binomial'); summary(res)
 ```
-
 ## Repetition rate
+
 ### calculate repetition rate per condition
 ```{r}
 repetition_rate_by_condition <- joined_df %>%
@@ -238,11 +217,8 @@ rep_bias_df <- joined_df %>%
   rename(bias = repetition_rate) %>% 
     group_by(group_structure, TMS) %>% 
      summarise(mean_rep_bias = mean(bias), sd = sd(bias))
-
 ```
-
-
-# Does shared vs unshared ratio predict decision quality?
+# Does the ration of shared vs. unshared information predict decision quality?
 
 ## For mentioning 
 
@@ -251,8 +227,8 @@ shared_mentioning_bias <- joined_df %>%
     group_by(group, simple_kind) %>%
     summarise(mentioning_rate = sum(mentioning)/n(), binary_decision = binary_decision[1] * 1) %>% 
     group_by(group) %>%
-    do(data.frame(bias = .[.$simple_kind=='shared', 'mentioning_rate'] / (.[.$simple_kind=='unshared', 'mentioning_rate'] + .[.$simple_kind=='shared', 'mentioning_rate']), binary_decision = .[1, 'binary_decision'])) #%>% 
-  rename(bias = mentioning_rate) 
+    do(data.frame(bias = .[.$simple_kind=='shared', 'mentioning_rate'] / (.[.$simple_kind=='unshared', 'mentioning_rate'] + .[.$simple_kind=='shared', 'mentioning_rate']), binary_decision = .[1, 'binary_decision'])) %>% 
+    rename(bias = mentioning_rate) 
 
 shared_mentioning_bias
 
@@ -261,7 +237,6 @@ shared_mentioning_bias %>%
   summarise(mention_bias = mean(bias))
 
 summary(glm(binary_decision ~ bias, family='binomial', data=shared_mentioning_bias))
-
 ```
 ## For repetition
 
@@ -280,9 +255,8 @@ shared_repetition_bias %>%
   summarise(rep_bias = mean(bias))
 
 summary(glm(binary_decision ~ bias, family='binomial', data=shared_repetition_bias))
-
 ```
-# BIASES PER CONDITION
+# Shared information biases per condition
 
 ```{r}
 shared_df <- shared_df %>%
@@ -291,7 +265,7 @@ shared_df <- shared_df %>%
 joined_df <- shared_df %>%
   left_join(group_df[, c("group", "binary_decision", "group_structure", "TMS")], by= 'group')
 
-## MENTIONING 
+# MENTIONING 
 
 mentioning_bias <- joined_df %>%
     group_by(group_structure, TMS, group, simple_kind) %>%
@@ -307,18 +281,20 @@ mentioning_bias %>%
   group_by(group_structure, TMS) %>% 
   summarise(avg_bias = mean(bias))
 
-mentioning_bias <- mentioning_bias %>% mutate(neutral = 0.5)
+mentioning_bias <- mentioning_bias %>% 
+  mutate(neutral = 0.5)
+
 t.test(mentioning_bias$bias, mentioning_bias$neutral)
-require(lsr)
+
 cohensD(mentioning_bias$bias, mentioning_bias$neutral)
 
 mean(mentioning_bias$bias)
 
 diff_test <- aov(bias ~ group_structure * TMS, data = mentioning_bias); summary(diff_test)
-require(sjstats)
+
 eta_sq(diff_test, partial = TRUE)
   
-## REPETITION
+# REPETITION
 
 rep_bias <- joined_df %>%
   group_by(group_structure, TMS, group, simple_kind) %>%
@@ -336,18 +312,18 @@ rep_bias %>%
 mean(rep_bias$bias)
 
 rep_bias <- rep_bias %>% mutate(neutral = 0.5)
+
 t.test(rep_bias$bias, rep_bias$neutral)
-require(lsr)
+
 cohensD(rep_bias$bias,rep_bias$neutral)
 
 rep_diff_test <- aov(bias ~ group_structure * TMS, data = rep_bias); summary(rep_diff_test)
+
 eta_sq(rep_diff_test, partial = TRUE)
 ```
-
-
 # MEDIATION ANALYSES
 
-## Group structure
+## group structure
 
 ```{r}
 require(mediation)
@@ -358,25 +334,9 @@ shared_df <- shared_df %>%
 joined_df <- shared_df %>%
   left_join(group_df[, c("group", "binary_decision", "group_structure", "TMS")], by= 'group')
 ```
-
 ### mentioning bias
-```{r}
-# DISCUSS WITH DAN ABOUT THIS 
-# 1.
-shared_mentioning_bias <- joined_df %>%
-    group_by(group_structure, group, simple_kind) %>%
-    summarize(mentioning_rate = sum(mentioning)/n(), 
-              binary_decision = binary_decision[1] * 1) %>% 
-    group_by(group_structure, group) %>%
-    do(
-      data.frame(
-        bias = .[.$simple_kind=='shared', 'mentioning_rate'] - .[.$simple_kind=='unshared', 'mentioning_rate'], 
-        binary_decision = .[1, 'binary_decision']
-        )
-      ) %>% 
-  rename(bias = mentioning_rate)
 
-# 2.
+```{r}
 shared_mentioning_bias <- joined_df %>%
     group_by(group_structure, group, simple_kind) %>%
     summarise(mentioning_rate = sum(mentioning)/n(), 
@@ -394,10 +354,9 @@ full.model <- glm(binary_decision ~ bias + group_structure, data = shared_mentio
 m.out <- mediate(med.model, full.model, treat = "group_structure", mediator = "bias")
 summary(m.out)
 plot(m.out)
-
-
 ```
 ### repetition bias
+
 ```{r}
 shared_repetition_bias <- joined_df %>%
     group_by(group_structure, group, simple_kind) %>%
@@ -406,33 +365,31 @@ shared_repetition_bias <- joined_df %>%
     group_by(group_structure, group) %>%
     do(
       data.frame(
-        bias = .[.$simple_kind=='shared', 'repetition_rate'] - .[.$simple_kind=='unshared', 'repetition_rate'], 
+        bias = .[.$simple_kind=='shared', 'repetition_rate'] / (.[.$simple_kind=='unshared', 'repetition_rate'] + .[.$simple_kind=='shared', 'repetition_rate']), 
         binary_decision = .[1, 'binary_decision']
       )
     ) %>% 
   rename(bias = repetition_rate)
-
 
 med.model <- lm(bias ~ group_structure, data= shared_repetition_bias)
 full.model <- glm(binary_decision ~ bias + group_structure, data = shared_repetition_bias, family = 'binomial')
 m.out <- mediate(med.model, full.model, treat = "group_structure", mediator = "bias")
 summary(m.out)
 plot(m.out)
-
 ```
-
-
 ## TMS
 
 ### mentioning bias
+
 ```{r}
 shared_mentioning_bias <- joined_df %>%
     group_by(TMS, group, simple_kind) %>%
     summarize(mentioning_rate = sum(mentioning)/n(), 
               binary_decision = binary_decision[1] * 1) %>% 
     group_by(TMS, group) %>%
-    do(data.frame(bias = .[.$simple_kind=='shared', 'mentioning_rate'] - .[.$simple_kind=='unshared', 'mentioning_rate'], 
-                  binary_decision = .[1, 'binary_decision'])) %>% 
+    do(
+    data.frame(
+      bias = .[.$simple_kind=='shared', 'mentioning_rate'] / (.[.$simple_kind=='unshared', 'mentioning_rate'] + .[.$simple_kind=='shared', 'mentioning_rate']), binary_decision = .[1, 'binary_decision'])) %>% 
   rename(bias = mentioning_rate)
 
 med.model <- lm(bias ~ TMS, data= shared_mentioning_bias)
@@ -440,41 +397,27 @@ full.model <- glm(binary_decision ~ bias + TMS, data = shared_mentioning_bias, f
 m.out <- mediate(med.model, full.model, treat = "TMS", mediator = "bias")
 summary(m.out)
 plot(m.out)
-
-
 ```
 ### repetition bias
+
 ```{r}
 shared_repetition_bias <- joined_df %>%
     group_by(TMS, group, simple_kind) %>%
     summarize(repetition_rate = sum(repetition)/sum(mentioning), 
               binary_decision = binary_decision[1] * 1) %>% 
     group_by(TMS, group) %>%
-    do(data.frame(
-      bias = .[.$simple_kind=='shared', 'repetition_rate'] - .[.$simple_kind=='unshared', 'repetition_rate'], 
-      binary_decision = .[1, 'binary_decision'])) %>% 
+    do(
+      data.frame(
+        bias = .[.$simple_kind=='shared', 'repetition_rate'] / (.[.$simple_kind=='unshared', 'repetition_rate'] + .[.$simple_kind=='shared', 'repetition_rate']), 
+        binary_decision = .[1, 'binary_decision']
+      )
+    ) %>% 
   rename(bias = repetition_rate)
 
-#shared_repetition_bias %>% group_by(binary_decision) %>% summarise(bias = mean(bias))
 
 med.model <- lm(bias ~ TMS, data= shared_repetition_bias)
 full.model <- glm(binary_decision ~ bias + TMS, data = shared_repetition_bias, family = 'binomial')
 m.out <- mediate(med.model, full.model, treat = "TMS", mediator = "bias")
 summary(m.out)
 plot(m.out)
-
 ```
-
-# Save as file 
-
-```{r}
-## save(shared_mentioning_bias, df2, df2, ...,  file = "shared_mentioning_bias.RData") # this way, all data frames would be stored in one file but I could also do it separately
-
-## save.image(file = "name.RData") # this saves everthing in the environment: to load it into a code file: load("file_name")
-
-save.image(file = "shared_unshared_information.RData")
-```
-
-
-
-

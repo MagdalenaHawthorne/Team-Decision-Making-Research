@@ -3,22 +3,22 @@ title: "Group Differences"
 output: "Compare Conditions"
 ---
 
-### load in our libraries
+# Libraries
 
 ```{r include=FALSE}
 require(tidyverse)
 require(sjstats)
 ```
-### load data sets
+# Data
 
 ```{r}
 group_df <- read_csv("data/group_level_data.csv")
 indiv_df <- read_csv("data/indiv_level_data.csv")
 memory_df <- read_csv("data/memory_test_data.csv")
 ```
-## cleaning
+# Cleaning
 
-### drop additional groups
+## drop additional groups
 
 ```{r}
 group_df <- group_df %>% 
@@ -30,22 +30,20 @@ indiv_df <- indiv_df %>%
 memory_df <- memory_df %>% 
   filter(!group %in% c(14, 80))
 ```
-### convert to binary decision
+## convert to binary decision
 
 ```{r}
 group_df <- group_df %>%
   mutate(binary_decision = decision == "C") %>% 
   mutate(binary_decision_numeric = binary_decision * 1)
-
 ```
-### add columns for TMS (yes/no) and group structure (h/so)
+## add columns for TMS (yes/no) and group structure (h/so)
 
 ```{r}
 group_df <- group_df %>%
   separate(condition, c('group_structure','TMS'), sep = '_', remove = FALSE)
-
 ```
-# Compare
+# Compare conditions
 
 ## number of correct decisions overall
 
@@ -53,7 +51,7 @@ group_df <- group_df %>%
 group_df
 group_df %>% 
   filter(decision == "C") %>% 
-  count() /80 * 100
+  count()/80 * 100
   
 group_df %>% 
   filter(binary_decision == TRUE) %>% 
@@ -62,8 +60,6 @@ group_df %>%
  group_df %>% 
   summarise(percent_correct = sum(binary_decision_numeric)/n() * 100)
 ```
-
-
 ## run chi-square tests to compare conditions
 
 ```{r}
@@ -83,29 +79,24 @@ group_df %>%
 
 chisq.test(group_df$binary_decision, group_df$TMS)
 ```
+## plot correct decisions by manipulations
 
 ```{r}
-#plot_data <- group_df %>% mutate(condition = factor(condition, levels = , labels = c("","")))
-
-ggplot(data=group_df, aes(TMS, binary_decision_numeric)) +
-  stat_summary(fun.y = "mean", geom = "bar") 
+ggplot(data = group_df, aes(TMS, binary_decision_numeric)) +
+  stat_summary(fun.y = "mean", geom = "bar") +
+  stat_summary(fun.data = mean_cl_normal, geom = "errorbar")
 ```
 
 
 ```{r}
-#plot_data <- group_df %>%
-#  mutate(condition = factor(condition, levels = , labels = c("","")))
-
 ggplot(data=group_df, aes(group_structure, binary_decision_numeric)) +
   stat_summary(fun.y = "mean", geom = "bar") +
   stat_summary(fun.data = mean_cl_normal, geom = "errorbar")
-  
 ```
 
 
 ```{r}
 require(Hmisc)
-# plot_data <- group_df %>% mutate(condition = factor(condition, levels = , labels = c("","")))
 
 ggplot(data=group_df, aes(condition, binary_decision_numeric)) +
   stat_summary(fun.y = "mean", geom = "bar") +
@@ -124,20 +115,11 @@ ggplot(data=plot_data, aes(condition, binary_decision_numeric, label = scales::p
   stat_summary(fun.y = "mean", geom = "bar") +
   labs(x = "Condition", y = "Percentage of Correct Decisions") +
   ylim(0, 1) +
-  geom_text(position = position_dodge(width = .9),    
-              vjust = -0.5,    
-              size = 3) +
-    scale_y_continuous(labels = scales::percent)
-
-ggplot(data=plot_data, aes(condition, binary_decision_numeric, label = scales::percent(pct))) +
-  stat_summary(fun.y = "mean", geom = "bar") +
-  labs(x = "Condition", y = "Percentage of Correct Decisions") +
-  ylim(0, 1) +
   geom_text(aes(label = scales::percent(pct), 
                   y = pct, 
                   group = condition),
               position = position_dodge(width = 0.9),
-              vjust = 1.5)
+              vjust = -0.8)
   
 ```
 
@@ -177,14 +159,8 @@ confint(fullmodel, level = 0.95) # 95% Confidence Intervalls
 exp(coef(fullmodel)) # Odds Ratios
 
 
-anova(full_additive_model, fullmodel, test="Chisq")
-
-
-
+anova(full_additive_model, fullmodel, test="Chisq") # model comparison
 ```
-
-
-
 ## logistic regression to check whether duration of discussion is predictive
 
 ```{r}
@@ -194,8 +170,7 @@ time_model_TMS <- glm(binary_decision ~ TMS + duration_min, data = group_df, fam
 
 time_model_interact <- glm(binary_decision ~ TMS * duration_min, data = group_df, family = 'binomial'); summary(time_model_interact)
 
-time_hierarchy_TMS <- glm(binary_decision ~ duration_min * group_structure, data = group_df, family = 'binomial'); summary(time_hierarchy_TMS)
-
+time_hierarchy_interact <- glm(binary_decision ~ duration_min * group_structure, data = group_df, family = 'binomial'); summary(time_hierarchy_interact)
 
 time_all_model <- glm(binary_decision ~ duration_min + group_structure + TMS, data = group_df, family = 'binomial'); summary(time_all_model)
 
@@ -204,54 +179,56 @@ exp(coef(time_all_model))
 
 anova(full_additive_model, time_all_model, test = "Chisq")
 ```
-## what predicts duration?
+### what predicts duration?
 
 ```{r}
-time_hierarchy <- lm(duration_min ~ group_structure, data = group_df); summary(time_hierarchy)
+# change independent variables to factors
+group_df_factor <- group_df %>% 
+  mutate(TMS = as.factor(TMS), group_structure = as.factor(group_structure))
 
-time_predict <- lm(duration_min ~ TMS * group_structure, data = group_df); 
+time_hierarchy <- lm(duration_min ~ group_structure, data = group_df_factor); summary(time_hierarchy)
+
+time_predict <- lm(duration_min ~ TMS * group_structure, data = group_df_factor) 
 summary(time_predict)
 
-install.packages("reghelper")
+require(reghelper)
 
 reghelper::beta(time_predict, na.rm = TRUE)
 
-aov_model <- aov(duration_min ~ TMS * group_structure, data = group_df)
-summary(aov_model)
+aov_model <- aov(duration_min ~ TMS * group_structure, data = group_df); summary(aov_model)
 eta_sq(aov_model, partial = TRUE)
 
 t.test(duration_min ~ group_structure, data = group_df)
 
 group_df %>%
   group_by(condition) %>%
-  summarise(m = mean(duration_min), v =  sd(duration_min))
+  summarise(m = mean(duration_min), v = sd(duration_min))
 
 group_df %>%
   group_by(group_structure) %>%
-  summarise(m = mean(duration_min), v =  sd(duration_min))
-
+  summarise(m = mean(duration_min), v = sd(duration_min))
 ```
-## duration's affect on outcome
+### duration's affect on outcome
 
 ```{r}
+# in the self-organized condition, does time predict outcome?
+time_hierarchy_TMS <- glm(binary_decision ~ duration_min - 1 , data = group_df %>%
+                            filter(group_structure == 'so'), family = 'binomial'); summary(time_hierarchy_TMS)
 
-time_hierarchy_TMS <- glm(binary_decision ~ duration_min - 1, data = group_df, family = 'binomial'); summary(time_hierarchy_TMS)
-# in the so, does time predict outcome?
-time_hierarchy_TMS <- glm(binary_decision ~ duration_min - 1 , data = group_df %>%  filter(group_structure == 'so'), family = 'binomial'); summary(time_hierarchy_TMS)
-# in the h, does time predict outcome?
-time_hierarchy_TMS <- glm(binary_decision ~ duration_min - 1 , data = group_df %>%  filter(group_structure == 'h'), family = 'binomial'); summary(time_hierarchy_TMS)
-
+# in the hierarchical condition, does time predict outcome?
+time_hierarchy_TMS <- glm(binary_decision ~ duration_min - 1 , data = group_df %>%
+                            filter(group_structure == 'h'), family = 'binomial'); summary(time_hierarchy_TMS)
 ```
-## plot duration and outcome
+### plot duration and outcome
 
 ```{r}
 ggplot(group_df, aes(duration_min, binary_decision * 1)) +
   geom_point() +
   geom_smooth()
 ```
-## see if excluding outliars does anything
+### see if excluding outliars does anything
 
 ```{r}
-time_hierarchy_TMS <- glm(binary_decision ~ duration_min - 1, data = group_df %>% filter(duration_min < 31), family = 'binomial'); summary(time_hierarchy_TMS)
+time_hierarchy_TMS <- glm(binary_decision ~ duration_min - 1, data = group_df %>% 
+                            filter(duration_min < 31), family = 'binomial'); summary(time_hierarchy_TMS)
 ```
-# 

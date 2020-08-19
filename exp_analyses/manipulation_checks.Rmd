@@ -6,7 +6,7 @@ output: pdf_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
-### load in libraries
+# Libraries
 
 ```{r}
 library(readr)
@@ -15,14 +15,13 @@ library(forcats)
 library(psych)
 require(lsr)
 ```
-### load in data
+# Load in data
 
 ```{r}
 group_df <- read_csv("data/group_level_data.csv")
 indiv_df <- read_csv("data/indiv_level_data.csv")
-
 ```
-### clean data
+# Clean data
 
 ```{r}
 group_df <- group_df %>% 
@@ -50,8 +49,7 @@ View(manip_checks)
 ```{r}
 manip_checks %>% 
   filter(!`formal_leader?` == "correct")
-
-# one girl did not comply but I will just ignore that, I think
+# => one person did not comply 
 ```
 # Second check: Who made the final decision?
 
@@ -66,15 +64,15 @@ manip_checks %>%
   filter(group_structure == "h", `final_decision?` == "group") 
 # => everyone in the hierarchichal condition agreed that the leader made the decision
 ```
-
 # Third check: Perceived influence
 
-## first aggregations and calculation of average influence per group
+## aggregations and calculation of average influence per group
 ```{r}
 # average influence by participant
 influence_check <- manip_checks %>% 
   group_by(group, group_structure, TMS) %>% 
   summarise(aggr_infl_p1 = mean(influence_p1), aggr_infl_p2 = mean(influence_p2), aggr_infl_p3 = mean(influence_p3))
+
 View(influence_check)
 
 # merge influence of three participants into one column 
@@ -91,7 +89,6 @@ View(influence_check)
 influence_check <- influence_check %>% 
   group_by(group, group_structure, TMS) %>% 
   summarise(avg_influence = mean(aggr_infl, na.rm = TRUE), sd_avg_infl = sd(aggr_infl, na.rm = TRUE))
-
 ```
 ## calculate coefficient of variation => perceived influence disparity
 
@@ -103,13 +100,14 @@ influence_check <- influence_check %>%
 ## testing the difference between h and so
 
 ```{r}
-library(broom)
 library(coin)
 # explore normality 
 ggplot(data = influence_check, aes(coefficient_of_variation)) + geom_histogram(binwidth = .04) +
 facet_wrap(~group_structure)
 
-t.test(coefficient_of_variation ~ group_structure, alternative = "greater", data = influence_check) # one-tailed, signifikant => participants in the hierarchical condition perceived a higher discrepancy in influence
+t.test(coefficient_of_variation ~ group_structure, alternative = "greater", data = influence_check) 
+# one-tailed => signifikant, participants in the hierarchical condition perceived a higher discrepancy in influence
+
 influence_check %>% 
   group_by(group_structure) %>% 
   summarise(sd = sd(coefficient_of_variation))
@@ -124,17 +122,19 @@ View(influence_check)
 
 influence_check <- mutate_at(influence_check, vars(group_structure, TMS), as.factor)
 
-# given that the perceived influence disparity is not normally distributed, perform "One-Way Permutation Test based on 9999 Monte-Carlo resamplings"
+# given that the perceived influence disparity is not normally distributed, perform One-Way Permutation Test based on 9999 Monte-Carlo resamplings:
 
-oneway_test(coefficient_of_variation ~ group_structure, data = influence_check, distribution = approximate(nresample = 9999)) # => still significant :)
-
+oneway_test(coefficient_of_variation ~ group_structure, data = influence_check, distribution = approximate(nresample = 9999)) 
+# => still significant 
 ```
 ## testing the difference between TMS and noTMS
 
 ```{r}
-t.test(coefficient_of_variation ~ TMS, data = influence_check) # two-tailed, not significant
+t.test(coefficient_of_variation ~ TMS, data = influence_check) 
+# two-tailed => not significant
 
-oneway_test(coefficient_of_variation ~ TMS, data = influence_check, distribution = approximate(B = 9999)) # => still not significant
+oneway_test(coefficient_of_variation ~ TMS, data = influence_check, distribution = approximate(B = 9999)) 
+# => still not significant
 ```
 ## testing for an effect of the TMS manipulation on the hierarchical manipulation
 
@@ -146,13 +146,11 @@ summary(lm(coefficient_of_variation ~ group_structure * TMS, data=influence_chec
 independence_of_manipulations <- influence_check %>% 
   filter(group_structure == "h")
 
+t.test(coefficient_of_variation ~ TMS, data = independence_of_manipulations) 
 
-t.test(coefficient_of_variation ~ TMS, data = independence_of_manipulations) # => neither the interaction nor the direct comparison of hierarchicalTMS with hierarchicalNoTMS are significant!! 
-  
-
-  
+# => neither the interaction nor the direct comparison of hierarchical_TMS with hierarchical_NoTMS are significant!! 
 ```
-# Check whether leaders are actually more powerful
+# Fourth check: Are leaders actually more powerful?
 
 ```{r}
 # average influence by participant
@@ -183,18 +181,13 @@ leader_check <- manip_checks %>%
             )
   )
 
-t.test(infl ~ `leader?`, data=leader_check)
 t.test(resp ~ `leader?`, data=leader_check)
 
 View(leader_check)
-
 ```
-
-
-# Fourth check: Perceived responsibility
+# Fifth check: Perceived responsibility
 
 ## first aggregations and calculation of average influence per group
-
 ```{r}
 # average responsibility by participant
 responsibility_check <- manip_checks %>% 
@@ -204,7 +197,6 @@ responsibility_check <- manip_checks %>%
 View(responsibility_check)
 
 # collapse aggregated responsibility scores to create a single vector
-
 responsibility_check <- responsibility_check %>% 
   gather('aggr_resp_p1', 'aggr_resp_p2', 'aggr_resp_p3', key = "participant", value = "avg_respon")
 
@@ -212,17 +204,14 @@ responsibility_check %>%
   arrange(group)
 
 # calculate mean and standard deviation of the average responsibility per group
-
 responsibility_check <- responsibility_check %>% 
   group_by(group, group_structure, TMS) %>%
   summarise(responsibility = mean(avg_respon), sd_respon = sd(avg_respon))
   
 # coefficient of variation for responsibility => perceived responsibility disparity
-
 responsibility_check <- responsibility_check %>%
   group_by(group, group_structure, TMS) %>% 
   mutate(coefficient_respon = sd_respon/responsibility)
-
 ```
 ## testing for potential differences between "h" and "so" as well as "TMS" and "noTMS"
 
@@ -238,7 +227,7 @@ describe(responsibility_check$coefficient_respon)
 ggplot(responsibility_check, aes(coefficient_respon)) +
   geom_histogram(binwidth = 0.02)
 
-# nonparametric test necessary, so first change character vectors to factors
+# non-parametric test necessary, so first change character vectors to factors
 responsibility_check <- responsibility_check %>% 
   ungroup()
   
@@ -249,33 +238,32 @@ oneway_test(coefficient_respon ~ group_structure, data = responsibility_check, d
 
 oneway_test(coefficient_respon ~ TMS, data = responsibility_check, distribution = approximate(B = 9999))         
 ```
-
-# Fifth check: explore differences in perceived overall responsibility and influence between h and so groups
+# Sixth check: Explore differences in perceived overall responsibility and influence between h and so groups
 
 ```{r}
 # violation of normality?
 ggplot(responsibility_check, mapping = aes(responsibility)) +
   geom_histogram(binwidth = 0.25)
 
-describe(responsibility_check$responsibility) # look at skew & kurtosis => it's fine
-describe(influence_check$avg_influence) # seems fine, too
+describe(responsibility_check$responsibility) 
+# look at skew & kurtosis => it's fine
+
+describe(influence_check$avg_influence) 
+# seems fine, too
 
 # test for significant difference
+t.test(responsibility ~ group_structure, data = responsibility_check) 
+# => There IS a SIGNIFICANT difference in perceived average responsibility
 
-t.test(responsibility ~ group_structure, data = responsibility_check) # => There IS a SIGNIFICANT difference in perceived average responsibility
-t.test(avg_influence ~ group_structure, data = influence_check) # => There is NO SIGNIFICANT difference in perceived average influence
+t.test(avg_influence ~ group_structure, data = influence_check) 
+# => There is NO SIGNIFICANT difference in perceived average influence
 ```
-
-# Manipulation CHECK for TMS
+# Manipulation check for TMS
 
 ```{r}
 manip_checks %>% 
   filter(TMS == 'noTMS') %>% 
-  filter(`exp_p1?` == 'correct' & `exp_p2?` == 'correct' & `exp_p3?` == 'correct') %>% count()/120 * 100
-  
+  filter(`exp_p1?` == 'correct' & `exp_p2?` == 'correct' & `exp_p3?` == 'correct') %>% 
+  count()/120 * 100
 
-manip_checks %>% 
-  filter(TMS == 'TMS') %>% 
-  filter(!`exp_p1?` == 'correct' | !`exp_p2?` == 'correct' | !`exp_p3?` == 'correct') 
 ```
-

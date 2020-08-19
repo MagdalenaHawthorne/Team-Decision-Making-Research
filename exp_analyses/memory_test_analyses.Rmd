@@ -6,7 +6,7 @@ output: pdf_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
-## libraries
+# Libraries
 
 ```{r}
 library(readr)
@@ -14,7 +14,7 @@ library(tidyverse)
 library(forcats)
 library(psych)
 ```
-## load in data
+# Data prep
 
 ```{r}
 memory_test <- read_csv("data/memory_test_data.csv")
@@ -29,7 +29,7 @@ memory_test <- memory_test %>%
 group_df <- group_df %>% 
   filter(!group %in% c(14, 80))
 ```
-# create new shared data frame
+## create new shared data frame
 
 ```{r}
 group_df <- group_df %>% 
@@ -39,12 +39,11 @@ group_df <- group_df %>%
   mutate(binary_decision_numeric = binary_decision * 1)
 
 View(group_df)
-group_df
 
 joint_df <- memory_test %>% 
   left_join(group_df, by = "group")
 ```
-# create variable for pieces of inf. that participants had learned per pilot 
+## create variable for pieces of information that participants had learned per pilot 
 
 ```{r}
 joint_df <- joint_df %>% 
@@ -53,10 +52,9 @@ joint_df <- joint_df %>%
          neg_information_learned_pilot = post_correct_neg - correct_same_neg, 
          all_information_learned_pilot = pos_information_learned_pilot + neg_information_learned_pilot)
 ```
-# Information Gain
+# Information gain
 
 ```{r}
-
 info_gain_per_person <- joint_df %>% 
   group_by(group, id, group_structure, TMS, condition) %>% 
   summarise(info_learned = sum(all_information_learned_pilot)) 
@@ -67,19 +65,14 @@ info_gain <- info_gain_per_person %>%
 
 info_gain
 
-
 ## Does condition predict information gain?
-
 summary(lm(info_learned ~ TMS * group_structure, data = info_gain_per_person))
 summary(lm(info_learned_avg ~ TMS * group_structure, data = info_gain))
 
 ggplot(data = info_gain, aes(condition, info_learned_avg)) +
   geom_bar(stat = "identity")
-            
-  
 ```
-
-# Manipulation Check for TMS: look whether in TMS condition, participants remembered more items about "their" pilot
+# Additionial manipulation check for TMS: Look whether in TMS condition, participants remembered more items about the pilot they were an expert on
 
 ## summarize pos. and neg. information remembered before discussion
 ```{r}
@@ -99,18 +92,13 @@ TMS_only <- joint_df %>%
 TMS_only %>% 
   dplyr::select(group, id, pilot, correct_pre_count_pilot)
 
-
-####
-
 TMS_short <- TMS_only %>% 
   group_by(group, id, pilot) %>% 
   mutate(exp_pilot = id == 1 & pilot == "A" | id == 2 & pilot =="B" | id == 3 & pilot == "C")
 
-summary(lm(correct_pre_count_pilot ~ exp_pilot, data = TMS_short))
 anova_mod <- aov(correct_pre_count_pilot ~ exp_pilot, data = TMS_short)
 summary(anova_mod)
 eta_sq(anova_mod)
-####
 
 TMS_short <- TMS_only %>% 
   group_by(id, pilot) %>% 
@@ -118,16 +106,15 @@ TMS_short <- TMS_only %>%
   mutate(exp_pilot = id == 1 & pilot == "A" | id == 2 & pilot =="B" | id == 3 & pilot == "C")
 
 summary(aov(avg_remembered ~ exp_pilot, data = TMS_short))
+```
+## vica versa: remove TMS gorups
 
-#### vica versa: remove TMS gorups
-
+```{r}
 noTMS_only <- joint_df %>% 
   filter(TMS == "noTMS") 
 
 noTMS_only %>% 
   dplyr::select(group, id, pilot, correct_pre_count_pilot) 
-
-####
 
 noTMS_short <- noTMS_only %>% 
   group_by(group, id, pilot) %>% 
@@ -136,23 +123,9 @@ noTMS_short <- noTMS_only %>%
 anova_counter_mod <- aov(correct_pre_count_pilot ~ exp_pilot, data = noTMS_short)
 summary(anova_counter_mod)
 eta_sq(anova_counter_mod)
-####
-
-
-# I've been wondering whether the way above is correct? Should I or can I consider the nested structure of the data? Does it matter that each individual has 3 data points and each group 9?
-test <- TMS_only %>% 
-  group_by(group) %>%
-  mutate(exp_pilot = id == 1 & pilot == "A" | id == 2 & pilot =="B" | id == 3 & pilot == "C") %>% ungroup()
-
-library('lme4')
-
-test
-summary(lmer(correct_pre_count_pilot ~ exp_pilot + (1 | group), data = test))
-
-?glmer
 ```
 
-# CONTROLLING FOR
+# Controlling for memory
 
 ## is memory itself a predictor for decision outcome?
 
