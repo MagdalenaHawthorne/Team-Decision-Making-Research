@@ -278,7 +278,7 @@ cond_indirect_2:= a1*b*c3
 model_fit_lesscompli <- sem(model_lesscompli, data = cleaned_df, se = "boot", bootstrap = 10000)
 summary(model_fit_lesscompli, fit.measures = TRUE, standardized = TRUE, ci = T)
 
-modificationindices(model_fit, minimum.value = 20)
+modificationindices(model_fit_lesscompli, minimum.value = 20)
 ```
 # Model comparisons
 
