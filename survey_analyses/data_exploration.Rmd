@@ -1,5 +1,5 @@
 ---
-title: "data_exploration"
+title: "Data Exploration"
 output: pdf_document
 ---
 
@@ -7,7 +7,7 @@ output: pdf_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## load libraries
+# Load libraries
 
 ```{r}
 library(tidyverse)
@@ -16,33 +16,33 @@ library(readr)
 library(forcats)
 library(stringr)
 ```
+# Data prep
 
-## load data 
+## load
 
 ```{r}
 survey_data <- read_csv("data/survey_results.csv")
-survey_data
 ```
-# prep data file
+## manipulate
 
 ```{r}
 survey_data <- rownames_to_column(survey_data, var = "participant") 
 survey_data <- mutate_at(survey_data, vars(indiv_team_tenure, core_team_tenure), as.factor)
-survey_data
 View(survey_data)
 ```
-
-# plotting variables
+# Exploring variables
 
 ## team size and tenure
 ```{r}
 ggplot(survey_data, aes(team_members)) +
   geom_histogram(binwidth = 10)
 
-survey_data %>% mutate(indiv_team_tenure = indiv_team_tenure %>% fct_infreq) %>% 
+survey_data %>% 
+  mutate(indiv_team_tenure = indiv_team_tenure %>% 
+  fct_infreq) %>% 
   ggplot(aes(indiv_team_tenure)) +
   geom_bar() +
-    theme(axis.text.x = element_text(angle = 90))
+  theme(axis.text.x = element_text(angle = 90))
 
 survey_data$indiv_team_tenure <- fct_relevel(survey_data$indiv_team_tenure, "Less than 3 months", "3 _ 6 months", "6 _ 12 months")
 
@@ -54,14 +54,12 @@ survey_data %>%
   xlab("indiv_team_tenure") +
   theme(axis.text.x = element_text(angle = 90)) 
 
-survey_data$core_team_tenure <- fct_relevel(survey_data$core_team_tenure,"Do not know", "Less than 3 months", "3 _ 6 months", "6 _ 12 months")
-
 summary(survey_data$core_team_tenure)
 
 survey_data %>% 
-  ggplot(aes(fct_relevel(core_team_tenure,"Do not know", "Less than 3 months", "3 _ 6 months", "6 _ 12 months"))) + 
+  ggplot(aes(core_team_tenure)) + 
   geom_bar() + 
-  xlab("core_team_tenure") +
+  xlab("team tenure in months") +
   theme(axis.text.x = element_text(angle = 90)) 
 ```
 ## agile 
@@ -69,10 +67,10 @@ survey_data %>%
 ```{r}
 survey_data %>% 
   count(agile_method) 
-# percent using an agile method [REMINDER: TRUE is interpreted as 1, FALSE as 0]
+
 survey_data %>% 
   mutate(agile_method = agile_method == "Yes") %>%
-  summarise(percent_agile = sum(agile_method)/n() * 100)
+  summarise(percent_agile = sum(agile_method, na.rm = T)/n() * 100)
 
 # looking into the character vector on which agile methods were used
 
@@ -106,8 +104,6 @@ survey_data <- survey_data %>%
 
 survey_data %>% 
   summarise(percent_male = sum(gender)/n() * 100)
-
-# Anteil weiblicher Angestellter bei SAP im Jahr 2018: 33 % 
 ```
 ## work experience
 
@@ -120,7 +116,7 @@ summary(survey_data$work_experience)
 
 survey_data %>% 
   filter(!work_experience > 40) %>% 
-  select(work_experience) %>% 
+  dplyr::select(work_experience) %>% 
   summarise(mean_work_exp = mean(work_experience))
 
 survey_data %>% 
@@ -128,28 +124,8 @@ survey_data %>%
 
 # participant 1074 needs to be excluded 
 ```
-## location and area
-
-```{r}
-survey_data %>% 
-  ggplot(aes(location)) +
-  geom_bar() +
-  theme(axis.text.x = element_text(angle = 90))
-
-survey_data %>% 
-  count(location) %>% 
-  arrange(desc(n))
-
-survey_data %>% 
-  ggplot(aes(functional_area)) +
-  geom_bar() +
-  theme(axis.text.x = element_text(angle = 90))
-
-survey_data %>% 
-  count(functional_area) %>% 
-  arrange(desc(n))
-```
 ## career level
+
 ```{r}
 survey_data <- mutate_at(survey_data, vars(level), as.factor) 
 

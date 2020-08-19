@@ -6,31 +6,37 @@ output: pdf_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
+# Load libraries
 
-## load libraries
 ```{r}
 library(tidyverse)
 library(readr)
 library(lavaan)
 library(mediation)
 library(MASS)
-
+library(psych)
+library(Hmisc)
+library(corrplot)
 ```
-## load data
+# Data prep
+
+## define column type
 
 ```{r}
 cleaned_df <- read_csv("survey_data_clean.csv")
 
 # change to factor
 cleaned_df <- cleaned_df %>% 
-  mutate_at(vars(level, gender), as.factor) %>% mutate(gender = gender == 'Female')
+  mutate_at(vars(level, gender), as.factor) %>% 
+  mutate(gender = gender == 'Female')
+
 #change to numeric 
 cleaned_df <- cleaned_df %>% 
   mutate_at(vars(work_experience, core_team_tenure, gender), as.numeric) 
 psych::describe(cleaned_df$gender)
-
 ```
-# check normality
+## check normality
+
 ```{r}
 ggplot(aes(decision_quality), data=cleaned_df) +
   geom_density()
@@ -43,31 +49,18 @@ ggplot(aes(transactive_memory), data=cleaned_df) +
 ggplot(aes(knowledge_sharing), data=cleaned_df) +
   geom_density()
 
-library(psych)
 psych::describe(cleaned_df$core_team_tenure) 
 psych::describe(cleaned_df$transactive_memory)
-
 ```
 
-# prepare control variables
+## prepare control variables
+
 ```{r}
-
-# cleaned_df$team_tenure <- fct_collapse(cleaned_df$core_team_tenure, 
-#  new = c("Less than 3 months", "3 _ 6 months"),
-#  established =c("6 _ 12 months", "1 _ 2 years"),
-#  mature = c("2 _ 5  years", "5 _ 10  years", "More than 10 years"), group_other = TRUE)
-
-# cleaned_df[cleaned_df$core_team_tenure == 'NA', 'core_team_tenure'] <- NA
-# ifelse(team_tenure == 'Other', NA, team_tenure))
-
-cleaned_df <- cleaned_df %>% mutate(career_level = fct_recode(level, "NA" = "Other (Please specify (optional)):"))
-cleaned_df <- cleaned_df %>% mutate(career_level = fct_recode(career_level, "Associate" = 'NA'))
+cleaned_df <- cleaned_df %>% 
+              mutate(career_level = fct_recode(level, "NA" = "Other (Please specify (optional)):"))
 
 cleaned_df$core_team_tenure[is.na(cleaned_df$core_team_tenure)] <- mean(cleaned_df$core_team_tenure, na.rm=TRUE)
-
-is.na(cleaned_df$core_team_tenure)
 summary(cleaned_df$core_team_tenure)
-             
 ```
 ## corraltion matrix
 
@@ -79,16 +72,12 @@ small_df
 cor_mat <- cor(small_df, method = c("pearson", "kendall", "spearman"))
 round(cor_mat, 2)
 
-library(corrplot)
-# NAs vermeiden 
 corrplot(cor_mat, type = "upper", order = "hclust", tl.col = "black", tl.srt = 45)
 
 eigen(cor_mat)
 max(eigen(cor_mat)$values)/min(eigen(cor_mat)$values)
 kappa((cor_mat), exact = TRUE)
 
-
-library(Hmisc)
 rcorr(as.matrix(small_df))
 ```
 ## center independent variables 
@@ -102,28 +91,12 @@ cleaned_df$core_team_tenure <- scale(cleaned_df$core_team_tenure, center = TRUE,
 cleaned_df$work_experience <- scale(cleaned_df$work_experience, center = TRUE, scale = FALSE)[,]
 cleaned_dfteam_members <- scale(cleaned_df$team_members, center = TRUE, scale = FALSE)[,]
 
-
-# cleaned_df$transactive_memory <- scale(cleaned_df$transactive_memory, center = TRUE, scale = FALSE)[,]
-
 # cleaned_df <- cleaned_df %>% mutate_at(vars(transactive_memory, team_structure, interdependence, knowledge_sharing, core_team_tenure, work_experience, team_members, intrinsic_motivation, group_identification), funs(scale(.)))
 ```
+# Stepwise regression
 
-# check out regressions
-
-```{r}
-summary(lm(decision_quality ~ team_structure + transactive_memory, data = cleaned_df))
-summary(lm(decision_quality ~ team_structure * transactive_memory , data = cleaned_df))
-summary(lm(knowledge_sharing ~ team_structure + transactive_memory, data = cleaned_df))
-
-model_complex <- lm(decision_quality ~ team_structure + transactive_memory + knowledge_sharing + core_team_tenure + work_experience + gender + team_members, data = cleaned_df); 
-summary(model_complex)
-
-```
-
-# STEPWISE REGRESSION
 ```{r}
 # STEP 1
-
 decision_1 <- lm(decision_quality ~ gender + work_experience + team_members + core_team_tenure, data = cleaned_df)
 summary(decision_1)
 
@@ -134,7 +107,6 @@ transactive_1 <- lm(transactive_memory ~ gender + team_members + work_experience
 summary(transactive_1)
 
 # STEP 2
-
 decision_2 <- lm(decision_quality ~ team_structure + interdependence + gender + team_members + work_experience + core_team_tenure, data = cleaned_df)
 summary(decision_2)
 
@@ -145,7 +117,6 @@ transactive_2 <- lm(transactive_memory ~ team_structure + interdependence + gend
 summary(transactive_2)
 
 # STEP 3
-
 decision_3 <- lm(decision_quality ~ team_structure * interdependence + gender + team_members + work_experience + core_team_tenure, data = cleaned_df)
 summary(decision_3)
 
@@ -170,12 +141,11 @@ summary(decision_5)
 
 anova(decision_4, decision_5)
 ```
-# MODERATED MEDIATION !!!
+# Moderated Mediation
 
 ```{r}
 library(mediation)
 mediate <- mediation::mediate
-
 
 Mod.Med.Model.1 <- lm(knowledge_sharing ~ team_structure * transactive_memory, data = cleaned_df); summary(Mod.Med.Model.1)
 
@@ -205,6 +175,7 @@ mod_med_test_1 <- mediate(Mod.Med.Model.1, Mod.Med.Model.2,
                              boot.ci.type = "bca",
                              sims = 1000, treat = "team_structure", 
                              mediator = "knowledge_sharing")
+
 test.modmed(mod_med_test_1, covariates.1 = list(transactive_memory = low_trans_memory), covariates.2 = list(transactive_memory = high_trans_memory), sims = 1000)
 
 ############# NO.2
@@ -230,143 +201,25 @@ mod_med_high_inter <- mediate(Mod.Med.Model.3, Mod.Med.Model.4,
                              mediator = "knowledge_sharing")
 summary(mod_med_high_inter)
 
-
 mod_med_test_2 <- mediate(Mod.Med.Model.3, Mod.Med.Model.4,
                              boot = TRUE,
                              boot.ci.type = "bca",
                              sims = 1000, treat = "team_structure", 
                              mediator = "knowledge_sharing")
+
 test.modmed(mod_med_test_2, covariates.1 = list(interdependence = low_inter), covariates.2 = list(interdependence = high_inter), sims = 1000)
-
 ```
-# Moderation analysis with INTERDEPENDENCE
-
-```{r}
-moderation_mod <- lm(decision_quality ~ team_structure * interdependence, data = cleaned_df)
-summary(moderation_mod) 
-
-
-?sd
-library(gvlma) # global validation of linear model assumptions (gvlma)
-
-gvlma(moderation_mod)
-
-library(rockchalk)
-
-ps <- plotSlopes(moderation_mod, plotx='team_structure', modx='interdependence', xlab = "team_structure", ylab = "decision_quality", modxVals = "std.dev.")
-
-library(interactions)
-interact_plot(moderation_mod, pred = team_structure, modx = interdependence)
-
-# make interdependece dichotomous
-cleaned_df <- cleaned_df %>% 
-  mutate(dichotomous_interdependence = case_when(
-    interdependence >= median(interdependence) ~ "high",
-    interdependence <= median(interdependence) ~ "low"))
-cleaned_df$dichotomous_interdependence
-
-simpel_mod_model <- lm(decision_quality ~ team_structure * dichotomous_interdependence, data = cleaned_df)
-
-plot <- plotSlopes(simpel_mod_model, plotx='team_structure', modx='dichotomous_interdependence', xlab = "team_structure", ylab = "decision_quality")
-
-ggplot(simpel_mod_model, aes(team_structure, decision_quality, colour = factor(dichotomous_interdependence))) +
-  geom_smooth(method = "lm")
-
-```
-# Mediation analysis with INTERDEPENDENCE
-
-```{r}
-med_mod <- lm(interdependence ~ team_structure, data = cleaned_df)
-full_mod <- lm(decision_quality ~ interdependence + team_structure, data = cleaned_df)
-out_mod <- mediate(med_mod, full_mod, treat = 'team_structure', mediator = 'interdependence', data = cleaned_df)
-summary(out_mod)
-plot(out_mod)
-```
-
-# Moderation with MeMoBootR
-```{r}
-summary(lm(transactive_memory ~ team_structure * interdependence ,  data=cleaned_df))
-library(MeMoBootR)
-modmodel <- moderation1(y = "decision_quality",
-                        x = "team_structure",
-                        m = "interdependence",
-                        df = cleaned_df)
-summary(modmodel$model1)
-summary(modmodel$model1low)
-summary(modmodel$model1high)
-cat(modmodel$interpretation)
-
-```
-
-# mediation test
-```{r}
-# mediation between team structure and decision quality by ks
-med_mod_1 <- lm(knowledge_sharing ~ team_structure, data = cleaned_df)
-full_mod_1 <- lm(decision_quality ~ knowledge_sharing + team_structure, data = cleaned_df)
-out_mod_1 <- mediate(med_mod_1, full_mod_1, treat = 'team_structure', mediator = 'knowledge_sharing')
-summary(out_mod_1)
-plot(out_mod_1)
-
-# mediation betw. transactive_memory and decision quality by ks
-med_mod_2 <- lm(knowledge_sharing ~ transactive_memory, data = cleaned_df)
-full_mod_2 <- lm(decision_quality ~ knowledge_sharing + transactive_memory, data = cleaned_df)
-out_mod_2 <- mediate(med_mod_2, full_mod_2, treat = 'transactive_memory', mediator = 'knowledge_sharing')
-summary(out_mod_2)
-plot(out_mod_2)
-
-# mediation betw. ts and ks by transactive_memory
-med_mod_3 <- lm(transactive_memory ~ team_structure, data = cleaned_df)
-full_mod_3 <- lm(knowledge_sharing ~ team_structure + transactive_memory, data = cleaned_df)
-out_mod_3 <- mediate(med_mod_3, full_mod_3, treat = 'team_structure', mediator = 'transactive_memory')
-summary(out_mod_3)
-plot(out_mod_3)
-```
-
-
 # SEM models
+
+## create interaction terms
 ```{r}
-#cleaned_df <- cleaned_df %>% mutate_at(vars(transactive_memory, team_structure, interdependence, knowledge_sharing, core_team_tenure, work_experience, team_members, intrinsic_motivation, group_identification), funs(scale(.)))
-
-#create interaction terms
-
 cleaned_df$inter_trans <- cleaned_df$transactive_memory*cleaned_df$interdependence
 cleaned_df$inter_teamstr <- cleaned_df$interdependence*cleaned_df$team_structure
 cleaned_df$inter_knowshare <-cleaned_df$interdependence*cleaned_df$knowledge_sharing
+```
+## run models
 
-
-
-model_compli <- '
-decision_quality ~ e1*knowledge_sharing + e2*interdependence + e3*inter_knowshare + f1*team_structure + f2*inter_teamstr + d1*transactive_memory + d2*inter_trans
-knowledge_sharing ~ c*team_structure + b*transactive_memory
-transactive_memory ~ a*team_structure
-
-interdependence ~ interdependence.mean*1
-interdependence ~~ interdependence.var*interdependence
-
-direct1 := c
-indirect1:= a*b
-total1 := direct1 + indirect1
-prop_med1 := indirect1 / total1
-
-direct2 := f1
-indirect2:= c*e1
-total2 := direct2 + indirect2
-prop_med2 := indirect2 / total2
-
-indirect3:= a*b*e1
-total3 := direct2 + indirect3
-prop_med3 := indirect3 / total3
-
-cond_indirect1_below:= c*(e1 + e3*(interdependence.mean-sqrt(interdependence.var)))
-cond_indirect1_above:= c*(e1 + e3*(interdependence.mean+sqrt(interdependence.var)))
-cond_direct_below:= f1 + f2*(interdependence.mean-sqrt(interdependence.var))
-cond_direct_above:= f1 + f2*(interdependence.mean+sqrt(interdependence.var))
-cond_indirect := c*e3
-'
-
-model_fit_compli <- sem(model_compli, data = cleaned_df)
-summary(model_fit_compli, fit.measures = TRUE, standardized = TRUE, ci = T)
-
+```{r}
 model_final <- '
 decision_quality ~ e1*knowledge_sharing + e2*interdependence + e3*inter_knowshare + f1*team_structure + f2*inter_teamstr + d1*transactive_memory + d2*inter_trans + team_members + core_team_tenure + work_experience + gender
 knowledge_sharing ~ a*team_structure + b*transactive_memory
@@ -404,11 +257,11 @@ cond_2_indirect := b*e3
 cond_1_direct := f1*f2
 cond_2_direct := d1*d2
 '
-model_fit_final <- sem(model_final, data = cleaned_df)
+model_fit_final <- sem(model_final, data = cleaned_df,)
 summary(model_fit_final, fit.measures = TRUE, standardized = TRUE, ci = T)
 
 
-# this is when Transactive Memory is not supposed to have a direct effect on DQ
+# this is when Transactive Memory is not supposed to have a direct effect on DQ:
 model_lesscompli <- '
 decision_quality ~ c1*knowledge_sharing + c2*interdependence + c3*inter_knowshare + a3*team_structure + a4*inter_teamstr + team_members + core_team_tenure
 knowledge_sharing ~ a2*team_structure + b*transactive_memory
@@ -422,51 +275,18 @@ indirect3:= a1*b*c1
 cond_indirect_1:= a2*c3
 cond_indirect_2:= a1*b*c3
 '
-model_fit_lesscompli <- sem(model_lesscompli, data = cleaned_df)
+model_fit_lesscompli <- sem(model_lesscompli, data = cleaned_df, se = "boot", bootstrap = 5000)
 summary(model_fit_lesscompli, fit.measures = TRUE, standardized = TRUE, ci = T)
 
-model_fit <- sem(model, data = cleaned_df, se = "boot", bootstrap = 5000)
-summary(model_fit, fit.measures = TRUE, standardized = TRUE, ci = T)
-
 modificationindices(model_fit, minimum.value = 20)
 ```
-# try and error
-```{r}
-## possible one
-model_test <- '
-decision_quality ~ team_structure + transactive_memory + knowledge_sharing
-knowledge_sharing ~ team_structure + transactive_memory
-transactive_memory ~ team_structure + interdependence'
+# Model comparisons
 
-model_fit <- sem(model_test, data = cleaned_df)
-summary(model_fit, fit.measures = TRUE, standardized = TRUE)
-
-model_test <- '
-decision_quality ~ c1*knowledge_sharing + c2*interdependence + c3*inter_knowshare + d1*team_structure + d2*inter_teamstr + e1*transactive_memory + e2*inter_trans + team_members + core_team_tenure + work_experience + gender
-knowledge_sharing ~ a*team_structure + b*transactive_memory
-
-direct1 := c1
-direct2 := d1
-direct3 := e1
-indirect1:= a*c1
-indirect2:= b*c1
-cond_indir_1 := a*c3
-cond_indir_2 := b*c3
-'
-
-model_fit <- sem(model_test, data = cleaned_df)
-summary(model_fit, fit.measures = TRUE, standardized = TRUE, ci = T)
-
-modificationindices(model_fit, minimum.value = 20)
-summary(lm(decision_quality ~ knowledge_sharing * interdependence + team_structure * interdependence + transactive_memory * interdependence + team_members + core_team_tenure + work_experience + gender, data = cleaned_df))
-```
-## Model comparisons
 ```{r}
 model_with <- '
 decision_quality ~ c1*knowledge_sharing + c2*interdependence + c3*inter_knowshare + d1*team_structure + d2*inter_teamstr + e1*transactive_memory + team_members + core_team_tenure + work_experience + gender
 knowledge_sharing ~ a*team_structure + b*transactive_memory
 '
-
 model_fit_with <- sem(model_with, data = cleaned_df)
 summary(model_fit_with, fit.measures = TRUE, standardized = TRUE, ci = T)
 
@@ -474,16 +294,14 @@ model_without <- '
 decision_quality ~ c1*knowledge_sharing + c2*interdependence + c3*inter_knowshare + d1*team_structure + d2*inter_teamstr + team_members + core_team_tenure + work_experience + gender
 knowledge_sharing ~ a*team_structure + b*transactive_memory
 '
-
 model_fit_without <- sem(model_without, data = cleaned_df)
 summary(model_fit_without, fit.measures = TRUE, standardized = TRUE, ci = T)
 
 anova(model_fit_with, model_fit_without)
 summary(model_fit_with)
 ```
+# Confirmatory Factor Analysis (CFA) for decision quality
 
-
-## CFA for Decision Quality
 ```{r}
 one_factor <- '
 decision_quality =~ decision_compare_1 + 
@@ -501,7 +319,6 @@ decision_quality ~~ 1*decision_quality
   decision_compare_1 ~~ decision_compare_2
 '
 
-R.Version()
 fit_one_fct <- cfa(one_factor, data = cleaned_df, std.lv=TRUE)
 summary(fit_one_fct, fit.measures=TRUE, standardized=TRUE)
 
@@ -540,4 +357,3 @@ overall =~ com_decision_quality + gen_decision_quality'
 levelled_fct <- cfa(levelled_factor, data = cleaned_df, std.lv=TRUE)
 summary(fit_one_fct, fit.measures=TRUE, standardized=TRUE)
 ```
-

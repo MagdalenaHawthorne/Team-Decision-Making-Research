@@ -6,7 +6,7 @@ output: pdf_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
-## load libraries
+# Libraries
 ```{r}
 library(tidyverse)
 library(readr)
@@ -15,7 +15,7 @@ library(mediation)
 library(MASS)
 
 ```
-## load data
+# Data
 
 ```{r}
 cleaned_df <- read_csv("survey_data_clean.csv")
@@ -28,13 +28,12 @@ cleaned_df <- cleaned_df %>%
 cleaned_df <- cleaned_df %>% 
   mutate_at(vars(work_experience, core_team_tenure), as.numeric) 
 ```
-# DAN'S EXOTIC PLAYGROUND
+# Playground to understand the relationships between TMS, team structure, knowledge sharing, and interdependence
 
 ```{r}
 t1 <- lm(transactive_memory ~ team_structure * interdependence, data = cleaned_df); summary(t1) 
 t2 <- lm(knowledge_sharing ~ transactive_memory + interdependence, data = cleaned_df); summary(t2)  
-t3 <- lm(decision_quality ~ transactive_memory + team_structure + knowledge_sharing * interdependence, data = cleaned_df);
-summary(t3)        
+t3 <- lm(decision_quality ~ transactive_memory + team_structure + knowledge_sharing * interdependence, data = cleaned_df); summary(t3)        
 t4 <- lm(knowledge_sharing ~ transactive_memory + team_structure, data = cleaned_df); summary(t4) 
 
 cleaned_df <- cleaned_df %>%
