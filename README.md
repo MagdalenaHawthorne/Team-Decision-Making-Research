@@ -11,13 +11,15 @@ In order to improve team performance, organizations typically invest in optimizi
 
 The present research aims to enrich our understanding of how teams should be structured internally to make high quality decisions. It focuses on fundamental group structures and members’ collective knowledge structure while taking the conditions of the modern workplace into account. Two studies provide much needed empirical data by directly comparing the decision making performance of self-organized versus hierarchically structured teams. In addition, the studies give insights into the role of meta-knowledge structures, as defined by a *transactive memory system* (TMS), in group decision making. A TMS describes the collective processes of encoding, storing, and retrieving information in groups. It has two major components: (1) a structure which involves a shared, organized store of knowledge, and (2) knowledge-relevant processes ([Wegner, 1986](https://www.scirp.org/(S(351jmbntvnsjt1aadkposzje))/reference/ReferencesPapers.aspx?ReferenceID=1323329); [Wegner, 1995](https://doi.org/10.1521/soco.1995.13.3.319)). More precisely, “the TMS structure is a knowledge representation of members’ unique and shared knowledge (including members’ shared understanding of who knows what).TMS processes are the mechanisms by which the group coordinates members’ learning and retrieval of knowledge, so that the knowledge can be applied to group tasks” ([Lewis & Herndon, 2011](https://doi.org/10.1287/orsc.1110.0647), p. 1256).
 
-In the following sections, I will outline each study. The analyses for these studies can be found [here](exp_analyses) and here. 
+In the following sections, I will outline each study. 
 
 
 ## Study I 
 ### The Effects of Group Structure and Transactive Memory System on Group Decision Making Under Conditions of Distributed Knowledge 
 
 In this study, I examined the causal effects of group structure and transactive memory system (TMS) on decision quality under conditions of distributed knowledge. Employing the *hidden profile paradigm* ([Stasser & Titus, 1985](https://doi.org/10.1037/0022-3514.48.6.1467)), I conducted a group experiment in the laboratory. Groups had to solve a decision making task that necessitated the exchange of information in order to reach the best result. I manipulated both **group structure** (self-organized *vs.* hierarchically structured) and **knowledge structure** (with TMS *vs.* without TMS), which resulted in a 2x2 factorial design. Forming three-person groups, a total of 267 participants (154 women, 113 men) were recruited at multiple universities. The results of this experiment revealed two main effects. First, decision quality was higher in self-organized than in hierarchically structured groups. Second, groups with TMS made better decisions on average than groups without TMS. Both effects were found to be mediated by improved information sharing among group members. Specifically, group members’ detrimental bias towards already shared information (e.g., [Schulz-Hardt, Brodbeck, Mojzisch, Kerschreiter, & Frey, 2006](https://doi.org/10.1037/0022-3514.91.6.1080)) was attenuated by a self-organized group structure as well as by the development of a TMS.
+
+The data analysis for this study can be found [here](exp_analyses).
 
 ## Study II 
 ### Assessment of Decision Quality and Knowledge Sharing in Existing Knowledge Worker Teams: The Role of Team Structure and Transactive Memory Systems
@@ -33,6 +35,8 @@ Using field data from a large organization, I tested a path model that was deriv
   + ***Hypotheses 5a & 5b.*** Task interdependence will moderate the second stage of the indirect (positive) relationship of both team structure and TMS to decision quality through knowledge sharing, such that these relationships are stronger when task interdependence is high rather than low.
 
 First, I conducted a cross-sectional survey study at a publicly traded company. I then tested the proposed moderated mediation model in a path analytic framework, using the lavaan package ([Rosseel, 2012](https://doi.org/10.18637/jss.v048.i02)). Data from a total of 1129 employees largely confirmed the hypothesized model. Both the degree of self-organization and the development of a TMS were positively related to teams’ perceived decision quality. Improved knowledge sharing among team members partially explained these positive relationships. Results further showed that task interdependence is a moderator of the indirect effects of TMS and team structure on decision quality through knowledge sharing. More precisely, the mediated relationships were stronger for higher levels of task interdependence compared to lower levels of task interdependence.
+
+All statistical analyses can be found [here](survey_analyses).
 
 ## Conclusion
 

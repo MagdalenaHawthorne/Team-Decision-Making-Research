@@ -1,0 +1,2725 @@
+\PassOptionsToPackage{unicode=true}{hyperref} % options for packages loaded elsewhere
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\usepackage{fixltx2e} % provides \textsubscript
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provides euro and other symbols
+\else % if luatex or xelatex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
+\fi
+% use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+% use microtype if available
+\IfFileExists{microtype.sty}{%
+\usepackage[]{microtype}
+\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\IfFileExists{parskip.sty}{%
+\usepackage{parskip}
+}{% else
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+}
+\usepackage{hyperref}
+\hypersetup{
+            pdftitle={SEM},
+            pdfborder={0 0 0},
+            breaklinks=true}
+\urlstyle{same}  % don't use monospace font for urls
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx,grffile}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+\setlength{\emergencystretch}{3em}  % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{0}
+% Redefines (sub)paragraphs to behave more like sections
+\ifx\paragraph\undefined\else
+\let\oldparagraph\paragraph
+\renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+\let\oldsubparagraph\subparagraph
+\renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+
+% set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+
+
+\title{SEM}
+\author{}
+\date{\vspace{-2.5em}}
+
+\begin{document}
+\maketitle
+
+\hypertarget{load-libraries}{%
+\section{Load libraries}\label{load-libraries}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(tidyverse)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## ── Attaching packages ──────────────────────────────────────────────────────────────────────────────────────────────────────────────── tidyverse 1.3.0 ──
+\end{verbatim}
+
+\begin{verbatim}
+## ✓ ggplot2 3.2.1     ✓ purrr   0.3.3
+## ✓ tibble  2.1.3     ✓ dplyr   0.8.3
+## ✓ tidyr   1.0.0     ✓ stringr 1.4.0
+## ✓ readr   1.3.1     ✓ forcats 0.4.0
+\end{verbatim}
+
+\begin{verbatim}
+## ── Conflicts ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
+## x dplyr::filter() masks stats::filter()
+## x dplyr::lag()    masks stats::lag()
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(readr)}
+\KeywordTok{library}\NormalTok{(lavaan)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## This is lavaan 0.6-5
+\end{verbatim}
+
+\begin{verbatim}
+## lavaan is BETA software! Please report any bugs.
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(mediation)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Loading required package: MASS
+\end{verbatim}
+
+\begin{verbatim}
+## 
+## Attaching package: 'MASS'
+\end{verbatim}
+
+\begin{verbatim}
+## The following object is masked from 'package:dplyr':
+## 
+##     select
+\end{verbatim}
+
+\begin{verbatim}
+## Loading required package: Matrix
+\end{verbatim}
+
+\begin{verbatim}
+## 
+## Attaching package: 'Matrix'
+\end{verbatim}
+
+\begin{verbatim}
+## The following objects are masked from 'package:tidyr':
+## 
+##     expand, pack, unpack
+\end{verbatim}
+
+\begin{verbatim}
+## Loading required package: mvtnorm
+\end{verbatim}
+
+\begin{verbatim}
+## Loading required package: sandwich
+\end{verbatim}
+
+\begin{verbatim}
+## mediation: Causal Mediation Analysis
+## Version: 4.5.0
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(MASS)}
+\KeywordTok{library}\NormalTok{(psych)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Attaching package: 'psych'
+\end{verbatim}
+
+\begin{verbatim}
+## The following object is masked from 'package:mediation':
+## 
+##     mediate
+\end{verbatim}
+
+\begin{verbatim}
+## The following object is masked from 'package:lavaan':
+## 
+##     cor2cov
+\end{verbatim}
+
+\begin{verbatim}
+## The following objects are masked from 'package:ggplot2':
+## 
+##     %+%, alpha
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(Hmisc)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Loading required package: lattice
+\end{verbatim}
+
+\begin{verbatim}
+## Loading required package: survival
+\end{verbatim}
+
+\begin{verbatim}
+## Loading required package: Formula
+\end{verbatim}
+
+\begin{verbatim}
+## 
+## Attaching package: 'Hmisc'
+\end{verbatim}
+
+\begin{verbatim}
+## The following object is masked from 'package:psych':
+## 
+##     describe
+\end{verbatim}
+
+\begin{verbatim}
+## The following objects are masked from 'package:dplyr':
+## 
+##     src, summarize
+\end{verbatim}
+
+\begin{verbatim}
+## The following objects are masked from 'package:base':
+## 
+##     format.pval, units
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(corrplot)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## corrplot 0.84 loaded
+\end{verbatim}
+
+\hypertarget{data-prep}{%
+\section{Data prep}\label{data-prep}}
+
+\hypertarget{define-column-type}{%
+\subsection{define column type}\label{define-column-type}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{cleaned_df <-}\StringTok{ }\KeywordTok{read_csv}\NormalTok{(}\StringTok{"survey_data_clean.csv"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Parsed with column specification:
+## cols(
+##   .default = col_double(),
+##   participant_datetime = col_character(),
+##   agile_method = col_character(),
+##   which_agile_method = col_character(),
+##   manager_type = col_character(),
+##   gender = col_character(),
+##   location = col_character(),
+##   functional_area = col_character(),
+##   level = col_character(),
+##   specified_level = col_character()
+## )
+\end{verbatim}
+
+\begin{verbatim}
+## See spec(...) for full column specifications.
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# change to factor}
+\NormalTok{cleaned_df <-}\StringTok{ }\NormalTok{cleaned_df }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{mutate_at}\NormalTok{(}\KeywordTok{vars}\NormalTok{(level, gender), as.factor) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{gender =}\NormalTok{ gender }\OperatorTok{==}\StringTok{ 'Female'}\NormalTok{)}
+
+\CommentTok{#change to numeric }
+\NormalTok{cleaned_df <-}\StringTok{ }\NormalTok{cleaned_df }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{mutate_at}\NormalTok{(}\KeywordTok{vars}\NormalTok{(work_experience, core_team_tenure, gender), as.numeric) }
+\NormalTok{psych}\OperatorTok{::}\KeywordTok{describe}\NormalTok{(cleaned_df}\OperatorTok{$}\NormalTok{gender)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##    vars    n mean   sd median trimmed mad min max range skew kurtosis   se
+## X1    1 1129 0.36 0.48      0    0.33   0   0   1     1 0.58    -1.66 0.01
+\end{verbatim}
+
+\hypertarget{check-normality}{%
+\subsection{check normality}\label{check-normality}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{ggplot}\NormalTok{(}\KeywordTok{aes}\NormalTok{(decision_quality), }\DataTypeTok{data=}\NormalTok{cleaned_df) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom_density}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{SEM_files/figure-latex/unnamed-chunk-3-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{ggplot}\NormalTok{(}\KeywordTok{aes}\NormalTok{(interdependence), }\DataTypeTok{data=}\NormalTok{cleaned_df) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom_density}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{SEM_files/figure-latex/unnamed-chunk-3-2.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{ggplot}\NormalTok{(}\KeywordTok{aes}\NormalTok{(team_structure), }\DataTypeTok{data=}\NormalTok{cleaned_df) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom_density}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{SEM_files/figure-latex/unnamed-chunk-3-3.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{ggplot}\NormalTok{(}\KeywordTok{aes}\NormalTok{(transactive_memory), }\DataTypeTok{data=}\NormalTok{cleaned_df) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom_density}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{SEM_files/figure-latex/unnamed-chunk-3-4.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{ggplot}\NormalTok{(}\KeywordTok{aes}\NormalTok{(knowledge_sharing), }\DataTypeTok{data=}\NormalTok{cleaned_df) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom_density}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{SEM_files/figure-latex/unnamed-chunk-3-5.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{psych}\OperatorTok{::}\KeywordTok{describe}\NormalTok{(cleaned_df}\OperatorTok{$}\NormalTok{core_team_tenure) }
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##    vars    n  mean    sd median trimmed   mad min max range skew kurtosis   se
+## X1    1 1111 49.48 33.03     42   46.73 26.69   3 120   117 0.74    -0.57 0.99
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{psych}\OperatorTok{::}\KeywordTok{describe}\NormalTok{(cleaned_df}\OperatorTok{$}\NormalTok{transactive_memory)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##    vars    n mean   sd median trimmed  mad min max range  skew kurtosis   se
+## X1    1 1129 4.07 0.64    4.2    4.14 0.59 1.3   5   3.7 -1.28     2.33 0.02
+\end{verbatim}
+
+\hypertarget{prepare-control-variables}{%
+\subsection{prepare control variables}\label{prepare-control-variables}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{cleaned_df <-}\StringTok{ }\NormalTok{cleaned_df }\OperatorTok{%>%}\StringTok{ }
+\StringTok{              }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{career_level =} \KeywordTok{fct_recode}\NormalTok{(level, }\StringTok{"NA"}\NormalTok{ =}\StringTok{ "Other (Please specify (optional)):"}\NormalTok{))}
+
+\NormalTok{cleaned_df}\OperatorTok{$}\NormalTok{core_team_tenure[}\KeywordTok{is.na}\NormalTok{(cleaned_df}\OperatorTok{$}\NormalTok{core_team_tenure)] <-}\StringTok{ }\KeywordTok{mean}\NormalTok{(cleaned_df}\OperatorTok{$}\NormalTok{core_team_tenure, }\DataTypeTok{na.rm=}\OtherTok{TRUE}\NormalTok{)}
+\KeywordTok{summary}\NormalTok{(cleaned_df}\OperatorTok{$}\NormalTok{core_team_tenure)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##    3.00   24.00   42.00   49.48   90.00  120.00
+\end{verbatim}
+
+\hypertarget{corraltion-matrix}{%
+\subsection{corraltion matrix}\label{corraltion-matrix}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{small_df <-}\StringTok{ }\NormalTok{cleaned_df }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\NormalTok{dplyr}\OperatorTok{::}\KeywordTok{select}\NormalTok{(decision_quality, team_structure, transactive_memory, knowledge_sharing, interdependence, team_members, core_team_tenure, work_experience, gender)}
+
+\NormalTok{small_df}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 1,129 x 9
+##    decision_quality team_structure transactive_mem… knowledge_shari…
+##               <dbl>          <dbl>            <dbl>            <dbl>
+##  1             4.83           4.67              4.5             5.57
+##  2             2.83           3.25              4.3             3.29
+##  3             5              4.67              5               5.43
+##  4             4.67           4.67              4.4             5.14
+##  5             3.5            4                 4.1             3.57
+##  6             2              2.5               4.1             3.14
+##  7             3.67           2.67              4.1             5.29
+##  8             2.33           1.83              3               2.71
+##  9             2.83           2.92              4.2             2.86
+## 10             3.33           3.33              3.6             5.14
+## # … with 1,119 more rows, and 5 more variables: interdependence <dbl>,
+## #   team_members <dbl>, core_team_tenure <dbl>, work_experience <dbl>,
+## #   gender <dbl>
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{cor_mat <-}\StringTok{ }\KeywordTok{cor}\NormalTok{(small_df, }\DataTypeTok{method =} \KeywordTok{c}\NormalTok{(}\StringTok{"pearson"}\NormalTok{, }\StringTok{"kendall"}\NormalTok{, }\StringTok{"spearman"}\NormalTok{))}
+\KeywordTok{round}\NormalTok{(cor_mat, }\DecValTok{2}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##                    decision_quality team_structure transactive_memory
+## decision_quality               1.00           0.61               0.56
+## team_structure                 0.61           1.00               0.43
+## transactive_memory             0.56           0.43               1.00
+## knowledge_sharing              0.75           0.59               0.56
+## interdependence                0.16           0.18               0.28
+## team_members                  -0.02          -0.01               0.04
+## core_team_tenure               0.05          -0.01               0.12
+## work_experience                0.01          -0.08               0.10
+## gender                        -0.03          -0.07               0.00
+##                    knowledge_sharing interdependence team_members
+## decision_quality                0.75            0.16        -0.02
+## team_structure                  0.59            0.18        -0.01
+## transactive_memory              0.56            0.28         0.04
+## knowledge_sharing               1.00            0.18        -0.02
+## interdependence                 0.18            1.00         0.04
+## team_members                   -0.02            0.04         1.00
+## core_team_tenure                0.08           -0.06         0.16
+## work_experience                 0.05            0.06        -0.03
+## gender                         -0.03            0.03        -0.01
+##                    core_team_tenure work_experience gender
+## decision_quality               0.05            0.01  -0.03
+## team_structure                -0.01           -0.08  -0.07
+## transactive_memory             0.12            0.10   0.00
+## knowledge_sharing              0.08            0.05  -0.03
+## interdependence               -0.06            0.06   0.03
+## team_members                   0.16           -0.03  -0.01
+## core_team_tenure               1.00            0.12   0.01
+## work_experience                0.12            1.00  -0.08
+## gender                         0.01           -0.08   1.00
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{corrplot}\NormalTok{(cor_mat, }\DataTypeTok{type =} \StringTok{"upper"}\NormalTok{, }\DataTypeTok{order =} \StringTok{"hclust"}\NormalTok{, }\DataTypeTok{tl.col =} \StringTok{"black"}\NormalTok{, }\DataTypeTok{tl.srt =} \DecValTok{45}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{SEM_files/figure-latex/unnamed-chunk-5-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{eigen}\NormalTok{(cor_mat)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## eigen() decomposition
+## $values
+## [1] 2.8602175 1.2163667 1.0753095 1.0206979 0.9657459 0.7083413 0.5128758
+## [8] 0.3949941 0.2454513
+## 
+## $vectors
+##               [,1]          [,2]         [,3]        [,4]         [,5]
+##  [1,] -0.517735165 -0.0629217733  0.005057097  0.12650705  0.108199193
+##  [2,] -0.458402692 -0.1744704753  0.043875062  0.18539984 -0.054894932
+##  [3,] -0.454153430  0.1368115779  0.009417397 -0.14984425  0.008588393
+##  [4,] -0.516165384 -0.0194464997 -0.015779964  0.08857159  0.121856868
+##  [5,] -0.209015238  0.0002945391  0.038761739 -0.68557855 -0.493523343
+##  [6,] -0.002466469  0.4768538033  0.533245990  0.12936244 -0.511741240
+##  [7,] -0.057784823  0.6823814595  0.166759676  0.17146758  0.353312536
+##  [8,] -0.032622788  0.4892325256 -0.601425865 -0.36349126  0.140551753
+##  [9,]  0.032224899 -0.1188392724  0.567746503 -0.52061985  0.565974994
+##               [,6]        [,7]        [,8]         [,9]
+##  [1,] -0.110862199 -0.02283088 -0.39326654  0.729920701
+##  [2,] -0.010709305 -0.56545831  0.63114458 -0.043751307
+##  [3,] -0.006200531  0.75486296  0.42594553 -0.033546656
+##  [4,] -0.100135488 -0.04746117 -0.48592177 -0.679597272
+##  [5,]  0.436843193 -0.17235528 -0.14098790  0.028476890
+##  [6,] -0.454012502 -0.04539731 -0.03805144 -0.001778386
+##  [7,]  0.575615058 -0.13038341  0.01000371  0.023327761
+##  [8,] -0.438776939 -0.21750839  0.07217610  0.030806447
+##  [9,] -0.238143018 -0.10764761  0.05304167  0.004055297
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{max}\NormalTok{(}\KeywordTok{eigen}\NormalTok{(cor_mat)}\OperatorTok{$}\NormalTok{values)}\OperatorTok{/}\KeywordTok{min}\NormalTok{(}\KeywordTok{eigen}\NormalTok{(cor_mat)}\OperatorTok{$}\NormalTok{values)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 11.65289
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{kappa}\NormalTok{((cor_mat), }\DataTypeTok{exact =} \OtherTok{TRUE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 11.65289
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{rcorr}\NormalTok{(}\KeywordTok{as.matrix}\NormalTok{(small_df))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##                    decision_quality team_structure transactive_memory
+## decision_quality               1.00           0.61               0.56
+## team_structure                 0.61           1.00               0.43
+## transactive_memory             0.56           0.43               1.00
+## knowledge_sharing              0.75           0.59               0.56
+## interdependence                0.16           0.18               0.28
+## team_members                  -0.02          -0.01               0.04
+## core_team_tenure               0.05          -0.01               0.12
+## work_experience                0.01          -0.08               0.10
+## gender                        -0.03          -0.07               0.00
+##                    knowledge_sharing interdependence team_members
+## decision_quality                0.75            0.16        -0.02
+## team_structure                  0.59            0.18        -0.01
+## transactive_memory              0.56            0.28         0.04
+## knowledge_sharing               1.00            0.18        -0.02
+## interdependence                 0.18            1.00         0.04
+## team_members                   -0.02            0.04         1.00
+## core_team_tenure                0.08           -0.06         0.16
+## work_experience                 0.05            0.06        -0.03
+## gender                         -0.03            0.03        -0.01
+##                    core_team_tenure work_experience gender
+## decision_quality               0.05            0.01  -0.03
+## team_structure                -0.01           -0.08  -0.07
+## transactive_memory             0.12            0.10   0.00
+## knowledge_sharing              0.08            0.05  -0.03
+## interdependence               -0.06            0.06   0.03
+## team_members                   0.16           -0.03  -0.01
+## core_team_tenure               1.00            0.12   0.01
+## work_experience                0.12            1.00  -0.08
+## gender                         0.01           -0.08   1.00
+## 
+## n= 1129 
+## 
+## 
+## P
+##                    decision_quality team_structure transactive_memory
+## decision_quality                    0.0000         0.0000            
+## team_structure     0.0000                          0.0000            
+## transactive_memory 0.0000           0.0000                           
+## knowledge_sharing  0.0000           0.0000         0.0000            
+## interdependence    0.0000           0.0000         0.0000            
+## team_members       0.4025           0.6371         0.1589            
+## core_team_tenure   0.0792           0.6926         0.0001            
+## work_experience    0.8232           0.0061         0.0005            
+## gender             0.2953           0.0147         0.9117            
+##                    knowledge_sharing interdependence team_members
+## decision_quality   0.0000            0.0000          0.4025      
+## team_structure     0.0000            0.0000          0.6371      
+## transactive_memory 0.0000            0.0000          0.1589      
+## knowledge_sharing                    0.0000          0.4145      
+## interdependence    0.0000                            0.1499      
+## team_members       0.4145            0.1499                      
+## core_team_tenure   0.0072            0.0539          0.0000      
+## work_experience    0.1077            0.0384          0.2644      
+## gender             0.3791            0.2855          0.6439      
+##                    core_team_tenure work_experience gender
+## decision_quality   0.0792           0.8232          0.2953
+## team_structure     0.6926           0.0061          0.0147
+## transactive_memory 0.0001           0.0005          0.9117
+## knowledge_sharing  0.0072           0.1077          0.3791
+## interdependence    0.0539           0.0384          0.2855
+## team_members       0.0000           0.2644          0.6439
+## core_team_tenure                    0.0000          0.7327
+## work_experience    0.0000                           0.0051
+## gender             0.7327           0.0051
+\end{verbatim}
+
+\hypertarget{center-independent-variables}{%
+\subsection{center independent
+variables}\label{center-independent-variables}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{cleaned_df}\OperatorTok{$}\NormalTok{team_structure <-}\StringTok{ }\KeywordTok{scale}\NormalTok{(cleaned_df}\OperatorTok{$}\NormalTok{team_structure, }\DataTypeTok{center =} \OtherTok{TRUE}\NormalTok{, }\DataTypeTok{scale =} \OtherTok{FALSE}\NormalTok{)[,]}
+\NormalTok{cleaned_df}\OperatorTok{$}\NormalTok{interdependence <-}\StringTok{ }\KeywordTok{scale}\NormalTok{(cleaned_df}\OperatorTok{$}\NormalTok{interdependence, }\DataTypeTok{center =} \OtherTok{TRUE}\NormalTok{, }\DataTypeTok{scale =} \OtherTok{FALSE}\NormalTok{)[,]}
+\NormalTok{cleaned_df}\OperatorTok{$}\NormalTok{knowledge_sharing <-}\StringTok{ }\KeywordTok{scale}\NormalTok{(cleaned_df}\OperatorTok{$}\NormalTok{knowledge_sharing, }\DataTypeTok{center =} \OtherTok{TRUE}\NormalTok{, }\DataTypeTok{scale =} \OtherTok{FALSE}\NormalTok{)[,]}
+\NormalTok{cleaned_df}\OperatorTok{$}\NormalTok{transactive_memory <-}\StringTok{ }\KeywordTok{scale}\NormalTok{(cleaned_df}\OperatorTok{$}\NormalTok{transactive_memory, }\DataTypeTok{center =} \OtherTok{TRUE}\NormalTok{, }\DataTypeTok{scale =} \OtherTok{FALSE}\NormalTok{)[,]}
+\NormalTok{cleaned_df}\OperatorTok{$}\NormalTok{core_team_tenure <-}\StringTok{ }\KeywordTok{scale}\NormalTok{(cleaned_df}\OperatorTok{$}\NormalTok{core_team_tenure, }\DataTypeTok{center =} \OtherTok{TRUE}\NormalTok{, }\DataTypeTok{scale =} \OtherTok{FALSE}\NormalTok{)[,]}
+\NormalTok{cleaned_df}\OperatorTok{$}\NormalTok{work_experience <-}\StringTok{ }\KeywordTok{scale}\NormalTok{(cleaned_df}\OperatorTok{$}\NormalTok{work_experience, }\DataTypeTok{center =} \OtherTok{TRUE}\NormalTok{, }\DataTypeTok{scale =} \OtherTok{FALSE}\NormalTok{)[,]}
+\NormalTok{cleaned_dfteam_members <-}\StringTok{ }\KeywordTok{scale}\NormalTok{(cleaned_df}\OperatorTok{$}\NormalTok{team_members, }\DataTypeTok{center =} \OtherTok{TRUE}\NormalTok{, }\DataTypeTok{scale =} \OtherTok{FALSE}\NormalTok{)[,]}
+
+\CommentTok{# cleaned_df <- cleaned_df %>% mutate_at(vars(transactive_memory, team_structure, interdependence, knowledge_sharing, core_team_tenure, work_experience, team_members, intrinsic_motivation, group_identification), funs(scale(.)))}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{stepwise-regression}{%
+\section{Stepwise regression}\label{stepwise-regression}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# STEP 1}
+\NormalTok{decision_}\DecValTok{1}\NormalTok{ <-}\StringTok{ }\KeywordTok{lm}\NormalTok{(decision_quality }\OperatorTok{~}\StringTok{ }\NormalTok{gender }\OperatorTok{+}\StringTok{ }\NormalTok{work_experience }\OperatorTok{+}\StringTok{ }\NormalTok{team_members }\OperatorTok{+}\StringTok{ }\NormalTok{core_team_tenure, }\DataTypeTok{data =}\NormalTok{ cleaned_df)}
+\KeywordTok{summary}\NormalTok{(decision_}\DecValTok{1}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = decision_quality ~ gender + work_experience + team_members + 
+##     core_team_tenure, data = cleaned_df)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -2.8619 -0.4448  0.1349  0.6056  1.3372 
+## 
+## Coefficients:
+##                    Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)       3.8654375  0.0521291  74.151   <2e-16 ***
+## gender           -0.0585684  0.0536267  -1.092    0.275    
+## work_experience  -0.0004420  0.0029651  -0.149    0.882    
+## team_members     -0.0035605  0.0030900  -1.152    0.249    
+## core_team_tenure  0.0015434  0.0008003   1.929    0.054 .  
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 0.8618 on 1124 degrees of freedom
+## Multiple R-squared:  0.004918,   Adjusted R-squared:  0.001377 
+## F-statistic: 1.389 on 4 and 1124 DF,  p-value: 0.2357
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{knowledge_}\DecValTok{1}\NormalTok{ <-}\StringTok{ }\KeywordTok{lm}\NormalTok{(knowledge_sharing }\OperatorTok{~}\StringTok{ }\NormalTok{gender }\OperatorTok{+}\StringTok{ }\NormalTok{team_members }\OperatorTok{+}\StringTok{ }\NormalTok{work_experience }\OperatorTok{+}\StringTok{ }\NormalTok{core_team_tenure, }\DataTypeTok{data =}\NormalTok{ cleaned_df)}
+\KeywordTok{summary}\NormalTok{(knowledge_}\DecValTok{1}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = knowledge_sharing ~ gender + team_members + work_experience + 
+##     core_team_tenure, data = cleaned_df)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -3.4076 -0.4190  0.2415  0.6898  1.5058 
+## 
+## Coefficients:
+##                    Estimate Std. Error t value Pr(>|t|)   
+## (Intercept)       0.0740270  0.0592539   1.249   0.2118   
+## gender           -0.0504442  0.0609562  -0.828   0.4081   
+## team_members     -0.0042427  0.0035123  -1.208   0.2273   
+## work_experience   0.0038676  0.0033704   1.148   0.2514   
+## core_team_tenure  0.0024492  0.0009097   2.692   0.0072 **
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 0.9796 on 1124 degrees of freedom
+## Multiple R-squared:  0.009712,   Adjusted R-squared:  0.006188 
+## F-statistic: 2.756 on 4 and 1124 DF,  p-value: 0.0268
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{transactive_}\DecValTok{1}\NormalTok{ <-}\StringTok{ }\KeywordTok{lm}\NormalTok{(transactive_memory }\OperatorTok{~}\StringTok{ }\NormalTok{gender }\OperatorTok{+}\StringTok{ }\NormalTok{team_members }\OperatorTok{+}\StringTok{ }\NormalTok{work_experience }\OperatorTok{+}\StringTok{ }\NormalTok{core_team_tenure, }\DataTypeTok{data =}\NormalTok{ cleaned_df)}
+\KeywordTok{summary}\NormalTok{(transactive_}\DecValTok{1}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = transactive_memory ~ gender + team_members + work_experience + 
+##     core_team_tenure, data = cleaned_df)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -2.78253 -0.31488  0.09895  0.46427  1.09147 
+## 
+## Coefficients:
+##                    Estimate Std. Error t value Pr(>|t|)   
+## (Intercept)      -0.0313831  0.0384373  -0.816  0.41440   
+## gender            0.0051376  0.0395416   0.130  0.89665   
+## team_members      0.0022437  0.0022784   0.985  0.32495   
+## work_experience   0.0068096  0.0021863   3.115  0.00189 **
+## core_team_tenure  0.0019439  0.0005901   3.294  0.00102 **
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 0.6354 on 1124 degrees of freedom
+## Multiple R-squared:  0.02237,    Adjusted R-squared:  0.01889 
+## F-statistic: 6.431 on 4 and 1124 DF,  p-value: 4.075e-05
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# STEP 2}
+\NormalTok{decision_}\DecValTok{2}\NormalTok{ <-}\StringTok{ }\KeywordTok{lm}\NormalTok{(decision_quality }\OperatorTok{~}\StringTok{ }\NormalTok{team_structure }\OperatorTok{+}\StringTok{ }\NormalTok{interdependence }\OperatorTok{+}\StringTok{ }\NormalTok{gender }\OperatorTok{+}\StringTok{ }\NormalTok{team_members }\OperatorTok{+}\StringTok{ }\NormalTok{work_experience }\OperatorTok{+}\StringTok{ }\NormalTok{core_team_tenure, }\DataTypeTok{data =}\NormalTok{ cleaned_df)}
+\KeywordTok{summary}\NormalTok{(decision_}\DecValTok{2}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = decision_quality ~ team_structure + interdependence + 
+##     gender + team_members + work_experience + core_team_tenure, 
+##     data = cleaned_df)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -2.61236 -0.38615  0.02964  0.41884  2.27589 
+## 
+## Coefficients:
+##                    Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)       3.8242910  0.0411765  92.876   <2e-16 ***
+## team_structure    0.6296295  0.0249259  25.260   <2e-16 ***
+## interdependence   0.0427584  0.0189291   2.259   0.0241 *  
+## gender            0.0251027  0.0424200   0.592   0.5541    
+## team_members     -0.0027260  0.0024376  -1.118   0.2637    
+## work_experience   0.0044843  0.0023539   1.905   0.0570 .  
+## core_team_tenure  0.0016038  0.0006319   2.538   0.0113 *  
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 0.6784 on 1122 degrees of freedom
+## Multiple R-squared:  0.3844, Adjusted R-squared:  0.3811 
+## F-statistic: 116.8 on 6 and 1122 DF,  p-value: < 2.2e-16
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{knowledge_}\DecValTok{2}\NormalTok{ <-}\StringTok{ }\KeywordTok{lm}\NormalTok{(knowledge_sharing }\OperatorTok{~}\StringTok{ }\NormalTok{team_structure }\OperatorTok{+}\StringTok{ }\NormalTok{interdependence }\OperatorTok{+}\StringTok{ }\NormalTok{gender }\OperatorTok{+}\StringTok{ }\NormalTok{team_members }\OperatorTok{+}\StringTok{ }\NormalTok{work_experience }\OperatorTok{+}\StringTok{ }\NormalTok{core_team_tenure, }\DataTypeTok{data =}\NormalTok{ cleaned_df)}
+\KeywordTok{summary}\NormalTok{(knowledge_}\DecValTok{2}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = knowledge_sharing ~ team_structure + interdependence + 
+##     gender + team_members + work_experience + core_team_tenure, 
+##     data = cleaned_df)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -2.88426 -0.44743  0.05856  0.53880  2.30113 
+## 
+## Coefficients:
+##                    Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)       0.0316745  0.0474192   0.668 0.504291    
+## team_structure    0.6918634  0.0287048  24.103  < 2e-16 ***
+## interdependence   0.0686687  0.0217989   3.150 0.001675 ** 
+## gender            0.0395318  0.0488512   0.809 0.418555    
+## team_members     -0.0034893  0.0028072  -1.243 0.214130    
+## work_experience   0.0090740  0.0027107   3.347 0.000843 ***
+## core_team_tenure  0.0025710  0.0007277   3.533 0.000427 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 0.7813 on 1122 degrees of freedom
+## Multiple R-squared:  0.3712, Adjusted R-squared:  0.3678 
+## F-statistic: 110.4 on 6 and 1122 DF,  p-value: < 2.2e-16
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{transactive_}\DecValTok{2}\NormalTok{ <-}\StringTok{ }\KeywordTok{lm}\NormalTok{(transactive_memory }\OperatorTok{~}\StringTok{ }\NormalTok{team_structure }\OperatorTok{+}\StringTok{ }\NormalTok{interdependence }\OperatorTok{+}\StringTok{ }\NormalTok{gender }\OperatorTok{+}\StringTok{ }\NormalTok{team_members }\OperatorTok{+}\StringTok{ }\NormalTok{work_experience }\OperatorTok{+}\StringTok{ }\NormalTok{core_team_tenure, }\DataTypeTok{data =}\NormalTok{ cleaned_df)}
+\KeywordTok{summary}\NormalTok{(transactive_}\DecValTok{2}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = transactive_memory ~ team_structure + interdependence + 
+##     gender + team_members + work_experience + core_team_tenure, 
+##     data = cleaned_df)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -2.28962 -0.30440  0.04168  0.37534  1.60973 
+## 
+## Coefficients:
+##                    Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)      -0.0386052  0.0337238  -1.145    0.253    
+## team_structure    0.3094633  0.0204144  15.159  < 2e-16 ***
+## interdependence   0.1195520  0.0155030   7.712 2.73e-14 ***
+## gender            0.0373312  0.0347422   1.075    0.283    
+## team_members      0.0019106  0.0019964   0.957    0.339    
+## work_experience   0.0082911  0.0019278   4.301 1.85e-05 ***
+## core_team_tenure  0.0022254  0.0005175   4.300 1.86e-05 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 0.5556 on 1122 degrees of freedom
+## Multiple R-squared:  0.2539, Adjusted R-squared:  0.2499 
+## F-statistic: 63.62 on 6 and 1122 DF,  p-value: < 2.2e-16
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# STEP 3}
+\NormalTok{decision_}\DecValTok{3}\NormalTok{ <-}\StringTok{ }\KeywordTok{lm}\NormalTok{(decision_quality }\OperatorTok{~}\StringTok{ }\NormalTok{team_structure }\OperatorTok{*}\StringTok{ }\NormalTok{interdependence }\OperatorTok{+}\StringTok{ }\NormalTok{gender }\OperatorTok{+}\StringTok{ }\NormalTok{team_members }\OperatorTok{+}\StringTok{ }\NormalTok{work_experience }\OperatorTok{+}\StringTok{ }\NormalTok{core_team_tenure, }\DataTypeTok{data =}\NormalTok{ cleaned_df)}
+\KeywordTok{summary}\NormalTok{(decision_}\DecValTok{3}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = decision_quality ~ team_structure * interdependence + 
+##     gender + team_members + work_experience + core_team_tenure, 
+##     data = cleaned_df)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -2.55169 -0.40557  0.01329  0.44074  2.17810 
+## 
+## Coefficients:
+##                                  Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)                     3.8061300  0.0409152  93.025  < 2e-16 ***
+## team_structure                  0.6045349  0.0251824  24.006  < 2e-16 ***
+## interdependence                 0.0618272  0.0191244   3.233  0.00126 ** 
+## gender                          0.0217642  0.0419868   0.518  0.60431    
+## team_members                   -0.0024908  0.0024129  -1.032  0.30217    
+## work_experience                 0.0041927  0.0023303   1.799  0.07225 .  
+## core_team_tenure                0.0015520  0.0006254   2.482  0.01323 *  
+## team_structure:interdependence  0.0974336  0.0196589   4.956  8.3e-07 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 0.6714 on 1121 degrees of freedom
+## Multiple R-squared:  0.3976, Adjusted R-squared:  0.3939 
+## F-statistic: 105.7 on 7 and 1121 DF,  p-value: < 2.2e-16
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{knowledge_}\DecValTok{3}\NormalTok{ <-}\StringTok{ }\KeywordTok{lm}\NormalTok{(knowledge_sharing }\OperatorTok{~}\StringTok{ }\NormalTok{team_structure }\OperatorTok{*}\StringTok{ }\NormalTok{interdependence }\OperatorTok{+}\StringTok{ }\NormalTok{gender }\OperatorTok{+}\StringTok{ }\NormalTok{team_members }\OperatorTok{+}\StringTok{ }\NormalTok{work_experience }\OperatorTok{+}\StringTok{ }\NormalTok{core_team_tenure, }\DataTypeTok{data =}\NormalTok{ cleaned_df)}
+\KeywordTok{summary}\NormalTok{(knowledge_}\DecValTok{3}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = knowledge_sharing ~ team_structure * interdependence + 
+##     gender + team_members + work_experience + core_team_tenure, 
+##     data = cleaned_df)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -2.87546 -0.45619  0.05446  0.54602  2.08556 
+## 
+## Coefficients:
+##                                  Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)                     0.0235313  0.0475543   0.495 0.620817    
+## team_structure                  0.6806112  0.0292686  23.254  < 2e-16 ***
+## interdependence                 0.0772190  0.0222276   3.474 0.000532 ***
+## gender                          0.0380349  0.0487998   0.779 0.435905    
+## team_members                   -0.0033838  0.0028044  -1.207 0.227839    
+## work_experience                 0.0089432  0.0027084   3.302 0.000990 ***
+## core_team_tenure                0.0025478  0.0007269   3.505 0.000475 ***
+## team_structure:interdependence  0.0436884  0.0228488   1.912 0.056123 .  
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 0.7804 on 1121 degrees of freedom
+## Multiple R-squared:  0.3732, Adjusted R-squared:  0.3693 
+## F-statistic: 95.37 on 7 and 1121 DF,  p-value: < 2.2e-16
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{transactive_}\DecValTok{3}\NormalTok{ <-}\StringTok{ }\KeywordTok{lm}\NormalTok{(transactive_memory }\OperatorTok{~}\StringTok{ }\NormalTok{team_structure }\OperatorTok{*}\StringTok{ }\NormalTok{interdependence }\OperatorTok{+}\StringTok{ }\NormalTok{gender }\OperatorTok{+}\StringTok{ }\NormalTok{team_members }\OperatorTok{+}\StringTok{ }\NormalTok{work_experience }\OperatorTok{+}\StringTok{ }\NormalTok{core_team_tenure, }\DataTypeTok{data =}\NormalTok{ cleaned_df)}
+\KeywordTok{summary}\NormalTok{(transactive_}\DecValTok{3}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = transactive_memory ~ team_structure * interdependence + 
+##     gender + team_members + work_experience + core_team_tenure, 
+##     data = cleaned_df)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -2.30261 -0.30323  0.04074  0.37334  1.61331 
+## 
+## Coefficients:
+##                                  Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)                    -0.0354294  0.0338584  -1.046    0.296    
+## team_structure                  0.3138516  0.0208391  15.061  < 2e-16 ***
+## interdependence                 0.1162174  0.0158259   7.343 3.99e-13 ***
+## gender                          0.0379150  0.0347452   1.091    0.275    
+## team_members                    0.0018695  0.0019967   0.936    0.349    
+## work_experience                 0.0083421  0.0019283   4.326 1.65e-05 ***
+## core_team_tenure                0.0022344  0.0005176   4.317 1.72e-05 ***
+## team_structure:interdependence -0.0170382  0.0162682  -1.047    0.295    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 0.5556 on 1121 degrees of freedom
+## Multiple R-squared:  0.2546, Adjusted R-squared:  0.2499 
+## F-statistic:  54.7 on 7 and 1121 DF,  p-value: < 2.2e-16
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Mediation Models}
+
+\CommentTok{# Step 1}
+
+\NormalTok{decision_}\DecValTok{3}\NormalTok{ <-}\StringTok{ }\KeywordTok{lm}\NormalTok{(decision_quality }\OperatorTok{~}\StringTok{ }\NormalTok{team_structure }\OperatorTok{*}\StringTok{ }\NormalTok{interdependence }\OperatorTok{+}\StringTok{ }\NormalTok{gender }\OperatorTok{+}\StringTok{ }\NormalTok{team_members }\OperatorTok{+}\StringTok{ }\NormalTok{work_experience }\OperatorTok{+}\StringTok{ }\NormalTok{core_team_tenure, }\DataTypeTok{data =}\NormalTok{ cleaned_df)}
+\KeywordTok{summary}\NormalTok{(decision_}\DecValTok{3}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = decision_quality ~ team_structure * interdependence + 
+##     gender + team_members + work_experience + core_team_tenure, 
+##     data = cleaned_df)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -2.55169 -0.40557  0.01329  0.44074  2.17810 
+## 
+## Coefficients:
+##                                  Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)                     3.8061300  0.0409152  93.025  < 2e-16 ***
+## team_structure                  0.6045349  0.0251824  24.006  < 2e-16 ***
+## interdependence                 0.0618272  0.0191244   3.233  0.00126 ** 
+## gender                          0.0217642  0.0419868   0.518  0.60431    
+## team_members                   -0.0024908  0.0024129  -1.032  0.30217    
+## work_experience                 0.0041927  0.0023303   1.799  0.07225 .  
+## core_team_tenure                0.0015520  0.0006254   2.482  0.01323 *  
+## team_structure:interdependence  0.0974336  0.0196589   4.956  8.3e-07 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 0.6714 on 1121 degrees of freedom
+## Multiple R-squared:  0.3976, Adjusted R-squared:  0.3939 
+## F-statistic: 105.7 on 7 and 1121 DF,  p-value: < 2.2e-16
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{decision_}\DecValTok{4}\NormalTok{ <-}\StringTok{ }\KeywordTok{lm}\NormalTok{(decision_quality }\OperatorTok{~}\StringTok{ }\NormalTok{gender }\OperatorTok{+}\StringTok{ }\NormalTok{team_members }\OperatorTok{+}\StringTok{ }\NormalTok{work_experience }\OperatorTok{+}\StringTok{ }\NormalTok{core_team_tenure }\OperatorTok{+}\StringTok{ }\NormalTok{team_structure }\OperatorTok{*}\StringTok{ }\NormalTok{interdependence }\OperatorTok{+}\StringTok{ }\NormalTok{transactive_memory, }\DataTypeTok{data =}\NormalTok{ cleaned_df)}
+\KeywordTok{summary}\NormalTok{(decision_}\DecValTok{4}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = decision_quality ~ gender + team_members + work_experience + 
+##     core_team_tenure + team_structure * interdependence + transactive_memory, 
+##     data = cleaned_df)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -2.60891 -0.35828  0.02408  0.38928  1.98291 
+## 
+## Coefficients:
+##                                  Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)                     3.824e+00  3.715e-02 102.926  < 2e-16 ***
+## gender                          2.492e-03  3.813e-02   0.065    0.948    
+## team_members                   -3.441e-03  2.191e-03  -1.571    0.117    
+## work_experience                -4.747e-05  2.133e-03  -0.022    0.982    
+## core_team_tenure                4.163e-04  5.724e-04   0.727    0.467    
+## team_structure                  4.450e-01  2.506e-02  17.756  < 2e-16 ***
+## interdependence                 2.755e-03  1.777e-02   0.155    0.877    
+## transactive_memory              5.083e-01  3.276e-02  15.516  < 2e-16 ***
+## team_structure:interdependence  1.061e-01  1.785e-02   5.943 3.73e-09 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 0.6094 on 1120 degrees of freedom
+## Multiple R-squared:  0.5042, Adjusted R-squared:  0.5007 
+## F-statistic: 142.4 on 8 and 1120 DF,  p-value: < 2.2e-16
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{decision_}\DecValTok{5}\NormalTok{ <-}\StringTok{ }\KeywordTok{lm}\NormalTok{(decision_quality }\OperatorTok{~}\StringTok{ }\NormalTok{gender }\OperatorTok{+}\StringTok{ }\NormalTok{team_members }\OperatorTok{+}\StringTok{ }\NormalTok{work_experience }\OperatorTok{+}\StringTok{ }\NormalTok{core_team_tenure }\OperatorTok{+}\StringTok{ }\NormalTok{team_structure }\OperatorTok{*}\StringTok{ }\NormalTok{interdependence }\OperatorTok{+}\StringTok{ }\NormalTok{transactive_memory }\OperatorTok{+}\StringTok{ }\NormalTok{knowledge_sharing, }\DataTypeTok{data =}\NormalTok{ cleaned_df)}
+\KeywordTok{summary}\NormalTok{(decision_}\DecValTok{5}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = decision_quality ~ gender + team_members + work_experience + 
+##     core_team_tenure + team_structure * interdependence + transactive_memory + 
+##     knowledge_sharing, data = cleaned_df)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -2.81315 -0.28226  0.01871  0.32487  2.21367 
+## 
+## Coefficients:
+##                                  Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)                     3.8047749  0.0317001 120.024  < 2e-16 ***
+## gender                         -0.0049445  0.0325194  -0.152    0.879    
+## team_members                   -0.0014651  0.0018709  -0.783    0.434    
+## work_experience                -0.0019397  0.0018211  -1.065    0.287    
+## core_team_tenure               -0.0001584  0.0004889  -0.324    0.746    
+## team_structure                  0.2205224  0.0240117   9.184  < 2e-16 ***
+## interdependence                -0.0025058  0.0151574  -0.165    0.869    
+## transactive_memory              0.2575968  0.0304928   8.448  < 2e-16 ***
+## knowledge_sharing               0.4454310  0.0217107  20.517  < 2e-16 ***
+## team_structure:interdependence  0.0823624  0.0152684   5.394 8.39e-08 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 0.5197 on 1119 degrees of freedom
+## Multiple R-squared:  0.6397, Adjusted R-squared:  0.6368 
+## F-statistic: 220.8 on 9 and 1119 DF,  p-value: < 2.2e-16
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{anova}\NormalTok{(decision_}\DecValTok{4}\NormalTok{, decision_}\DecValTok{5}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Analysis of Variance Table
+## 
+## Model 1: decision_quality ~ gender + team_members + work_experience + 
+##     core_team_tenure + team_structure * interdependence + transactive_memory
+## Model 2: decision_quality ~ gender + team_members + work_experience + 
+##     core_team_tenure + team_structure * interdependence + transactive_memory + 
+##     knowledge_sharing
+##   Res.Df    RSS Df Sum of Sq      F    Pr(>F)    
+## 1   1120 415.92                                  
+## 2   1119 302.23  1    113.69 420.93 < 2.2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+\end{verbatim}
+
+\hypertarget{moderated-mediation}{%
+\section{Moderated Mediation}\label{moderated-mediation}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(mediation)}
+\NormalTok{mediate <-}\StringTok{ }\NormalTok{mediation}\OperatorTok{::}\NormalTok{mediate}
+
+\NormalTok{Mod.Med.Model}\FloatTok{.1}\NormalTok{ <-}\StringTok{ }\KeywordTok{lm}\NormalTok{(knowledge_sharing }\OperatorTok{~}\StringTok{ }\NormalTok{team_structure }\OperatorTok{*}\StringTok{ }\NormalTok{transactive_memory, }\DataTypeTok{data =}\NormalTok{ cleaned_df); }\KeywordTok{summary}\NormalTok{(Mod.Med.Model}\FloatTok{.1}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = knowledge_sharing ~ team_structure * transactive_memory, 
+##     data = cleaned_df)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -3.08034 -0.36141  0.07582  0.44004  2.78331 
+## 
+## Coefficients:
+##                                   Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)                        0.04095    0.02212   1.851   0.0645 .  
+## team_structure                     0.49300    0.02811  17.536   <2e-16 ***
+## transactive_memory                 0.47330    0.04019  11.776   <2e-16 ***
+## team_structure:transactive_memory -0.18039    0.02983  -6.048    2e-09 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 0.7077 on 1125 degrees of freedom
+## Multiple R-squared:  0.4827, Adjusted R-squared:  0.4813 
+## F-statistic: 349.9 on 3 and 1125 DF,  p-value: < 2.2e-16
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{Mod.Med.Model}\FloatTok{.2}\NormalTok{ <-}\StringTok{ }\KeywordTok{lm}\NormalTok{(decision_quality }\OperatorTok{~}\StringTok{ }\NormalTok{team_structure }\OperatorTok{*}\StringTok{ }\NormalTok{transactive_memory }\OperatorTok{+}\StringTok{ }\NormalTok{knowledge_sharing, }\DataTypeTok{data =}\NormalTok{ cleaned_df); }\KeywordTok{summary}\NormalTok{(Mod.Med.Model}\FloatTok{.2}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = decision_quality ~ team_structure * transactive_memory + 
+##     knowledge_sharing, data = cleaned_df)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -3.01579 -0.30761  0.03297  0.32632  2.22286 
+## 
+## Coefficients:
+##                                   Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)                       3.796188   0.016469 230.510  < 2e-16 ***
+## team_structure                    0.240860   0.023580  10.215  < 2e-16 ***
+## transactive_memory                0.237242   0.031663   7.493 1.36e-13 ***
+## knowledge_sharing                 0.454662   0.022161  20.517  < 2e-16 ***
+## team_structure:transactive_memory 0.005609   0.022528   0.249    0.803    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 0.526 on 1124 degrees of freedom
+## Multiple R-squared:  0.6293, Adjusted R-squared:  0.628 
+## F-statistic:   477 on 4 and 1124 DF,  p-value: < 2.2e-16
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{low_trans_memory <-}\StringTok{ }\KeywordTok{mean}\NormalTok{(cleaned_df}\OperatorTok{$}\NormalTok{transactive_memory)}\OperatorTok{-}\KeywordTok{sd}\NormalTok{(cleaned_df}\OperatorTok{$}\NormalTok{transactive_memory)}
+\NormalTok{high_trans_memory <-}\StringTok{ }\KeywordTok{mean}\NormalTok{(cleaned_df}\OperatorTok{$}\NormalTok{transactive_memory)}\OperatorTok{+}\KeywordTok{sd}\NormalTok{(cleaned_df}\OperatorTok{$}\NormalTok{transactive_memory)}
+
+\NormalTok{mod_med_low_trans_memory <-}\StringTok{ }\KeywordTok{mediate}\NormalTok{(Mod.Med.Model}\FloatTok{.1}\NormalTok{, Mod.Med.Model}\FloatTok{.2}\NormalTok{,}
+                             \DataTypeTok{covariates =} \KeywordTok{list}\NormalTok{(}\DataTypeTok{transactive_memory =}\NormalTok{ low_trans_memory), }
+                             \DataTypeTok{boot =} \OtherTok{TRUE}\NormalTok{,}
+                             \DataTypeTok{boot.ci.type =} \StringTok{"bca"}\NormalTok{,}
+                             \DataTypeTok{sims =} \DecValTok{1000}\NormalTok{, }\DataTypeTok{treat =} \StringTok{"team_structure"}\NormalTok{, }
+                             \DataTypeTok{mediator =} \StringTok{"knowledge_sharing"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Running nonparametric bootstrap
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{summary}\NormalTok{(mod_med_low_trans_memory)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Causal Mediation Analysis 
+## 
+## Nonparametric Bootstrap Confidence Intervals with the BCa Method
+## 
+## (Inference Conditional on the Covariate Values Specified in `covariates')
+## 
+##                Estimate 95% CI Lower 95% CI Upper p-value    
+## ACME              0.277        0.232         0.33  <2e-16 ***
+## ADE               0.237        0.175         0.30  <2e-16 ***
+## Total Effect      0.514        0.454         0.58  <2e-16 ***
+## Prop. Mediated    0.538        0.455         0.64  <2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Sample Size Used: 1129 
+## 
+## 
+## Simulations: 1000
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{mod_med_high_trans_memory <-}\StringTok{ }\KeywordTok{mediate}\NormalTok{(Mod.Med.Model}\FloatTok{.1}\NormalTok{, Mod.Med.Model}\FloatTok{.2}\NormalTok{,}
+                             \DataTypeTok{covariates =} \KeywordTok{list}\NormalTok{(}\DataTypeTok{transactive_memory =}\NormalTok{ high_trans_memory), }
+                             \DataTypeTok{boot =} \OtherTok{TRUE}\NormalTok{,}
+                             \DataTypeTok{boot.ci.type =} \StringTok{"bca"}\NormalTok{,}
+                             \DataTypeTok{sims =} \DecValTok{1000}\NormalTok{, }\DataTypeTok{treat =} \StringTok{"team_structure"}\NormalTok{, }
+                             \DataTypeTok{mediator =} \StringTok{"knowledge_sharing"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Running nonparametric bootstrap
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{summary}\NormalTok{(mod_med_high_trans_memory)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Causal Mediation Analysis 
+## 
+## Nonparametric Bootstrap Confidence Intervals with the BCa Method
+## 
+## (Inference Conditional on the Covariate Values Specified in `covariates')
+## 
+##                Estimate 95% CI Lower 95% CI Upper p-value    
+## ACME              0.172        0.123         0.22  <2e-16 ***
+## ADE               0.244        0.185         0.31  <2e-16 ***
+## Total Effect      0.416        0.340         0.50  <2e-16 ***
+## Prop. Mediated    0.412        0.317         0.51  <2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Sample Size Used: 1129 
+## 
+## 
+## Simulations: 1000
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{mod_med_test_}\DecValTok{1}\NormalTok{ <-}\StringTok{ }\KeywordTok{mediate}\NormalTok{(Mod.Med.Model}\FloatTok{.1}\NormalTok{, Mod.Med.Model}\FloatTok{.2}\NormalTok{,}
+                             \DataTypeTok{boot =} \OtherTok{TRUE}\NormalTok{,}
+                             \DataTypeTok{boot.ci.type =} \StringTok{"bca"}\NormalTok{,}
+                             \DataTypeTok{sims =} \DecValTok{1000}\NormalTok{, }\DataTypeTok{treat =} \StringTok{"team_structure"}\NormalTok{, }
+                             \DataTypeTok{mediator =} \StringTok{"knowledge_sharing"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Running nonparametric bootstrap
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{test.modmed}\NormalTok{(mod_med_test_}\DecValTok{1}\NormalTok{, }\DataTypeTok{covariates.1 =} \KeywordTok{list}\NormalTok{(}\DataTypeTok{transactive_memory =}\NormalTok{ low_trans_memory), }\DataTypeTok{covariates.2 =} \KeywordTok{list}\NormalTok{(}\DataTypeTok{transactive_memory =}\NormalTok{ high_trans_memory), }\DataTypeTok{sims =} \DecValTok{1000}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Running nonparametric bootstrap
+## 
+## Running nonparametric bootstrap
+\end{verbatim}
+
+\begin{verbatim}
+## 
+##  Test of ACME(covariates.1) - ACME(covariates.2) = 0
+## 
+## data:  estimates from mod_med_test_1
+## ACME(covariates.1) - ACME(covariates.2) = 0.10523, p-value < 2.2e-16
+## alternative hypothesis: true ACME(covariates.1) - ACME(covariates.2) is not equal to 0
+## 95 percent confidence interval:
+##  0.03290005 0.17802954
+## 
+## 
+##  Test of ADE(covariates.1) - ADE(covariates.2) = 0
+## 
+## data:  estimates from mod_med_test_1
+## ADE(covariates.1) - ADE(covariates.2) = -0.0071963, p-value = 0.87
+## alternative hypothesis: true ADE(covariates.1) - ADE(covariates.2) is not equal to 0
+## 95 percent confidence interval:
+##  -0.09682726  0.07682613
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{############# NO.2}
+
+\NormalTok{Mod.Med.Model}\FloatTok{.3}\NormalTok{ <-}\StringTok{ }\KeywordTok{lm}\NormalTok{(knowledge_sharing }\OperatorTok{~}\StringTok{ }\NormalTok{team_structure }\OperatorTok{*}\StringTok{ }\NormalTok{interdependence, }\DataTypeTok{data =}\NormalTok{ cleaned_df); }\KeywordTok{summary}\NormalTok{(Mod.Med.Model}\FloatTok{.3}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = knowledge_sharing ~ team_structure * interdependence, 
+##     data = cleaned_df)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -2.71699 -0.47857  0.07659  0.53060  2.21942 
+## 
+## Coefficients:
+##                                 Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)                    -0.008007   0.023783  -0.337  0.73644    
+## team_structure                  0.669335   0.029303  22.842  < 2e-16 ***
+## interdependence                 0.078923   0.022269   3.544  0.00041 ***
+## team_structure:interdependence  0.047954   0.023071   2.079  0.03789 *  
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 0.7886 on 1125 degrees of freedom
+## Multiple R-squared:  0.3577, Adjusted R-squared:  0.356 
+## F-statistic: 208.8 on 3 and 1125 DF,  p-value: < 2.2e-16
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{Mod.Med.Model}\FloatTok{.4}\NormalTok{ <-}\StringTok{ }\KeywordTok{lm}\NormalTok{(decision_quality }\OperatorTok{~}\StringTok{ }\NormalTok{team_structure }\OperatorTok{+}\StringTok{ }\NormalTok{knowledge_sharing }\OperatorTok{*}\StringTok{ }\NormalTok{interdependence, }\DataTypeTok{data =}\NormalTok{ cleaned_df); }\KeywordTok{summary}\NormalTok{(Mod.Med.Model}\FloatTok{.4}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = decision_quality ~ team_structure + knowledge_sharing * 
+##     interdependence, data = cleaned_df)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -2.95905 -0.32231  0.02765  0.32898  2.16162 
+## 
+## Coefficients:
+##                                   Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)                        3.78513    0.01611 234.945  < 2e-16 ***
+## team_structure                     0.24527    0.02422  10.128  < 2e-16 ***
+## knowledge_sharing                  0.53413    0.02025  26.376  < 2e-16 ***
+## interdependence                    0.01802    0.01506   1.196    0.232    
+## knowledge_sharing:interdependence  0.06257    0.01280   4.890 1.16e-06 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 0.5347 on 1124 degrees of freedom
+## Multiple R-squared:  0.617,  Adjusted R-squared:  0.6156 
+## F-statistic: 452.7 on 4 and 1124 DF,  p-value: < 2.2e-16
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{low_inter <-}\StringTok{ }\KeywordTok{mean}\NormalTok{(cleaned_df}\OperatorTok{$}\NormalTok{interdependence)}\OperatorTok{-}\KeywordTok{sd}\NormalTok{(cleaned_df}\OperatorTok{$}\NormalTok{interdependence)}
+\NormalTok{high_inter <-}\StringTok{ }\KeywordTok{mean}\NormalTok{(cleaned_df}\OperatorTok{$}\NormalTok{interdependence)}\OperatorTok{+}\KeywordTok{sd}\NormalTok{(cleaned_df}\OperatorTok{$}\NormalTok{interdependence)}
+
+\NormalTok{mod_med_low_inter <-}\StringTok{ }\KeywordTok{mediate}\NormalTok{(Mod.Med.Model}\FloatTok{.3}\NormalTok{, Mod.Med.Model}\FloatTok{.4}\NormalTok{,}
+                             \DataTypeTok{covariates =} \KeywordTok{list}\NormalTok{(}\DataTypeTok{interdependence =}\NormalTok{ low_inter), }\DataTypeTok{boot =} \OtherTok{TRUE}\NormalTok{,}
+                             \DataTypeTok{boot.ci.type =} \StringTok{"bca"}\NormalTok{,}
+                             \DataTypeTok{sims =} \DecValTok{2000}\NormalTok{, }\DataTypeTok{treat =} \StringTok{"team_structure"}\NormalTok{, }
+                             \DataTypeTok{mediator =} \StringTok{"knowledge_sharing"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Running nonparametric bootstrap
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{summary}\NormalTok{(mod_med_low_inter)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Causal Mediation Analysis 
+## 
+## Nonparametric Bootstrap Confidence Intervals with the BCa Method
+## 
+## (Inference Conditional on the Covariate Values Specified in `covariates')
+## 
+##                Estimate 95% CI Lower 95% CI Upper p-value    
+## ACME              0.287        0.221         0.34  <2e-16 ***
+## ADE               0.245        0.189         0.30  <2e-16 ***
+## Total Effect      0.532        0.450         0.60  <2e-16 ***
+## Prop. Mediated    0.539        0.453         0.63  <2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Sample Size Used: 1129 
+## 
+## 
+## Simulations: 2000
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{mod_med_high_inter <-}\StringTok{ }\KeywordTok{mediate}\NormalTok{(Mod.Med.Model}\FloatTok{.3}\NormalTok{, Mod.Med.Model}\FloatTok{.4}\NormalTok{,}
+                             \DataTypeTok{covariates =} \KeywordTok{list}\NormalTok{(}\DataTypeTok{interdependence =}\NormalTok{ high_inter), }\DataTypeTok{boot =} \OtherTok{TRUE}\NormalTok{,}
+                             \DataTypeTok{boot.ci.type =} \StringTok{"bca"}\NormalTok{,}
+                             \DataTypeTok{sims =} \DecValTok{1000}\NormalTok{, }\DataTypeTok{treat =} \StringTok{"team_structure"}\NormalTok{, }
+                             \DataTypeTok{mediator =} \StringTok{"knowledge_sharing"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Running nonparametric bootstrap
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{summary}\NormalTok{(mod_med_high_inter)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Causal Mediation Analysis 
+## 
+## Nonparametric Bootstrap Confidence Intervals with the BCa Method
+## 
+## (Inference Conditional on the Covariate Values Specified in `covariates')
+## 
+##                Estimate 95% CI Lower 95% CI Upper p-value    
+## ACME              0.435        0.358         0.51  <2e-16 ***
+## ADE               0.245        0.193         0.31  <2e-16 ***
+## Total Effect      0.680        0.603         0.75  <2e-16 ***
+## Prop. Mediated    0.639        0.561         0.71  <2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Sample Size Used: 1129 
+## 
+## 
+## Simulations: 1000
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{mod_med_test_}\DecValTok{2}\NormalTok{ <-}\StringTok{ }\KeywordTok{mediate}\NormalTok{(Mod.Med.Model}\FloatTok{.3}\NormalTok{, Mod.Med.Model}\FloatTok{.4}\NormalTok{,}
+                             \DataTypeTok{boot =} \OtherTok{TRUE}\NormalTok{,}
+                             \DataTypeTok{boot.ci.type =} \StringTok{"bca"}\NormalTok{,}
+                             \DataTypeTok{sims =} \DecValTok{1000}\NormalTok{, }\DataTypeTok{treat =} \StringTok{"team_structure"}\NormalTok{, }
+                             \DataTypeTok{mediator =} \StringTok{"knowledge_sharing"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Running nonparametric bootstrap
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{test.modmed}\NormalTok{(mod_med_test_}\DecValTok{2}\NormalTok{, }\DataTypeTok{covariates.1 =} \KeywordTok{list}\NormalTok{(}\DataTypeTok{interdependence =}\NormalTok{ low_inter), }\DataTypeTok{covariates.2 =} \KeywordTok{list}\NormalTok{(}\DataTypeTok{interdependence =}\NormalTok{ high_inter), }\DataTypeTok{sims =} \DecValTok{1000}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Running nonparametric bootstrap
+## 
+## Running nonparametric bootstrap
+\end{verbatim}
+
+\begin{verbatim}
+## 
+##  Test of ACME(covariates.1) - ACME(covariates.2) = 0
+## 
+## data:  estimates from mod_med_test_2
+## ACME(covariates.1) - ACME(covariates.2) = -0.14782, p-value < 2.2e-16
+## alternative hypothesis: true ACME(covariates.1) - ACME(covariates.2) is not equal to 0
+## 95 percent confidence interval:
+##  -0.23896549 -0.05595828
+## 
+## 
+##  Test of ADE(covariates.1) - ADE(covariates.2) = 0
+## 
+## data:  estimates from mod_med_test_2
+## ADE(covariates.1) - ADE(covariates.2) = 1.9429e-16, p-value = 0.98
+## alternative hypothesis: true ADE(covariates.1) - ADE(covariates.2) is not equal to 0
+## 95 percent confidence interval:
+##  -0.07985163  0.07969532
+\end{verbatim}
+
+\hypertarget{sem-models}{%
+\section{SEM models}\label{sem-models}}
+
+\hypertarget{create-interaction-terms}{%
+\subsection{create interaction terms}\label{create-interaction-terms}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{cleaned_df}\OperatorTok{$}\NormalTok{inter_trans <-}\StringTok{ }\NormalTok{cleaned_df}\OperatorTok{$}\NormalTok{transactive_memory}\OperatorTok{*}\NormalTok{cleaned_df}\OperatorTok{$}\NormalTok{interdependence}
+\NormalTok{cleaned_df}\OperatorTok{$}\NormalTok{inter_teamstr <-}\StringTok{ }\NormalTok{cleaned_df}\OperatorTok{$}\NormalTok{interdependence}\OperatorTok{*}\NormalTok{cleaned_df}\OperatorTok{$}\NormalTok{team_structure}
+\NormalTok{cleaned_df}\OperatorTok{$}\NormalTok{inter_knowshare <-cleaned_df}\OperatorTok{$}\NormalTok{interdependence}\OperatorTok{*}\NormalTok{cleaned_df}\OperatorTok{$}\NormalTok{knowledge_sharing}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{run-models}{%
+\subsection{run models}\label{run-models}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{model_final <-}\StringTok{ '}
+\StringTok{decision_quality ~ e1*knowledge_sharing + e2*interdependence + e3*inter_knowshare + f1*team_structure + f2*inter_teamstr + d1*transactive_memory + d2*inter_trans + team_members + core_team_tenure + work_experience + gender}
+\StringTok{knowledge_sharing ~ a*team_structure + b*transactive_memory}
+
+\StringTok{interdependence ~ interdependence.mean*1}
+\StringTok{interdependence ~~ interdependence.var*interdependence}
+
+\StringTok{direct1 := f1}
+\StringTok{direct2 := d1}
+
+\StringTok{indirect1:= a*e1}
+\StringTok{indirect2:= b*e1}
+
+\StringTok{total1 := direct1 + indirect1}
+\StringTok{total2 := direct2 + indirect2}
+
+\StringTok{prop_med1 := indirect1 / total1}
+\StringTok{prop_med2 := indirect2 / total2}
+
+\StringTok{ind_1_below:= a*(e1 + e3*(interdependence.mean-sqrt(interdependence.var)))}
+\StringTok{ind_1_above:= a*(e1 + e3*(interdependence.mean+sqrt(interdependence.var)))}
+
+\StringTok{ind_2_below:= b*(e1 + e3*(interdependence.mean-sqrt(interdependence.var)))}
+\StringTok{ind_2_above:= b*(e1 + e3*(interdependence.mean+sqrt(interdependence.var)))}
+
+
+\StringTok{direct_1_below := f1 + f2*(interdependence.mean-sqrt(interdependence.var))}
+\StringTok{direct_1_above := f1 + f2*(interdependence.mean+sqrt(interdependence.var))}
+
+\StringTok{direct_2_below := d1 + d2*(interdependence.mean-sqrt(interdependence.var))}
+\StringTok{direct_2_above := d1 + d2*(interdependence.mean+sqrt(interdependence.var))}
+
+\StringTok{cond_1_indirect := a*e3}
+\StringTok{cond_2_indirect := b*e3}
+\StringTok{cond_1_direct := f1*f2}
+\StringTok{cond_2_direct := d1*d2}
+\StringTok{'}
+\NormalTok{model_fit_final <-}\StringTok{ }\KeywordTok{sem}\NormalTok{(model_final, }\DataTypeTok{data =}\NormalTok{ cleaned_df, }\DataTypeTok{se =} \StringTok{"boot"}\NormalTok{, }\DataTypeTok{bootstrap =} \DecValTok{10000}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning in lavaan::lavaan(model = model_final, data = cleaned_df, se = "boot", :
+## lavaan WARNING: syntax contains parameters involving exogenous covariates;
+## switching to fixed.x = FALSE
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{summary}\NormalTok{(model_fit_final, }\DataTypeTok{fit.measures =} \OtherTok{TRUE}\NormalTok{, }\DataTypeTok{standardized =} \OtherTok{TRUE}\NormalTok{, }\DataTypeTok{ci =}\NormalTok{ T)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## lavaan 0.6-5 ended normally after 36 iterations
+## 
+##   Estimator                                         ML
+##   Optimization method                           NLMINB
+##   Number of free parameters                         73
+##                                                       
+##   Number of observations                          1129
+##                                                       
+## Model Test User Model:
+##                                                       
+##   Test statistic                               198.619
+##   Degrees of freedom                                17
+##   P-value (Chi-square)                           0.000
+## 
+## Model Test Baseline Model:
+## 
+##   Test statistic                              2068.832
+##   Degrees of freedom                                30
+##   P-value                                        0.000
+## 
+## User Model versus Baseline Model:
+## 
+##   Comparative Fit Index (CFI)                    0.911
+##   Tucker-Lewis Index (TLI)                       0.843
+## 
+## Loglikelihood and Information Criteria:
+## 
+##   Loglikelihood user model (H0)             -24785.024
+##   Loglikelihood unrestricted model (H1)     -24685.715
+##                                                       
+##   Akaike (AIC)                               49716.048
+##   Bayesian (BIC)                             50083.171
+##   Sample-size adjusted Bayesian (BIC)        49851.303
+## 
+## Root Mean Square Error of Approximation:
+## 
+##   RMSEA                                          0.097
+##   90 Percent confidence interval - lower         0.085
+##   90 Percent confidence interval - upper         0.110
+##   P-value RMSEA <= 0.05                          0.000
+## 
+## Standardized Root Mean Square Residual:
+## 
+##   SRMR                                           0.054
+## 
+## Parameter Estimates:
+## 
+##   Standard errors                            Bootstrap
+##   Number of requested bootstrap draws            10000
+##   Number of successful bootstrap draws           10000
+## 
+## Regressions:
+##                       Estimate  Std.Err  z-value  P(>|z|) ci.lower ci.upper
+##   decision_quality ~                                                       
+##     knwldg_sh (e1)       0.453    0.026   17.466    0.000    0.400    0.502
+##     intrdpndn (e2)      -0.001    0.016   -0.052    0.958   -0.032    0.031
+##     intr_knws (e3)       0.055    0.027    2.064    0.039    0.006    0.110
+##     tm_strctr (f1)       0.210    0.029    7.310    0.000    0.154    0.266
+##     intr_tmst (f2)       0.053    0.030    1.759    0.079   -0.006    0.111
+##     trnsctv_m (d1)       0.258    0.032    8.152    0.000    0.197    0.321
+##     intr_trns (d2)      -0.032    0.031   -1.043    0.297   -0.093    0.026
+##     tem_mmbrs           -0.001    0.002   -0.792    0.428   -0.005    0.002
+##     cr_tm_tnr           -0.000    0.000   -0.347    0.729   -0.001    0.001
+##     wrk_xprnc           -0.002    0.002   -1.084    0.278   -0.006    0.002
+##     gender              -0.004    0.033   -0.126    0.900   -0.070    0.060
+##   knowledge_sharing ~                                                      
+##     tm_strctr  (a)       0.509    0.037   13.782    0.000    0.434    0.579
+##     trnsctv_m  (b)       0.578    0.041   14.088    0.000    0.497    0.658
+##    Std.lv  Std.all
+##                   
+##     0.453    0.517
+##    -0.001   -0.001
+##     0.055    0.081
+##     0.210    0.202
+##     0.053    0.064
+##     0.258    0.192
+##    -0.032   -0.030
+##    -0.001   -0.014
+##    -0.000   -0.006
+##    -0.002   -0.023
+##    -0.004   -0.002
+##                   
+##     0.509    0.431
+##     0.578    0.377
+## 
+## Covariances:
+##                         Estimate  Std.Err  z-value  P(>|z|) ci.lower ci.upper
+##   inter_knowshare ~~                                                         
+##     team_structure         0.134    0.057    2.349    0.019    0.022    0.243
+##     inter_teamstr          0.852    0.113    7.537    0.000    0.644    1.089
+##     transactv_mmry        -0.044    0.048   -0.923    0.356   -0.144    0.047
+##     inter_trans            0.644    0.110    5.855    0.000    0.449    0.881
+##     team_members          -0.302    0.285   -1.060    0.289   -0.855    0.257
+##     core_team_tenr         0.478    1.255    0.381    0.703   -2.010    2.921
+##     work_experienc         0.187    0.387    0.483    0.629   -0.550    0.973
+##     gender                -0.012    0.018   -0.644    0.520   -0.046    0.024
+##   team_structure ~~                                                          
+##     inter_teamstr          0.143    0.049    2.894    0.004    0.046    0.239
+##     transactv_mmry         0.227    0.024    9.308    0.000    0.180    0.276
+##     inter_trans            0.005    0.035    0.138    0.890   -0.065    0.072
+##     team_members          -0.098    0.180   -0.548    0.584   -0.449    0.253
+##     core_team_tenr        -0.321    0.769   -0.417    0.677   -1.823    1.200
+##     work_experienc        -0.594    0.223   -2.661    0.008   -1.023   -0.156
+##     gender                -0.029    0.012   -2.429    0.015   -0.052   -0.006
+##   inter_teamstr ~~                                                           
+##     transactv_mmry         0.005    0.035    0.138    0.890   -0.065    0.073
+##     inter_trans            0.408    0.077    5.276    0.000    0.269    0.572
+##     team_members          -0.260    0.246   -1.057    0.290   -0.741    0.225
+##     core_team_tenr         0.897    1.038    0.865    0.387   -1.162    2.920
+##     work_experienc        -0.026    0.282   -0.093    0.926   -0.573    0.537
+##     gender                -0.004    0.015   -0.239    0.811   -0.034    0.026
+##   transactive_memory ~~                                                      
+##     inter_trans           -0.055    0.039   -1.417    0.157   -0.134    0.019
+##     team_members           0.227    0.137    1.655    0.098   -0.043    0.497
+##     core_team_tenr         2.425    0.615    3.942    0.000    1.210    3.638
+##     work_experienc         0.585    0.173    3.386    0.001    0.247    0.931
+##     gender                -0.001    0.009   -0.108    0.914   -0.020    0.017
+##   inter_trans ~~                                                             
+##     team_members          -0.279    0.178   -1.563    0.118   -0.620    0.076
+##     core_team_tenr         0.010    0.827    0.012    0.990   -1.611    1.625
+##     work_experienc        -0.085    0.207   -0.413    0.680   -0.490    0.327
+##     gender                -0.000    0.012   -0.002    0.998   -0.024    0.023
+##   team_members ~~                                                            
+##     core_team_tenr        43.457    8.433    5.153    0.000   26.930   60.699
+##     work_experienc        -2.453    2.257   -1.087    0.277   -6.789    2.060
+##     gender                -0.056    0.120   -0.464    0.643   -0.287    0.182
+##   core_team_tenure ~~                                                        
+##     work_experienc        35.599    8.485    4.196    0.000   19.045   52.303
+##     gender                 0.160    0.473    0.338    0.735   -0.764    1.102
+##   work_experience ~~                                                         
+##     gender                -0.351    0.123   -2.841    0.004   -0.591   -0.107
+##    Std.lv  Std.all
+##                   
+##     0.134    0.126
+##     0.852    0.633
+##    -0.044   -0.054
+##     0.644    0.617
+##    -0.302   -0.028
+##     0.478    0.011
+##     0.187    0.017
+##    -0.012   -0.019
+##                   
+##     0.143    0.163
+##     0.227    0.426
+##     0.005    0.007
+##    -0.098   -0.014
+##    -0.321   -0.012
+##    -0.594   -0.082
+##    -0.029   -0.073
+##                   
+##     0.005    0.007
+##     0.408    0.475
+##    -0.260   -0.029
+##     0.897    0.026
+##    -0.026   -0.003
+##    -0.004   -0.007
+##                   
+##    -0.055   -0.105
+##     0.227    0.042
+##     2.425    0.115
+##     0.585    0.104
+##    -0.001   -0.003
+##                   
+##    -0.279   -0.041
+##     0.010    0.000
+##    -0.085   -0.012
+##    -0.000   -0.000
+##                   
+##    43.457    0.158
+##    -2.453   -0.033
+##    -0.056   -0.014
+##                   
+##    35.599    0.124
+##     0.160    0.010
+##                   
+##    -0.351   -0.083
+## 
+## Intercepts:
+##                    Estimate  Std.Err  z-value  P(>|z|) ci.lower ci.upper
+##     intrdpn (int.)   -0.000    0.032   -0.000    1.000   -0.063    0.066
+##    .dcsn_ql           3.805    0.032  120.075    0.000    3.745    3.869
+##    .knwldg_          -0.000    0.021   -0.000    1.000   -0.041    0.042
+##     intr_kn           0.197    0.038    5.133    0.000    0.122    0.273
+##     tm_strc          -0.000    0.025   -0.000    1.000   -0.048    0.048
+##     intr_tm           0.167    0.032    5.295    0.000    0.105    0.230
+##     trnsct_          -0.000    0.019   -0.000    1.000   -0.038    0.037
+##     intr_tr           0.197    0.024    8.026    0.000    0.148    0.245
+##     tm_mmbr          13.162    0.250   52.728    0.000   12.686   13.655
+##     cr_tm_t          -0.000    0.977   -0.000    1.000   -1.895    1.954
+##     wrk_xpr          -0.000    0.258   -0.000    1.000   -0.497    0.513
+##     gender            0.360    0.014   25.479    0.000    0.333    0.389
+##    Std.lv  Std.all
+##    -0.000   -0.000
+##     3.805    4.414
+##    -0.000   -0.000
+##     0.197    0.154
+##    -0.000   -0.000
+##     0.167    0.159
+##    -0.000   -0.000
+##     0.197    0.241
+##    13.162    1.563
+##    -0.000   -0.000
+##    -0.000   -0.000
+##     0.360    0.751
+## 
+## Variances:
+##                    Estimate  Std.Err  z-value  P(>|z|) ci.lower ci.upper
+##     intrdpn (int.)    1.198    0.048   24.832    0.000    1.104    1.293
+##    .dcsn_ql           0.265    0.015   17.784    0.000    0.234    0.292
+##    .knwldg_           0.515    0.027   19.432    0.000    0.464    0.567
+##     intr_kn           1.632    0.191    8.546    0.000    1.284    2.031
+##     tm_strc           0.691    0.031   22.232    0.000    0.630    0.754
+##     intr_tm           1.108    0.091   12.156    0.000    0.935    1.293
+##     trnsct_           0.411    0.026   15.876    0.000    0.362    0.464
+##     intr_tr           0.667    0.086    7.761    0.000    0.517    0.851
+##     tm_mmbr          70.888    5.484   12.927    0.000   60.132   81.698
+##     cr_tm_t        1072.320   39.049   27.461    0.000  994.273 1147.470
+##     wrk_xpr          76.783    3.125   24.568    0.000   70.845   83.072
+##     gender            0.231    0.004   58.357    0.000    0.222    0.238
+##    Std.lv  Std.all
+##     1.198    1.000
+##     0.265    0.357
+##     0.515    0.534
+##     1.632    1.000
+##     0.691    1.000
+##     1.108    1.000
+##     0.411    1.000
+##     0.667    1.000
+##    70.888    1.000
+##  1072.320    1.000
+##    76.783    1.000
+##     0.231    1.000
+## 
+## Defined Parameters:
+##                    Estimate  Std.Err  z-value  P(>|z|) ci.lower ci.upper
+##     direct1           0.210    0.029    7.309    0.000    0.154    0.266
+##     direct2           0.258    0.032    8.152    0.000    0.197    0.321
+##     indirect1         0.231    0.022   10.331    0.000    0.187    0.275
+##     indirect2         0.262    0.023   11.390    0.000    0.218    0.307
+##     total1            0.440    0.031   14.355    0.000    0.379    0.499
+##     total2            0.520    0.035   14.703    0.000    0.451    0.589
+##     prop_med1         0.524    0.048   11.001    0.000    0.433    0.620
+##     prop_med2         0.503    0.041   12.199    0.000    0.425    0.587
+##     ind_1_below       0.200    0.024    8.296    0.000    0.152    0.246
+##     ind_1_above       0.261    0.030    8.784    0.000    0.204    0.322
+##     ind_2_below       0.227    0.027    8.298    0.000    0.174    0.279
+##     ind_2_above       0.297    0.029   10.058    0.000    0.240    0.357
+##     direct_1_below    0.152    0.044    3.455    0.001    0.068    0.240
+##     direct_1_above    0.267    0.043    6.227    0.000    0.184    0.353
+##     direct_2_below    0.293    0.048    6.063    0.000    0.199    0.390
+##     direct_2_above    0.223    0.044    5.112    0.000    0.138    0.310
+##     cond_1_indirct    0.028    0.014    2.006    0.045    0.003    0.057
+##     cond_2_indirct    0.032    0.015    2.057    0.040    0.003    0.064
+##     cond_1_direct     0.011    0.006    1.700    0.089   -0.001    0.024
+##     cond_2_direct    -0.008    0.008   -1.003    0.316   -0.026    0.007
+##    Std.lv  Std.all
+##     0.210    0.202
+##     0.258    0.192
+##     0.231    0.222
+##     0.262    0.195
+##     0.440    0.425
+##     0.520    0.387
+##     0.524    0.524
+##     0.503    0.503
+##     0.200    0.187
+##     0.261    0.257
+##     0.227    0.164
+##     0.297    0.226
+##     0.152    0.138
+##     0.267    0.267
+##     0.293    0.222
+##     0.223    0.162
+##     0.028    0.035
+##     0.032    0.031
+##     0.011    0.013
+##    -0.008   -0.006
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# this is when Transactive Memory is not supposed to have a direct effect on DQ:}
+\NormalTok{model_lesscompli <-}\StringTok{ '}
+\StringTok{decision_quality ~ c1*knowledge_sharing + c2*interdependence + c3*inter_knowshare + a3*team_structure + a4*inter_teamstr + team_members + core_team_tenure}
+\StringTok{knowledge_sharing ~ a2*team_structure + b*transactive_memory}
+\StringTok{transactive_memory ~ a1*team_structure}
+
+\StringTok{direct1 := a3}
+\StringTok{direct2 := a2}
+\StringTok{indirect1:= a1*b}
+\StringTok{indirect2:= a2*c1}
+\StringTok{indirect3:= a1*b*c1}
+\StringTok{cond_indirect_1:= a2*c3}
+\StringTok{cond_indirect_2:= a1*b*c3}
+\StringTok{'}
+\NormalTok{model_fit_lesscompli <-}\StringTok{ }\KeywordTok{sem}\NormalTok{(model_lesscompli, }\DataTypeTok{data =}\NormalTok{ cleaned_df, }\DataTypeTok{se =} \StringTok{"boot"}\NormalTok{, }\DataTypeTok{bootstrap =} \DecValTok{10000}\NormalTok{)}
+\KeywordTok{summary}\NormalTok{(model_fit_lesscompli, }\DataTypeTok{fit.measures =} \OtherTok{TRUE}\NormalTok{, }\DataTypeTok{standardized =} \OtherTok{TRUE}\NormalTok{, }\DataTypeTok{ci =}\NormalTok{ T)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## lavaan 0.6-5 ended normally after 27 iterations
+## 
+##   Estimator                                         ML
+##   Optimization method                           NLMINB
+##   Number of free parameters                         13
+##                                                       
+##   Number of observations                          1129
+##                                                       
+## Model Test User Model:
+##                                                       
+##   Test statistic                               200.122
+##   Degrees of freedom                                11
+##   P-value (Chi-square)                           0.000
+## 
+## Model Test Baseline Model:
+## 
+##   Test statistic                              2222.699
+##   Degrees of freedom                                21
+##   P-value                                        0.000
+## 
+## User Model versus Baseline Model:
+## 
+##   Comparative Fit Index (CFI)                    0.914
+##   Tucker-Lewis Index (TLI)                       0.836
+## 
+## Loglikelihood and Information Criteria:
+## 
+##   Loglikelihood user model (H0)              -3105.060
+##   Loglikelihood unrestricted model (H1)      -3004.999
+##                                                       
+##   Akaike (AIC)                                6236.121
+##   Bayesian (BIC)                              6301.499
+##   Sample-size adjusted Bayesian (BIC)         6260.207
+## 
+## Root Mean Square Error of Approximation:
+## 
+##   RMSEA                                          0.123
+##   90 Percent confidence interval - lower         0.109
+##   90 Percent confidence interval - upper         0.139
+##   P-value RMSEA <= 0.05                          0.000
+## 
+## Standardized Root Mean Square Residual:
+## 
+##   SRMR                                           0.051
+## 
+## Parameter Estimates:
+## 
+##   Standard errors                            Bootstrap
+##   Number of requested bootstrap draws            10000
+##   Number of successful bootstrap draws           10000
+## 
+## Regressions:
+##                        Estimate  Std.Err  z-value  P(>|z|) ci.lower ci.upper
+##   decision_quality ~                                                        
+##     knwldg_sh (c1)        0.526    0.024   21.701    0.000    0.478    0.572
+##     intrdpndn (c2)        0.023    0.016    1.464    0.143   -0.008    0.053
+##     intr_knws (c3)        0.040    0.022    1.792    0.073   -0.003    0.084
+##     tm_strctr (a3)        0.245    0.028    8.645    0.000    0.190    0.301
+##     intr_tmst (a4)        0.044    0.028    1.579    0.114   -0.011    0.100
+##     tem_mmbrs            -0.001    0.002   -0.332    0.740   -0.005    0.003
+##     cr_tm_tnr             0.000    0.000    0.414    0.679   -0.001    0.001
+##   knowledge_sharing ~                                                       
+##     tm_strctr (a2)        0.509    0.037   13.796    0.000    0.435    0.579
+##     trnsctv_m  (b)        0.578    0.041   13.984    0.000    0.497    0.660
+##   transactive_memory ~                                                      
+##     tm_strctr (a1)        0.328    0.030   11.106    0.000    0.271    0.387
+##    Std.lv  Std.all
+##                   
+##     0.526    0.600
+##     0.023    0.029
+##     0.040    0.059
+##     0.245    0.236
+##     0.044    0.054
+##    -0.001   -0.006
+##     0.000    0.008
+##                   
+##     0.509    0.431
+##     0.578    0.377
+##                   
+##     0.328    0.426
+## 
+## Variances:
+##                    Estimate  Std.Err  z-value  P(>|z|) ci.lower ci.upper
+##    .decision_qulty    0.283    0.016   18.244    0.000    0.251    0.312
+##    .knowledg_shrng    0.515    0.026   19.546    0.000    0.463    0.566
+##    .transactv_mmry    0.337    0.017   19.649    0.000    0.303    0.370
+##    Std.lv  Std.all
+##     0.283    0.381
+##     0.515    0.534
+##     0.337    0.819
+## 
+## Defined Parameters:
+##                    Estimate  Std.Err  z-value  P(>|z|) ci.lower ci.upper
+##     direct1           0.245    0.028    8.644    0.000    0.190    0.301
+##     direct2           0.509    0.037   13.796    0.000    0.435    0.579
+##     indirect1         0.190    0.025    7.635    0.000    0.144    0.242
+##     indirect2         0.268    0.023   11.731    0.000    0.223    0.313
+##     indirect3         0.100    0.014    6.893    0.000    0.074    0.130
+##     cond_indirct_1    0.020    0.012    1.761    0.078   -0.001    0.044
+##     cond_indirct_2    0.008    0.004    1.732    0.083   -0.000    0.017
+##    Std.lv  Std.all
+##     0.245    0.236
+##     0.509    0.431
+##     0.190    0.161
+##     0.268    0.258
+##     0.100    0.096
+##     0.020    0.025
+##     0.008    0.009
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{modificationindices}\NormalTok{(model_fit_lesscompli, }\DataTypeTok{minimum.value =} \DecValTok{20}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##                   lhs op                rhs     mi    epc sepc.lv sepc.all
+## 42   decision_quality ~~  knowledge_sharing 63.935 -0.215  -0.215   -0.562
+## 43   decision_quality ~~ transactive_memory 63.935  0.081   0.081    0.263
+## 45   decision_quality  ~ transactive_memory 63.935  0.241   0.241    0.179
+## 46  knowledge_sharing  ~   decision_quality 52.925 -0.645  -0.645   -0.566
+## 52 transactive_memory  ~   decision_quality 58.731  0.270   0.270    0.363
+## 54 transactive_memory  ~    interdependence 58.229  0.122   0.122    0.209
+## 58 transactive_memory  ~   core_team_tenure 20.029  0.002   0.002    0.121
+## 61    interdependence  ~ transactive_memory 34.202  0.251   0.251    0.147
+##    sepc.nox
+## 42   -0.562
+## 43    0.263
+## 45    0.179
+## 46   -0.566
+## 52    0.363
+## 54    0.191
+## 58    0.004
+## 61    0.147
+\end{verbatim}
+
+\hypertarget{model-comparisons}{%
+\section{Model comparisons}\label{model-comparisons}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{model_with <-}\StringTok{ '}
+\StringTok{decision_quality ~ c1*knowledge_sharing + c2*interdependence + c3*inter_knowshare + d1*team_structure + d2*inter_teamstr + e1*transactive_memory + team_members + core_team_tenure + work_experience + gender}
+\StringTok{knowledge_sharing ~ a*team_structure + b*transactive_memory}
+\StringTok{'}
+\NormalTok{model_fit_with <-}\StringTok{ }\KeywordTok{sem}\NormalTok{(model_with, }\DataTypeTok{data =}\NormalTok{ cleaned_df)}
+\KeywordTok{summary}\NormalTok{(model_fit_with, }\DataTypeTok{fit.measures =} \OtherTok{TRUE}\NormalTok{, }\DataTypeTok{standardized =} \OtherTok{TRUE}\NormalTok{, }\DataTypeTok{ci =}\NormalTok{ T)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## lavaan 0.6-5 ended normally after 28 iterations
+## 
+##   Estimator                                         ML
+##   Optimization method                           NLMINB
+##   Number of free parameters                         14
+##                                                       
+##   Number of observations                          1129
+##                                                       
+## Model Test User Model:
+##                                                       
+##   Test statistic                                38.310
+##   Degrees of freedom                                 7
+##   P-value (Chi-square)                           0.000
+## 
+## Model Test Baseline Model:
+## 
+##   Test statistic                              1906.790
+##   Degrees of freedom                                19
+##   P-value                                        0.000
+## 
+## User Model versus Baseline Model:
+## 
+##   Comparative Fit Index (CFI)                    0.983
+##   Tucker-Lewis Index (TLI)                       0.955
+## 
+## Loglikelihood and Information Criteria:
+## 
+##   Loglikelihood user model (H0)              -2081.786
+##   Loglikelihood unrestricted model (H1)      -2062.631
+##                                                       
+##   Akaike (AIC)                                4191.572
+##   Bayesian (BIC)                              4261.980
+##   Sample-size adjusted Bayesian (BIC)         4217.512
+## 
+## Root Mean Square Error of Approximation:
+## 
+##   RMSEA                                          0.063
+##   90 Percent confidence interval - lower         0.044
+##   90 Percent confidence interval - upper         0.083
+##   P-value RMSEA <= 0.05                          0.120
+## 
+## Standardized Root Mean Square Residual:
+## 
+##   SRMR                                           0.014
+## 
+## Parameter Estimates:
+## 
+##   Information                                 Expected
+##   Information saturated (h1) model          Structured
+##   Standard errors                             Standard
+## 
+## Regressions:
+##                       Estimate  Std.Err  z-value  P(>|z|) ci.lower ci.upper
+##   decision_quality ~                                                       
+##     knwldg_sh (c1)       0.454    0.021   21.225    0.000    0.412    0.496
+##     intrdpndn (c2)      -0.001    0.015   -0.052    0.959   -0.030    0.029
+##     intr_knws (c3)       0.044    0.016    2.826    0.005    0.014    0.075
+##     tm_strctr (d1)       0.212    0.024    8.861    0.000    0.165    0.258
+##     intr_tmst (d2)       0.049    0.019    2.556    0.011    0.011    0.086
+##     trnsctv_m (e1)       0.260    0.030    8.541    0.000    0.200    0.320
+##     tem_mmbrs           -0.001    0.002   -0.760    0.448   -0.005    0.002
+##     cr_tm_tnr           -0.000    0.000   -0.349    0.727   -0.001    0.001
+##     wrk_xprnc           -0.002    0.002   -1.215    0.224   -0.006    0.001
+##     gender              -0.004    0.032   -0.136    0.891   -0.068    0.059
+##   knowledge_sharing ~                                                      
+##     tm_strctr  (a)       0.509    0.028   17.912    0.000    0.453    0.564
+##     trnsctv_m  (b)       0.578    0.037   15.691    0.000    0.506    0.650
+##    Std.lv  Std.all
+##                   
+##     0.454    0.517
+##    -0.001   -0.001
+##     0.044    0.065
+##     0.212    0.204
+##     0.049    0.060
+##     0.260    0.193
+##    -0.001   -0.014
+##    -0.000   -0.006
+##    -0.002   -0.022
+##    -0.004   -0.002
+##                   
+##     0.509    0.431
+##     0.578    0.377
+## 
+## Variances:
+##                    Estimate  Std.Err  z-value  P(>|z|) ci.lower ci.upper
+##    .decision_qulty    0.266    0.011   23.759    0.000    0.244    0.288
+##    .knowledg_shrng    0.515    0.022   23.759    0.000    0.473    0.558
+##    Std.lv  Std.all
+##     0.266    0.358
+##     0.515    0.534
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{model_without <-}\StringTok{ '}
+\StringTok{decision_quality ~ c1*knowledge_sharing + c2*interdependence + c3*inter_knowshare + d1*team_structure + d2*inter_teamstr + team_members + core_team_tenure + work_experience + gender}
+\StringTok{knowledge_sharing ~ a*team_structure + b*transactive_memory}
+\StringTok{'}
+\NormalTok{model_fit_without <-}\StringTok{ }\KeywordTok{sem}\NormalTok{(model_without, }\DataTypeTok{data =}\NormalTok{ cleaned_df)}
+\KeywordTok{summary}\NormalTok{(model_fit_without, }\DataTypeTok{fit.measures =} \OtherTok{TRUE}\NormalTok{, }\DataTypeTok{standardized =} \OtherTok{TRUE}\NormalTok{, }\DataTypeTok{ci =}\NormalTok{ T)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## lavaan 0.6-5 ended normally after 26 iterations
+## 
+##   Estimator                                         ML
+##   Optimization method                           NLMINB
+##   Number of free parameters                         13
+##                                                       
+##   Number of observations                          1129
+##                                                       
+## Model Test User Model:
+##                                                       
+##   Test statistic                               109.840
+##   Degrees of freedom                                 8
+##   P-value (Chi-square)                           0.000
+## 
+## Model Test Baseline Model:
+## 
+##   Test statistic                              1906.790
+##   Degrees of freedom                                19
+##   P-value                                        0.000
+## 
+## User Model versus Baseline Model:
+## 
+##   Comparative Fit Index (CFI)                    0.946
+##   Tucker-Lewis Index (TLI)                       0.872
+## 
+## Loglikelihood and Information Criteria:
+## 
+##   Loglikelihood user model (H0)              -2117.551
+##   Loglikelihood unrestricted model (H1)      -2062.631
+##                                                       
+##   Akaike (AIC)                                4261.102
+##   Bayesian (BIC)                              4326.480
+##   Sample-size adjusted Bayesian (BIC)         4285.189
+## 
+## Root Mean Square Error of Approximation:
+## 
+##   RMSEA                                          0.106
+##   90 Percent confidence interval - lower         0.089
+##   90 Percent confidence interval - upper         0.124
+##   P-value RMSEA <= 0.05                          0.000
+## 
+## Standardized Root Mean Square Residual:
+## 
+##   SRMR                                           0.020
+## 
+## Parameter Estimates:
+## 
+##   Information                                 Expected
+##   Information saturated (h1) model          Structured
+##   Standard errors                             Standard
+## 
+## Regressions:
+##                       Estimate  Std.Err  z-value  P(>|z|) ci.lower ci.upper
+##   decision_quality ~                                                       
+##     knwldg_sh (c1)       0.527    0.020   26.135    0.000    0.488    0.567
+##     intrdpndn (c2)       0.024    0.015    1.544    0.123   -0.006    0.053
+##     intr_knws (c3)       0.040    0.016    2.500    0.012    0.009    0.072
+##     tm_strctr (d1)       0.244    0.024    9.995    0.000    0.196    0.291
+##     intr_tmst (d2)       0.044    0.020    2.242    0.025    0.006    0.083
+##     tem_mmbrs           -0.001    0.002   -0.354    0.724   -0.004    0.003
+##     cr_tm_tnr            0.000    0.000    0.451    0.652   -0.001    0.001
+##     wrk_xprnc           -0.001    0.002   -0.361    0.718   -0.004    0.003
+##     gender               0.003    0.033    0.078    0.938   -0.063    0.068
+##   knowledge_sharing ~                                                      
+##     tm_strctr  (a)       0.509    0.028   17.912    0.000    0.453    0.564
+##     trnsctv_m  (b)       0.578    0.037   15.691    0.000    0.506    0.650
+##    Std.lv  Std.all
+##                   
+##     0.527    0.601
+##     0.024    0.030
+##     0.040    0.060
+##     0.244    0.235
+##     0.044    0.054
+##    -0.001   -0.007
+##     0.000    0.009
+##    -0.001   -0.007
+##     0.003    0.001
+##                   
+##     0.509    0.431
+##     0.578    0.377
+## 
+## Variances:
+##                    Estimate  Std.Err  z-value  P(>|z|) ci.lower ci.upper
+##    .decision_qulty    0.283    0.012   23.759    0.000    0.260    0.307
+##    .knowledg_shrng    0.515    0.022   23.759    0.000    0.473    0.558
+##    Std.lv  Std.all
+##     0.283    0.382
+##     0.515    0.534
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{anova}\NormalTok{(model_fit_with, model_fit_without)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Chi-Squared Difference Test
+## 
+##                   Df    AIC    BIC  Chisq Chisq diff Df diff Pr(>Chisq)    
+## model_fit_with     7 4191.6 4262.0  38.31                                  
+## model_fit_without  8 4261.1 4326.5 109.84      71.53       1  < 2.2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{summary}\NormalTok{(model_fit_with)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## lavaan 0.6-5 ended normally after 28 iterations
+## 
+##   Estimator                                         ML
+##   Optimization method                           NLMINB
+##   Number of free parameters                         14
+##                                                       
+##   Number of observations                          1129
+##                                                       
+## Model Test User Model:
+##                                                       
+##   Test statistic                                38.310
+##   Degrees of freedom                                 7
+##   P-value (Chi-square)                           0.000
+## 
+## Parameter Estimates:
+## 
+##   Information                                 Expected
+##   Information saturated (h1) model          Structured
+##   Standard errors                             Standard
+## 
+## Regressions:
+##                       Estimate  Std.Err  z-value  P(>|z|)
+##   decision_quality ~                                     
+##     knwldg_sh (c1)       0.454    0.021   21.225    0.000
+##     intrdpndn (c2)      -0.001    0.015   -0.052    0.959
+##     intr_knws (c3)       0.044    0.016    2.826    0.005
+##     tm_strctr (d1)       0.212    0.024    8.861    0.000
+##     intr_tmst (d2)       0.049    0.019    2.556    0.011
+##     trnsctv_m (e1)       0.260    0.030    8.541    0.000
+##     tem_mmbrs           -0.001    0.002   -0.760    0.448
+##     cr_tm_tnr           -0.000    0.000   -0.349    0.727
+##     wrk_xprnc           -0.002    0.002   -1.215    0.224
+##     gender              -0.004    0.032   -0.136    0.891
+##   knowledge_sharing ~                                    
+##     tm_strctr  (a)       0.509    0.028   17.912    0.000
+##     trnsctv_m  (b)       0.578    0.037   15.691    0.000
+## 
+## Variances:
+##                    Estimate  Std.Err  z-value  P(>|z|)
+##    .decision_qulty    0.266    0.011   23.759    0.000
+##    .knowledg_shrng    0.515    0.022   23.759    0.000
+\end{verbatim}
+
+\hypertarget{confirmatory-factor-analysis-cfa-for-decision-quality}{%
+\section{Confirmatory Factor Analysis (CFA) for decision
+quality}\label{confirmatory-factor-analysis-cfa-for-decision-quality}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{one_factor <-}\StringTok{ '}
+\StringTok{decision_quality =~ decision_compare_1 + }
+\StringTok{                    decision_compare_2 + }
+\StringTok{                    decision_compare_3 +}
+\StringTok{                    decision_general_1 + }
+\StringTok{                    decision_general_2 + }
+\StringTok{                    decision_general_3}
+
+\StringTok{decision_quality ~~ 1*decision_quality}
+
+\StringTok{# manifest variable covariances (uniquenesses)}
+\StringTok{  decision_compare_1 ~~ decision_compare_3}
+\StringTok{  decision_compare_3 ~~ decision_compare_2}
+\StringTok{  decision_compare_1 ~~ decision_compare_2}
+\StringTok{'}
+
+\NormalTok{fit_one_fct <-}\StringTok{ }\KeywordTok{cfa}\NormalTok{(one_factor, }\DataTypeTok{data =}\NormalTok{ cleaned_df, }\DataTypeTok{std.lv=}\OtherTok{TRUE}\NormalTok{)}
+\KeywordTok{summary}\NormalTok{(fit_one_fct, }\DataTypeTok{fit.measures=}\OtherTok{TRUE}\NormalTok{, }\DataTypeTok{standardized=}\OtherTok{TRUE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## lavaan 0.6-5 ended normally after 28 iterations
+## 
+##   Estimator                                         ML
+##   Optimization method                           NLMINB
+##   Number of free parameters                         15
+##                                                       
+##   Number of observations                          1129
+##                                                       
+## Model Test User Model:
+##                                                       
+##   Test statistic                                26.580
+##   Degrees of freedom                                 6
+##   P-value (Chi-square)                           0.000
+## 
+## Model Test Baseline Model:
+## 
+##   Test statistic                              5070.853
+##   Degrees of freedom                                15
+##   P-value                                        0.000
+## 
+## User Model versus Baseline Model:
+## 
+##   Comparative Fit Index (CFI)                    0.996
+##   Tucker-Lewis Index (TLI)                       0.990
+## 
+## Loglikelihood and Information Criteria:
+## 
+##   Loglikelihood user model (H0)              -7247.219
+##   Loglikelihood unrestricted model (H1)      -7233.930
+##                                                       
+##   Akaike (AIC)                               14524.439
+##   Bayesian (BIC)                             14599.875
+##   Sample-size adjusted Bayesian (BIC)        14552.231
+## 
+## Root Mean Square Error of Approximation:
+## 
+##   RMSEA                                          0.055
+##   90 Percent confidence interval - lower         0.035
+##   90 Percent confidence interval - upper         0.077
+##   P-value RMSEA <= 0.05                          0.310
+## 
+## Standardized Root Mean Square Residual:
+## 
+##   SRMR                                           0.010
+## 
+## Parameter Estimates:
+## 
+##   Information                                 Expected
+##   Information saturated (h1) model          Structured
+##   Standard errors                             Standard
+## 
+## Latent Variables:
+##                       Estimate  Std.Err  z-value  P(>|z|)   Std.lv  Std.all
+##   decision_quality =~                                                      
+##     decisin_cmpr_1       0.654    0.029   22.397    0.000    0.654    0.619
+##     decisin_cmpr_2       0.772    0.028   27.626    0.000    0.772    0.726
+##     decisin_cmpr_3       0.711    0.031   23.294    0.000    0.711    0.639
+##     decisin_gnrl_1       0.872    0.024   36.029    0.000    0.872    0.868
+##     decisin_gnrl_2       0.839    0.022   37.472    0.000    0.839    0.889
+##     decisin_gnrl_3       0.885    0.023   39.043    0.000    0.885    0.912
+## 
+## Covariances:
+##                         Estimate  Std.Err  z-value  P(>|z|)   Std.lv  Std.all
+##  .decision_compare_1 ~~                                                      
+##    .decisin_cmpr_3         0.353    0.025   13.988    0.000    0.353    0.497
+##  .decision_compare_2 ~~                                                      
+##    .decisin_cmpr_3         0.286    0.022   12.757    0.000    0.286    0.457
+##  .decision_compare_1 ~~                                                      
+##    .decisin_cmpr_2         0.279    0.022   12.898    0.000    0.279    0.461
+## 
+## Variances:
+##                    Estimate  Std.Err  z-value  P(>|z|)   Std.lv  Std.all
+##     decision_qulty    1.000                               1.000    1.000
+##    .decisin_cmpr_1    0.687    0.030   22.549    0.000    0.687    0.617
+##    .decisin_cmpr_2    0.534    0.025   21.654    0.000    0.534    0.473
+##    .decisin_cmpr_3    0.733    0.033   22.423    0.000    0.733    0.592
+##    .decisin_gnrl_1    0.250    0.014   17.840    0.000    0.250    0.247
+##    .decisin_gnrl_2    0.186    0.011   16.306    0.000    0.186    0.209
+##    .decisin_gnrl_3    0.159    0.011   14.141    0.000    0.159    0.169
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{parameterEstimates}\NormalTok{(fit_one_fct, }\DataTypeTok{standardized=}\OtherTok{TRUE}\NormalTok{) }
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##                   lhs op                rhs   est    se      z pvalue ci.lower
+## 1    decision_quality =~ decision_compare_1 0.654 0.029 22.397      0    0.597
+## 2    decision_quality =~ decision_compare_2 0.772 0.028 27.626      0    0.717
+## 3    decision_quality =~ decision_compare_3 0.711 0.031 23.294      0    0.651
+## 4    decision_quality =~ decision_general_1 0.872 0.024 36.029      0    0.825
+## 5    decision_quality =~ decision_general_2 0.839 0.022 37.472      0    0.795
+## 6    decision_quality =~ decision_general_3 0.885 0.023 39.043      0    0.841
+## 7    decision_quality ~~   decision_quality 1.000 0.000     NA     NA    1.000
+## 8  decision_compare_1 ~~ decision_compare_3 0.353 0.025 13.988      0    0.303
+## 9  decision_compare_2 ~~ decision_compare_3 0.286 0.022 12.757      0    0.242
+## 10 decision_compare_1 ~~ decision_compare_2 0.279 0.022 12.898      0    0.237
+## 11 decision_compare_1 ~~ decision_compare_1 0.687 0.030 22.549      0    0.628
+## 12 decision_compare_2 ~~ decision_compare_2 0.534 0.025 21.654      0    0.486
+## 13 decision_compare_3 ~~ decision_compare_3 0.733 0.033 22.423      0    0.669
+## 14 decision_general_1 ~~ decision_general_1 0.250 0.014 17.840      0    0.222
+## 15 decision_general_2 ~~ decision_general_2 0.186 0.011 16.306      0    0.164
+## 16 decision_general_3 ~~ decision_general_3 0.159 0.011 14.141      0    0.137
+##    ci.upper std.lv std.all std.nox
+## 1     0.711  0.654   0.619   0.619
+## 2     0.826  0.772   0.726   0.726
+## 3     0.771  0.711   0.639   0.639
+## 4     0.920  0.872   0.868   0.868
+## 5     0.882  0.839   0.889   0.889
+## 6     0.930  0.885   0.912   0.912
+## 7     1.000  1.000   1.000   1.000
+## 8     0.402  0.353   0.497   0.497
+## 9     0.330  0.286   0.457   0.457
+## 10    0.322  0.279   0.461   0.461
+## 11    0.747  0.687   0.617   0.617
+## 12    0.583  0.534   0.473   0.473
+## 13    0.797  0.733   0.592   0.592
+## 14    0.277  0.250   0.247   0.247
+## 15    0.209  0.186   0.209   0.209
+## 16    0.181  0.159   0.169   0.169
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{modificationIndices}\NormalTok{(fit_one_fct, }\DataTypeTok{sort.=}\OtherTok{TRUE}\NormalTok{, }\DataTypeTok{minimum.value=}\DecValTok{3}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##                   lhs op                rhs     mi    epc sepc.lv sepc.all
+## 21 decision_compare_2 ~~ decision_general_2 15.372 -0.040  -0.040   -0.126
+## 26 decision_general_1 ~~ decision_general_2 11.825  0.046   0.046    0.215
+## 22 decision_compare_2 ~~ decision_general_3 10.813  0.033   0.033    0.115
+## 24 decision_compare_3 ~~ decision_general_2  6.929  0.029   0.029    0.080
+## 27 decision_general_1 ~~ decision_general_3  4.994 -0.033  -0.033   -0.164
+## 25 decision_compare_3 ~~ decision_general_3  3.220 -0.020  -0.020   -0.059
+##    sepc.nox
+## 21   -0.126
+## 26    0.215
+## 22    0.115
+## 24    0.080
+## 27   -0.164
+## 25   -0.059
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{two_factor <-}\StringTok{ '}
+\StringTok{com_decision_quality =~ decision_compare_1 + }
+\StringTok{                    decision_compare_2 + }
+\StringTok{                    decision_compare_3}
+\StringTok{                    }
+\StringTok{gen_decision_quality =~ decision_general_1 + }
+\StringTok{                    decision_general_2 + }
+\StringTok{                    decision_general_3'}
+
+\NormalTok{fit_two_fct <-}\StringTok{ }\KeywordTok{cfa}\NormalTok{(two_factor, }\DataTypeTok{data =}\NormalTok{ cleaned_df, }\DataTypeTok{std.lv=}\OtherTok{TRUE}\NormalTok{)}
+\KeywordTok{summary}\NormalTok{(fit_one_fct, }\DataTypeTok{fit.measures=}\OtherTok{TRUE}\NormalTok{, }\DataTypeTok{standardized=}\OtherTok{TRUE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## lavaan 0.6-5 ended normally after 28 iterations
+## 
+##   Estimator                                         ML
+##   Optimization method                           NLMINB
+##   Number of free parameters                         15
+##                                                       
+##   Number of observations                          1129
+##                                                       
+## Model Test User Model:
+##                                                       
+##   Test statistic                                26.580
+##   Degrees of freedom                                 6
+##   P-value (Chi-square)                           0.000
+## 
+## Model Test Baseline Model:
+## 
+##   Test statistic                              5070.853
+##   Degrees of freedom                                15
+##   P-value                                        0.000
+## 
+## User Model versus Baseline Model:
+## 
+##   Comparative Fit Index (CFI)                    0.996
+##   Tucker-Lewis Index (TLI)                       0.990
+## 
+## Loglikelihood and Information Criteria:
+## 
+##   Loglikelihood user model (H0)              -7247.219
+##   Loglikelihood unrestricted model (H1)      -7233.930
+##                                                       
+##   Akaike (AIC)                               14524.439
+##   Bayesian (BIC)                             14599.875
+##   Sample-size adjusted Bayesian (BIC)        14552.231
+## 
+## Root Mean Square Error of Approximation:
+## 
+##   RMSEA                                          0.055
+##   90 Percent confidence interval - lower         0.035
+##   90 Percent confidence interval - upper         0.077
+##   P-value RMSEA <= 0.05                          0.310
+## 
+## Standardized Root Mean Square Residual:
+## 
+##   SRMR                                           0.010
+## 
+## Parameter Estimates:
+## 
+##   Information                                 Expected
+##   Information saturated (h1) model          Structured
+##   Standard errors                             Standard
+## 
+## Latent Variables:
+##                       Estimate  Std.Err  z-value  P(>|z|)   Std.lv  Std.all
+##   decision_quality =~                                                      
+##     decisin_cmpr_1       0.654    0.029   22.397    0.000    0.654    0.619
+##     decisin_cmpr_2       0.772    0.028   27.626    0.000    0.772    0.726
+##     decisin_cmpr_3       0.711    0.031   23.294    0.000    0.711    0.639
+##     decisin_gnrl_1       0.872    0.024   36.029    0.000    0.872    0.868
+##     decisin_gnrl_2       0.839    0.022   37.472    0.000    0.839    0.889
+##     decisin_gnrl_3       0.885    0.023   39.043    0.000    0.885    0.912
+## 
+## Covariances:
+##                         Estimate  Std.Err  z-value  P(>|z|)   Std.lv  Std.all
+##  .decision_compare_1 ~~                                                      
+##    .decisin_cmpr_3         0.353    0.025   13.988    0.000    0.353    0.497
+##  .decision_compare_2 ~~                                                      
+##    .decisin_cmpr_3         0.286    0.022   12.757    0.000    0.286    0.457
+##  .decision_compare_1 ~~                                                      
+##    .decisin_cmpr_2         0.279    0.022   12.898    0.000    0.279    0.461
+## 
+## Variances:
+##                    Estimate  Std.Err  z-value  P(>|z|)   Std.lv  Std.all
+##     decision_qulty    1.000                               1.000    1.000
+##    .decisin_cmpr_1    0.687    0.030   22.549    0.000    0.687    0.617
+##    .decisin_cmpr_2    0.534    0.025   21.654    0.000    0.534    0.473
+##    .decisin_cmpr_3    0.733    0.033   22.423    0.000    0.733    0.592
+##    .decisin_gnrl_1    0.250    0.014   17.840    0.000    0.250    0.247
+##    .decisin_gnrl_2    0.186    0.011   16.306    0.000    0.186    0.209
+##    .decisin_gnrl_3    0.159    0.011   14.141    0.000    0.159    0.169
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{modificationIndices}\NormalTok{(fit_two_fct, }\DataTypeTok{sort.=}\OtherTok{TRUE}\NormalTok{, }\DataTypeTok{minimum.value=}\DecValTok{3}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##                     lhs op                rhs     mi    epc sepc.lv sepc.all
+## 23   decision_compare_1 ~~ decision_compare_3 28.338  0.106   0.106    0.268
+## 20 gen_decision_quality =~ decision_compare_2 28.338  0.277   0.277    0.260
+## 30   decision_compare_2 ~~ decision_general_3 18.602  0.042   0.042    0.204
+## 27   decision_compare_2 ~~ decision_compare_3 10.694 -0.072  -0.072   -0.220
+## 19 gen_decision_quality =~ decision_compare_1 10.694 -0.160  -0.160   -0.152
+## 18 com_decision_quality =~ decision_general_3 10.216  0.116   0.116    0.120
+## 34   decision_general_1 ~~ decision_general_2 10.216  0.044   0.044    0.204
+## 29   decision_compare_2 ~~ decision_general_2  7.593 -0.027  -0.027   -0.122
+## 33   decision_compare_3 ~~ decision_general_3  4.920 -0.024  -0.024   -0.095
+## 21 gen_decision_quality =~ decision_compare_3  4.678 -0.112  -0.112   -0.101
+## 22   decision_compare_1 ~~ decision_compare_2  4.678 -0.044  -0.044   -0.138
+## 32   decision_compare_3 ~~ decision_general_2  4.605  0.024   0.024    0.086
+## 24   decision_compare_1 ~~ decision_general_1  4.067 -0.024  -0.024   -0.077
+## 35   decision_general_1 ~~ decision_general_3  3.123 -0.026  -0.026   -0.130
+## 17 com_decision_quality =~ decision_general_2  3.123 -0.062  -0.062   -0.066
+##    sepc.nox
+## 23    0.268
+## 20    0.260
+## 30    0.204
+## 27   -0.220
+## 19   -0.152
+## 18    0.120
+## 34    0.204
+## 29   -0.122
+## 33   -0.095
+## 21   -0.101
+## 22   -0.138
+## 32    0.086
+## 24   -0.077
+## 35   -0.130
+## 17   -0.066
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{anova}\NormalTok{(fit_one_fct, fit_two_fct)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Chi-Squared Difference Test
+## 
+##             Df   AIC   BIC  Chisq Chisq diff Df diff Pr(>Chisq)    
+## fit_one_fct  6 14524 14600 26.580                                  
+## fit_two_fct  8 14548 14613 54.115     27.535       2  1.049e-06 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{levelled_factor <-}\StringTok{ '}
+\StringTok{com_decision_quality =~ decision_compare_1 + }
+\StringTok{                    decision_compare_2 + }
+\StringTok{                    decision_compare_3}
+\StringTok{                    }
+\StringTok{gen_decision_quality =~ decision_general_1 + }
+\StringTok{                    decision_general_2 + }
+\StringTok{                    decision_general_3}
+
+\StringTok{overall =~ com_decision_quality + gen_decision_quality'}
+
+\NormalTok{levelled_fct <-}\StringTok{ }\KeywordTok{cfa}\NormalTok{(levelled_factor, }\DataTypeTok{data =}\NormalTok{ cleaned_df, }\DataTypeTok{std.lv=}\OtherTok{TRUE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning in lav_model_vcov(lavmodel = lavmodel2, lavsamplestats = lavsamplestats, : lavaan WARNING:
+##     Could not compute standard errors! The information matrix could
+##     not be inverted. This may be a symptom that the model is not
+##     identified.
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{summary}\NormalTok{(fit_one_fct, }\DataTypeTok{fit.measures=}\OtherTok{TRUE}\NormalTok{, }\DataTypeTok{standardized=}\OtherTok{TRUE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## lavaan 0.6-5 ended normally after 28 iterations
+## 
+##   Estimator                                         ML
+##   Optimization method                           NLMINB
+##   Number of free parameters                         15
+##                                                       
+##   Number of observations                          1129
+##                                                       
+## Model Test User Model:
+##                                                       
+##   Test statistic                                26.580
+##   Degrees of freedom                                 6
+##   P-value (Chi-square)                           0.000
+## 
+## Model Test Baseline Model:
+## 
+##   Test statistic                              5070.853
+##   Degrees of freedom                                15
+##   P-value                                        0.000
+## 
+## User Model versus Baseline Model:
+## 
+##   Comparative Fit Index (CFI)                    0.996
+##   Tucker-Lewis Index (TLI)                       0.990
+## 
+## Loglikelihood and Information Criteria:
+## 
+##   Loglikelihood user model (H0)              -7247.219
+##   Loglikelihood unrestricted model (H1)      -7233.930
+##                                                       
+##   Akaike (AIC)                               14524.439
+##   Bayesian (BIC)                             14599.875
+##   Sample-size adjusted Bayesian (BIC)        14552.231
+## 
+## Root Mean Square Error of Approximation:
+## 
+##   RMSEA                                          0.055
+##   90 Percent confidence interval - lower         0.035
+##   90 Percent confidence interval - upper         0.077
+##   P-value RMSEA <= 0.05                          0.310
+## 
+## Standardized Root Mean Square Residual:
+## 
+##   SRMR                                           0.010
+## 
+## Parameter Estimates:
+## 
+##   Information                                 Expected
+##   Information saturated (h1) model          Structured
+##   Standard errors                             Standard
+## 
+## Latent Variables:
+##                       Estimate  Std.Err  z-value  P(>|z|)   Std.lv  Std.all
+##   decision_quality =~                                                      
+##     decisin_cmpr_1       0.654    0.029   22.397    0.000    0.654    0.619
+##     decisin_cmpr_2       0.772    0.028   27.626    0.000    0.772    0.726
+##     decisin_cmpr_3       0.711    0.031   23.294    0.000    0.711    0.639
+##     decisin_gnrl_1       0.872    0.024   36.029    0.000    0.872    0.868
+##     decisin_gnrl_2       0.839    0.022   37.472    0.000    0.839    0.889
+##     decisin_gnrl_3       0.885    0.023   39.043    0.000    0.885    0.912
+## 
+## Covariances:
+##                         Estimate  Std.Err  z-value  P(>|z|)   Std.lv  Std.all
+##  .decision_compare_1 ~~                                                      
+##    .decisin_cmpr_3         0.353    0.025   13.988    0.000    0.353    0.497
+##  .decision_compare_2 ~~                                                      
+##    .decisin_cmpr_3         0.286    0.022   12.757    0.000    0.286    0.457
+##  .decision_compare_1 ~~                                                      
+##    .decisin_cmpr_2         0.279    0.022   12.898    0.000    0.279    0.461
+## 
+## Variances:
+##                    Estimate  Std.Err  z-value  P(>|z|)   Std.lv  Std.all
+##     decision_qulty    1.000                               1.000    1.000
+##    .decisin_cmpr_1    0.687    0.030   22.549    0.000    0.687    0.617
+##    .decisin_cmpr_2    0.534    0.025   21.654    0.000    0.534    0.473
+##    .decisin_cmpr_3    0.733    0.033   22.423    0.000    0.733    0.592
+##    .decisin_gnrl_1    0.250    0.014   17.840    0.000    0.250    0.247
+##    .decisin_gnrl_2    0.186    0.011   16.306    0.000    0.186    0.209
+##    .decisin_gnrl_3    0.159    0.011   14.141    0.000    0.159    0.169
+\end{verbatim}
+
+\end{document}
