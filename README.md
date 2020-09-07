@@ -1,7 +1,7 @@
 # Research on Team Decision Making
 
 > "Because the modern organization consists of knowledge specialists, it has to be an organization of equals, of colleagues and associates. No knowledge ranks higher than another; each is judged by its contribution to the common task rather than by any inherent superiority or inferiority. Therefore, the modern organization cannot be an organization of boss and subordinate. It must be organized as a team." <br>
-(Drucker, 1992)
+(Peter Drucker, 1992)
 
 In this project, I present empirical studies that contribute to an increasingly important research area: team effectiveness in the context of knowledge work. My findings demonstrate that self-organized teams are capable of making better decisions on the basis of distributed knowledge than hierarchically structured teams. This yields actionable insights for the future implementation of self-organized teams in modern organizations. All statistical analyses can be found in this repository. 
 
