@@ -44,9 +44,9 @@ survey_data %>%
   geom_bar() +
   theme(axis.text.x = element_text(angle = 90))
 
-survey_data$indiv_team_tenure <- fct_relevel(survey_data$indiv_team_tenure, "Less than 3 months", "3 _ 6 months", "6 _ 12 months")
 
 summary(survey_data$indiv_team_tenure)
+
 
 survey_data %>% 
   ggplot(aes(indiv_team_tenure)) + 
@@ -60,7 +60,7 @@ survey_data %>%
   ggplot(aes(core_team_tenure)) + 
   geom_bar() + 
   xlab("team tenure in months") +
-  theme(axis.text.x = element_text(angle = 90)) 
+  ylab("number of teams") 
 ```
 ## agile 
 
