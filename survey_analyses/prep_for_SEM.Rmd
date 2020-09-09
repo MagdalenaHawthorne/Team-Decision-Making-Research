@@ -11,11 +11,9 @@ knitr::opts_chunk$set(echo = TRUE)
 ```{r}
 library(lavaan)
 library(tidyverse)
-# library(lubridate)
 library(psych)
 library(readr)
 library(forcats)
-# library(stringr)
 ```
 # Data prep
 
@@ -157,7 +155,7 @@ survey_data_clean <- survey_data
 
 write_csv(survey_data_clean, "survey_data_clean.csv")
 ```
-# Cronbach's alpha
+# Cronbach's alpha to report for each scale and its subscale
 
 ## team structure
 

@@ -13,7 +13,6 @@ library(readr)
 library(lavaan)
 library(mediation)
 library(MASS)
-
 ```
 # Data
 
@@ -82,6 +81,7 @@ ggplot(aes(x=team_structure, y=transactive_memory, fill = HighLowInde, group = H
 
 ggplot(aes(x=team_structure, y=decision_quality, fill = HighLowInde, group = HighLowInde), data=cleaned_df) +
     geom_smooth()
+
 # The more non-hierarchical the more knowledge is shared. **To a lesser extent, having a strong TMS system in place additionally increases knowledge sharing**. However, TMS is very important in moderately hierarcical regimes where it can lead to much higher knowledge sharing than similarly hierarchical teams without strong TMS systems in place. 
 
 ```
