@@ -35,7 +35,7 @@ cleaned_df <- cleaned_df %>%
   mutate_at(vars(work_experience, core_team_tenure, gender), as.numeric) 
 psych::describe(cleaned_df$gender)
 ```
-## check normality
+## check normality by screening
 
 ```{r}
 ggplot(aes(decision_quality), data=cleaned_df) +
@@ -49,8 +49,19 @@ ggplot(aes(transactive_memory), data=cleaned_df) +
 ggplot(aes(knowledge_sharing), data=cleaned_df) +
   geom_density()
 
+# use psych package to examine skew and kurtosis
 psych::describe(cleaned_df$core_team_tenure) 
 psych::describe(cleaned_df$transactive_memory)
+psych::describe(cleaned_df$knowledge_sharing)
+psych::describe(cleaned_df$team_structure)
+psych::describe(cleaned_df$decision_quality)
+
+
+# test with Shapiro-Wilk’s method 
+shapiro.test(cleaned_df$team_structure)
+shapiro.test(cleaned_df$decision_quality) # !! non-normal
+
+
 ```
 
 ## prepare control variables
